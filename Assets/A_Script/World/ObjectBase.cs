@@ -3,10 +3,10 @@ using UnityEngine;
 public class ObjectBase : MonoBehaviour
 {
     public Sprite Icon;
-    public Vector2Int currentGridPos;
+    public Vector2Int currentGridPosition;
 
     protected virtual void Start()
     {
-        transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
+        transform.position = new Vector3(currentGridPosition.x, currentGridPosition.y, 0);
     }
 }

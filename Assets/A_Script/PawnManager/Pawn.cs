@@ -14,16 +14,27 @@ public class Pawn : ObjectBase
     public HeadData HeadData => headData;
     public HairData HairData => hairData;
 
-    Dictionary<DiagonalDirection, Vector2Int> directionToVector = new()
+    struct DirectionData
     {
-        { DiagonalDirection.up, Vector2Int.up },
-        { DiagonalDirection.upright, new Vector2Int(1, 1) },
-        { DiagonalDirection.right, Vector2Int.right },
-        { DiagonalDirection.downright, new Vector2Int(1, -1) },
-        { DiagonalDirection.down, Vector2Int.down },
-        { DiagonalDirection.downleft, new Vector2Int(-1, -1) },
-        { DiagonalDirection.left, Vector2Int.left },
-        { DiagonalDirection.upleft, new Vector2Int(-1, 1) }
+        public Vector2Int vector;
+        public Direction direction;
+        public DirectionData(Vector2Int vector, Direction direction)
+        {
+            this.vector = vector;
+            this.direction = direction;
+        }
+    }
+
+    Dictionary<DiagonalDirection, DirectionData> directionToVector = new()
+    {
+        { DiagonalDirection.up, new DirectionData(Vector2Int.up, Direction.North) },
+        { DiagonalDirection.upright, new DirectionData(new Vector2Int(1, 1), Direction.East) },
+        { DiagonalDirection.right, new DirectionData(Vector2Int.right, Direction.East) },
+        { DiagonalDirection.downright, new DirectionData(new Vector2Int(1, -1), Direction.East) },
+        { DiagonalDirection.down, new DirectionData(Vector2Int.down, Direction.South) },
+        { DiagonalDirection.downleft, new DirectionData(new Vector2Int(-1, -1), Direction.West) },
+        { DiagonalDirection.left, new DirectionData(Vector2Int.left, Direction.West) },
+        { DiagonalDirection.upleft, new DirectionData(new Vector2Int(-1, 1), Direction.West) }
     };
 
     public void ChangeDirection(Direction dir)
@@ -35,8 +46,10 @@ public class Pawn : ObjectBase
 
     public void Walk(DiagonalDirection dir)
     {
-        Vector2Int delta = directionToVector[dir];
-        paths.Enqueue(currentGridPos + delta);
+        DirectionData data = directionToVector[dir];
+        ChangeDirection(data.direction);
+        Vector2Int delta = data.vector;
+        paths.Enqueue(currentGridPosition + delta);
     }
 
 
@@ -53,22 +66,16 @@ public class Pawn : ObjectBase
 
         if (pos == destinationGridPos)
         {
-            currentGridPos = destinationGridPos;
+            currentGridPosition = destinationGridPos;
             paths.Dequeue();
             return;
         }
 
         Vector2 tempPos = Vector2.MoveTowards(pos, destinationGridPos, Time.deltaTime);
         rb.MovePosition(tempPos);
-
-        Vector2Int delta = destinationGridPos - currentGridPos;
-
-        if (delta.x != 0)
-            ChangeDirection(delta.x > 0 ? Direction.East : Direction.West);
-        else
-            ChangeDirection(delta.y > 0 ? Direction.North : Direction.South);
-
     }
+
+    
 
     //protected override void Start()
     //{

@@ -128,7 +128,7 @@ public class World : MonoBehaviour
         if (pawnPrefab == null) return;
         Pawn pM = Instantiate(pawnPrefab).GetComponent<Pawn>();
         if (pM == null || preset == null) return;
-        pM.currentGridPos = position;
+        pM.currentGridPosition = position;
         BodyData bmanager = pM.BodyData;
         if (bmanager) bmanager.SetDirectionSpriteData(preset.body);
         HeadData hmanager = pM.HeadData;
