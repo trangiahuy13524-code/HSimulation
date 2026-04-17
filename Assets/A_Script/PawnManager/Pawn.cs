@@ -14,6 +14,18 @@ public class Pawn : ObjectBase
     public HeadData HeadData => headData;
     public HairData HairData => hairData;
 
+    Dictionary<DiagonalDirection, Vector2Int> directionToVector = new()
+    {
+        { DiagonalDirection.up, Vector2Int.up },
+        { DiagonalDirection.upright, new Vector2Int(1, 1) },
+        { DiagonalDirection.right, Vector2Int.right },
+        { DiagonalDirection.downright, new Vector2Int(1, -1) },
+        { DiagonalDirection.down, Vector2Int.down },
+        { DiagonalDirection.downleft, new Vector2Int(-1, -1) },
+        { DiagonalDirection.left, Vector2Int.left },
+        { DiagonalDirection.upleft, new Vector2Int(-1, 1) }
+    };
+
     public void ChangeDirection(Direction dir)
     {
         if (bodyData) bodyData.SetDirection(dir);
@@ -23,18 +35,7 @@ public class Pawn : ObjectBase
 
     public void Walk(DiagonalDirection dir)
     {
-        Vector2Int delta = dir switch
-        {
-            DiagonalDirection.up => Vector2Int.up,
-            DiagonalDirection.upright => Vector2Int.up + Vector2Int.right,
-            DiagonalDirection.right => Vector2Int.right,
-            DiagonalDirection.downright => Vector2Int.down + Vector2Int.right,
-            DiagonalDirection.down => Vector2Int.down,
-            DiagonalDirection.downleft => Vector2Int.down + Vector2Int.left,
-            DiagonalDirection.left => Vector2Int.left,
-            DiagonalDirection.upleft => Vector2Int.up + Vector2Int.left,
-            _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
-        };
+        Vector2Int delta = directionToVector[dir];
         paths.Enqueue(currentGridPos + delta);
     }
 
