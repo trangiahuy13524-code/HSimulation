@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90c7227c8c12c8f4db828bd7f84a3cd9, type: 3}
+  m_Name: MaleBody
+  m_EditorClassIdentifier: Assembly-CSharp::DirectionSpriteData
+  offset: {x: 0, y: -0.15}
+  childOffset: {x: 0, y: 1.3}
+  scale: {x: 0.25, y: 0.25}
+  sortingOrder: 0
+  northSprite: {fileID: 21300000, guid: 87d5d577eca02a94a96d84ca2d210181, type: 3}
+  southSprite: {fileID: 21300000, guid: 3ee743934bad7574a8a9fc9157fbc07c, type: 3}
+  eastSprite: {fileID: 21300000, guid: c826be5deb6f1c047a0b4ed91dd4d3fc, type: 3}

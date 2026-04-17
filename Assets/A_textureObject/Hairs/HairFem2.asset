@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90c7227c8c12c8f4db828bd7f84a3cd9, type: 3}
+  m_Name: HairFem2
+  m_EditorClassIdentifier: Assembly-CSharp::DirectionSpriteData
+  offset: {x: 0, y: 0, z: 0}
+  childOffset: {x: 0, y: 0, z: 0}
+  scale: {x: 2, y: 2, z: 2}
+  northSprite: {fileID: 21300000, guid: f823449725de8d2448f8d1b803574e05, type: 3}
+  southSprite: {fileID: 21300000, guid: 1152aa70bed8e354cbafddbe9cfcc756, type: 3}
+  eastSprite: {fileID: 21300000, guid: 6c800db88f8794d4b932531462607a47, type: 3}

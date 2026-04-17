@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90c7227c8c12c8f4db828bd7f84a3cd9, type: 3}
+  m_Name: HairMale1
+  m_EditorClassIdentifier: Assembly-CSharp::DirectionSpriteData
+  offset: {x: 0, y: 0}
+  childOffset: {x: 0, y: 0}
+  scale: {x: 2, y: 2}
+  northSprite: {fileID: 21300000, guid: 01a63635b7543da439f7de735830d703, type: 3}
+  southSprite: {fileID: 21300000, guid: 91486088b7bab4b4eb9492072f32bf48, type: 3}
+  eastSprite: {fileID: 21300000, guid: a0f3216ba2a97154981db31ab4bdac06, type: 3}
