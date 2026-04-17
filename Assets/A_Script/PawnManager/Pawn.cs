@@ -27,14 +27,14 @@ public class Pawn : ObjectBase
 
     Dictionary<DiagonalDirection, DirectionData> directionToVector = new()
     {
-        { DiagonalDirection.up, new DirectionData(Vector2Int.up, Direction.North) },
-        { DiagonalDirection.upright, new DirectionData(new Vector2Int(1, 1), Direction.East) },
-        { DiagonalDirection.right, new DirectionData(Vector2Int.right, Direction.East) },
-        { DiagonalDirection.downright, new DirectionData(new Vector2Int(1, -1), Direction.East) },
-        { DiagonalDirection.down, new DirectionData(Vector2Int.down, Direction.South) },
-        { DiagonalDirection.downleft, new DirectionData(new Vector2Int(-1, -1), Direction.West) },
-        { DiagonalDirection.left, new DirectionData(Vector2Int.left, Direction.West) },
-        { DiagonalDirection.upleft, new DirectionData(new Vector2Int(-1, 1), Direction.West) }
+        { DiagonalDirection.North, new DirectionData(Vector2Int.up, Direction.North) },
+        { DiagonalDirection.NorthEast, new DirectionData(new Vector2Int(1, 1), Direction.East) },
+        { DiagonalDirection.East, new DirectionData(Vector2Int.right, Direction.East) },
+        { DiagonalDirection.SouthEast, new DirectionData(new Vector2Int(1, -1), Direction.East) },
+        { DiagonalDirection.South, new DirectionData(Vector2Int.down, Direction.South) },
+        { DiagonalDirection.SouthWest, new DirectionData(new Vector2Int(-1, -1), Direction.West) },
+        { DiagonalDirection.West, new DirectionData(Vector2Int.left, Direction.West) },
+        { DiagonalDirection.NorthWest, new DirectionData(new Vector2Int(-1, 1), Direction.West) }
     };
 
     public void ChangeDirection(Direction dir)

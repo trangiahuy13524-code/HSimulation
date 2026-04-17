@@ -44,28 +44,28 @@ public class TestButtonEditor : Editor
         GUILayout.Space(10);
 
         if (GUILayout.Button("Up"))
-            script.Walk(DiagonalDirection.up);
+            script.Walk(DiagonalDirection.North);
 
         if (GUILayout.Button("Down"))
-            script.Walk(DiagonalDirection.down);
+            script.Walk(DiagonalDirection.South);
 
         if (GUILayout.Button("Left"))
-            script.Walk(DiagonalDirection.left);
+            script.Walk(DiagonalDirection.West);
 
         if (GUILayout.Button("Right"))
-            script.Walk(DiagonalDirection.right);
+            script.Walk(DiagonalDirection.East);
 
         if (GUILayout.Button("UpLeft"))
-            script.Walk(DiagonalDirection.upleft);
+            script.Walk(DiagonalDirection.NorthWest);
 
         if (GUILayout.Button("UpRight"))
-            script.Walk(DiagonalDirection.upright);
+            script.Walk(DiagonalDirection.NorthEast);
 
         if (GUILayout.Button("DownLeft"))
-            script.Walk(DiagonalDirection.downleft);
+            script.Walk(DiagonalDirection.SouthWest);
 
         if (GUILayout.Button("DownRight"))
-            script.Walk(DiagonalDirection.downright);
+            script.Walk(DiagonalDirection.SouthEast);
 
         serializedObject.ApplyModifiedProperties();
     }

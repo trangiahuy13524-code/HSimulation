@@ -10,14 +10,14 @@ public enum Direction
 
 public enum DiagonalDirection
 {
-    up,
-    upright,
-    right,
-    downright,
-    down,
-    downleft,
-    left,
-    upleft
+    North,
+    NorthEast,
+    East,
+    SouthEast,
+    South,
+    SouthWest,
+    West,
+    NorthWest
 }
 
 
