@@ -5,10 +5,10 @@ using System.Collections.Generic;
 public class WorldDebug : MonoBehaviour
 {
     [SerializeField] World world;
-    [SerializeField] PawnPreset bodySprite;
-    [SerializeField] PawnPreset headSprite;
-    [SerializeField] PawnPreset hairSprite;
-    [SerializeField] List<DirectionTexturePreset> pawnPreset = new();
+    [SerializeField] DirectionSpriteData bodySprite;
+    [SerializeField] DirectionSpriteData headSprite;
+    [SerializeField] DirectionSpriteData hairSprite;
+    [SerializeField] List<PawnPreset> pawnPreset = new();
     [SerializeField] Vector2Int spawnPos = Vector2Int.zero;
     [SerializeField] byte spawnCount = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

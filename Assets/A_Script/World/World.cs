@@ -111,7 +111,7 @@ public class World : MonoBehaviour
     //    return TerrainType.Rock;
     //}
 
-    public void GeneratePawn(Vector2Int position, PawnPreset bodySprite, PawnPreset headSprite = null, PawnPreset hairSprite = null)
+    public void GeneratePawn(Vector2Int position, DirectionSpriteData bodySprite, DirectionSpriteData headSprite = null, DirectionSpriteData hairSprite = null)
     {
         if (pawnPrefab == null) return;
         GameObject spawned = Instantiate(pawnPrefab);
@@ -126,7 +126,7 @@ public class World : MonoBehaviour
         spawned.transform.position = new Vector3Int(position.x, position.y, 0);
     }
 
-    public void GeneratePawn(Vector2Int position, DirectionTexturePreset preset)
+    public void GeneratePawn(Vector2Int position, PawnPreset preset)
     {
         if (pawnPrefab == null) return;
         Pawn pawn = Instantiate(pawnPrefab).GetComponent<Pawn>();

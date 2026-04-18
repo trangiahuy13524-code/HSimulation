@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e7c132bf8235440a63cd5a47e5b290, type: 3}
+  m_Script: {fileID: 11500000, guid: b74bbe760294b1243bfba25abae942a4, type: 3}
   m_Name: NormalFemale
   m_EditorClassIdentifier: Assembly-CSharp::DirectionTexturePreset
   body: {fileID: 11400000, guid: d4f53e22bae8bed4a981aeeea78f8b3b, type: 2}

@@ -1,11 +1,9 @@
 using UnityEngine;
 
-
-
 [CreateAssetMenu]
-public class PawnPreset : SpriteDataBase
+public class PawnPreset : ScriptableObject
 {
-    public Sprite northSprite;
-    public Sprite southSprite;
-    public Sprite eastSprite;
+    public DirectionSpriteData body;
+    public DirectionSpriteData head;
+    public DirectionSpriteData hair;
 }
