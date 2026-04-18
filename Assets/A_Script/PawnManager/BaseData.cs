@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BaseData : MonoBehaviour
 {
-    [SerializeField] protected DirectionSpriteData spriteDirectionData;
+    [SerializeField] protected PawnPreset spriteDirectionData;
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected Pawn pM;
     [SerializeField] protected List<BaseData> children = new List<BaseData>();
@@ -86,7 +86,7 @@ public class BaseData : MonoBehaviour
         }
     }
 
-    public virtual void SetDirectionSpriteData(DirectionSpriteData spriteData)
+    public virtual void SetDirectionSpriteData(PawnPreset spriteData)
     {
         spriteDirectionData = spriteData;
         if (initialized)

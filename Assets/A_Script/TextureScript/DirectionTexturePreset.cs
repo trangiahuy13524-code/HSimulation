@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class DirectionTexturePreset : ScriptableObject
 {
-    public DirectionSpriteData body;
-    public DirectionSpriteData head;
-    public DirectionSpriteData hair;
+    public PawnPreset body;
+    public PawnPreset head;
+    public PawnPreset hair;
 }

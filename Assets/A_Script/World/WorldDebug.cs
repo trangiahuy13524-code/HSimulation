@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class WorldDebug : MonoBehaviour
 {
     [SerializeField] World world;
-    [SerializeField] DirectionSpriteData bodySprite;
-    [SerializeField] DirectionSpriteData headSprite;
-    [SerializeField] DirectionSpriteData hairSprite;
+    [SerializeField] PawnPreset bodySprite;
+    [SerializeField] PawnPreset headSprite;
+    [SerializeField] PawnPreset hairSprite;
     [SerializeField] List<DirectionTexturePreset> pawnPreset = new();
     [SerializeField] Vector2Int spawnPos = Vector2Int.zero;
     [SerializeField] byte spawnCount = 1;

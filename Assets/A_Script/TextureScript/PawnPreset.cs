@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu]
-public class DirectionSpriteData : SpriteDataBase
+public class PawnPreset : SpriteDataBase
 {
     public Sprite northSprite;
     public Sprite southSprite;
