@@ -37,18 +37,6 @@ public class Pawn : ObjectBase
         { DiagonalDirection.NorthWest, new DirectionData(new Vector2Int(-1, 1), Direction.West) }
     };
 
-    Dictionary<Vector2Int, Direction> vectorToDirection = new()
-    {
-        { Vector2Int.up, Direction.North },
-        { new Vector2Int(1, 1), Direction.East },
-        { Vector2Int.right, Direction.East },
-        { new Vector2Int(1, -1), Direction.East },
-        { Vector2Int.down, Direction.South },
-        { new Vector2Int(-1, -1), Direction.West },
-        { Vector2Int.left, Direction.West },
-        { new Vector2Int(-1, 1), Direction.West }
-    };
-
     public void AddPathtoQueue(List<Vector2Int> pathList)
     {
         foreach (Vector2Int path in pathList)
@@ -106,7 +94,11 @@ public class Pawn : ObjectBase
             {
                 Vector2Int nextDestination = paths.Peek();
                 Vector2Int delta = nextDestination - currentGridPosition;
-                Direction dir = vectorToDirection[delta];
+                Direction dir;
+                if (delta.x > 0) dir = Direction.East;
+                else if (delta.x < 0) dir = Direction.West;
+                else if (delta.y > 0) dir = Direction.North;
+                else dir = Direction.South;
                 ChangeDirection(dir);
             }
             return;
