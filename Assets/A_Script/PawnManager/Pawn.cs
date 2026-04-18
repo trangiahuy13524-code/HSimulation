@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System;
 using UnityEngine;
-using System.Linq;
 
 public class Pawn : ObjectBase
 {
@@ -9,7 +7,8 @@ public class Pawn : ObjectBase
     [SerializeField] HeadData headData;
     [SerializeField] HairData hairData;
     [SerializeField] Rigidbody2D rb;
-    public Queue<Vector2Int> paths = new();
+    [SerializeField] Vector2Int lastQueuePosCache;
+    Queue<Vector2Int> paths;
 
     public BodyData BodyData => bodyData;
     public HeadData HeadData => headData;
@@ -50,6 +49,27 @@ public class Pawn : ObjectBase
         { new Vector2Int(-1, 1), Direction.West }
     };
 
+    public void AddPathtoQueue(List<Vector2Int> pathList)
+    {
+        foreach (Vector2Int path in pathList)
+        {
+            AddPathToQueue(path);
+        }
+    }
+
+    public void AddPathToQueue(Vector2Int path)
+    {
+        if (paths.Count > 0)
+        {
+            if (lastQueuePosCache == path)
+            {
+                return;
+            }
+        }
+        paths.Enqueue(path);
+        lastQueuePosCache = path;
+    }
+
     public void ChangeDirection(Direction dir)
     {
         if (bodyData) bodyData.SetDirection(dir);
@@ -62,15 +82,7 @@ public class Pawn : ObjectBase
         DirectionData data = directionToVector[dir];
         ChangeDirection(data.direction);
         Vector2Int destination = data.vector + currentGridPosition;
-        if (paths.Count > 0)
-        {
-            Vector2Int lastDestination = paths.Last();
-            if (lastDestination == destination)
-            {
-                return;
-            }
-        }
-        paths.Enqueue(destination);
+        AddPathToQueue(destination);
     }
 
 
@@ -94,7 +106,7 @@ public class Pawn : ObjectBase
             {
                 Vector2Int nextDestination = paths.Peek();
                 Vector2Int delta = nextDestination - currentGridPosition;
-                Direction dir = delta.x > 0 ? Direction.East : (delta.x < 0 ? Direction.West : (delta.y > 0 ? Direction.North : Direction.South));
+                Direction dir = vectorToDirection[delta];
                 ChangeDirection(dir);
             }
             return;
@@ -104,29 +116,11 @@ public class Pawn : ObjectBase
         rb.MovePosition(tempPos);
     }
 
-    
 
-    //protected override void Start()
-    //{
-    //    base.Start();
-    //    Vector2Int pos = currentGridPos;
-    //    pos += Vector2Int.left;
-    //    paths.Enqueue(pos);
-    //    pos += Vector2Int.left;
-    //    paths.Enqueue(pos);
-    //    pos += Vector2Int.left + Vector2Int.up;
-    //    paths.Enqueue(pos);
-    //    pos += Vector2Int.up;
-    //    paths.Enqueue(pos);
-    //    pos += Vector2Int.up + Vector2Int.right;
-    //    paths.Enqueue(pos);
-    //    pos += Vector2Int.right;
-    //    paths.Enqueue(pos);
-    //    pos += Vector2Int.right + Vector2Int.down;
-    //    paths.Enqueue(pos);
-    //    pos += Vector2Int.down;
-    //    paths.Enqueue(pos);
-    //    pos += Vector2Int.down;
-    //    paths.Enqueue(pos);
-    //}
+
+    protected override void Start()
+    {
+        base.Start();
+        paths = new Queue<Vector2Int>();
+    }
 }
