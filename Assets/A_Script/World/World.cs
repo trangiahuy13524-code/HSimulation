@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 
 public class World : MonoBehaviour
 {
+    public static World Instance;
+
     [SerializeField] byte gameFPS = 48;
     [SerializeField] Tilemap terrainTilemap;
     [SerializeField] List<Tile> terrainTiles = new();
@@ -20,6 +22,7 @@ public class World : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Instance = this;
         Application.targetFrameRate = gameFPS;
 
         blockedGrid = new bool[worldSize, worldSize];
@@ -112,30 +115,30 @@ public class World : MonoBehaviour
     {
         if (pawnPrefab == null) return;
         GameObject spawned = Instantiate(pawnPrefab);
-        Pawn pM = spawned.GetComponent<Pawn>();
-        if (pM == null || bodySprite == null || headSprite == null) return;
-        BodyData bmanager = pM.BodyData;
+        Pawn pawn = spawned.GetComponent<Pawn>();
+        if (pawn == null || bodySprite == null || headSprite == null) return;
+        BodyData bmanager = pawn.BodyData;
         if (bmanager) bmanager.SetDirectionSpriteData(bodySprite);
-        HeadData hmanager = pM.HeadData;
+        HeadData hmanager = pawn.HeadData;
         if (hmanager) hmanager.SetDirectionSpriteData(headSprite);
-        HairData hairmanager = pM.HairData;
+        HairData hairmanager = pawn.HairData;
         if (hairmanager) hairmanager.SetDirectionSpriteData(hairSprite);
-        spawned.transform.position = new Vector3(position.x, position.y, 0);
+        spawned.transform.position = new Vector3Int(position.x, position.y, 0);
     }
 
     public void GeneratePawn(Vector2Int position, DirectionTexturePreset preset)
     {
         if (pawnPrefab == null) return;
-        Pawn pM = Instantiate(pawnPrefab).GetComponent<Pawn>();
-        if (pM == null || preset == null) return;
-        pM.currentGridPosition = position;
-        BodyData bmanager = pM.BodyData;
+        Pawn pawn = Instantiate(pawnPrefab).GetComponent<Pawn>();
+        if (pawn == null || preset == null) return;
+        BodyData bmanager = pawn.BodyData;
         if (bmanager) bmanager.SetDirectionSpriteData(preset.body);
-        HeadData hmanager = pM.HeadData;
+        HeadData hmanager = pawn.HeadData;
         if (hmanager) hmanager.SetDirectionSpriteData(preset.head);
-        HairData hairmanager = pM.HairData;
+        HairData hairmanager = pawn.HairData;
         if (hairmanager) hairmanager.SetDirectionSpriteData(preset.hair);
-        pM.transform.position = new Vector3(position.x, position.y, 0);
+        pawn.currentGridPosition = position;
+        pawn.transform.position = new Vector3Int(position.x, position.y, 0);
     }
 
     public void GenerateAttire(Pawn pawn)
