@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Linq;
 
 public class Pawn : ObjectBase
 {
@@ -37,6 +38,18 @@ public class Pawn : ObjectBase
         { DiagonalDirection.NorthWest, new DirectionData(new Vector2Int(-1, 1), Direction.West) }
     };
 
+    Dictionary<Vector2Int, Direction> vectorToDirection = new()
+    {
+        { Vector2Int.up, Direction.North },
+        { new Vector2Int(1, 1), Direction.East },
+        { Vector2Int.right, Direction.East },
+        { new Vector2Int(1, -1), Direction.East },
+        { Vector2Int.down, Direction.South },
+        { new Vector2Int(-1, -1), Direction.West },
+        { Vector2Int.left, Direction.West },
+        { new Vector2Int(-1, 1), Direction.West }
+    };
+
     public void ChangeDirection(Direction dir)
     {
         if (bodyData) bodyData.SetDirection(dir);
@@ -48,14 +61,23 @@ public class Pawn : ObjectBase
     {
         DirectionData data = directionToVector[dir];
         ChangeDirection(data.direction);
-        Vector2Int delta = data.vector;
-        paths.Enqueue(currentGridPosition + delta);
+        Vector2Int destination = data.vector + currentGridPosition;
+        if (paths.Count > 0)
+        {
+            Vector2Int lastDestination = paths.Last();
+            if (lastDestination == destination)
+            {
+                return;
+            }
+        }
+        paths.Enqueue(destination);
     }
 
 
     private void Update()
     {
-        if (paths.Count == 0)
+        int pathCount = paths.Count;
+        if (pathCount == 0)
         {
             return;
         }
@@ -68,6 +90,13 @@ public class Pawn : ObjectBase
         {
             currentGridPosition = destinationGridPos;
             paths.Dequeue();
+            if (pathCount > 1)
+            {
+                Vector2Int nextDestination = paths.Peek();
+                Vector2Int delta = nextDestination - currentGridPosition;
+                Direction dir = delta.x > 0 ? Direction.East : (delta.x < 0 ? Direction.West : (delta.y > 0 ? Direction.North : Direction.South));
+                ChangeDirection(dir);
+            }
             return;
         }
 
