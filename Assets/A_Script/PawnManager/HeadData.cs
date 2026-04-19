@@ -8,7 +8,7 @@ public class HeadData : BaseData
     {
         if (pM == null) pM = transform.parent.parent.GetComponent<Pawn>();
         base.Start();
-        spriteRenderer.sortingOrder = 11;
+        spriteRenderer.sortingOrder = 60;
 
     }
 

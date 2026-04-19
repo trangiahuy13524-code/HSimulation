@@ -6,6 +6,6 @@ public class HairData : BaseData
     {
         if (pM == null) pM = transform.parent.parent.parent.GetComponent<Pawn>();
         base.Start();
-        spriteRenderer.sortingOrder = 12;
+        spriteRenderer.sortingOrder = 70;
     }
 }

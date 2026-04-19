@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8109650e6dff034896405805fbb3a78, type: 3}
+  m_Name: Kemetic
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTillingTile
+  sprites:
+  - {fileID: -747203844, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: -1551645331, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: 1224984380, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: -1397663898, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: -1186652503, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: 1257387067, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: -2095720761, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: 1856248172, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: 1746644447, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: -532533054, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: 1833071111, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: 2021348477, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: 5853383246252850406, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: -1851396106, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: 1612196808, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}
+  - {fileID: 728133541, guid: 7fb721ea23596614784f62eaa27f46e8, type: 3}

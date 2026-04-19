@@ -48,12 +48,12 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 60
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -116,10 +116,10 @@ TextureImporter:
       name: AM_KemeticWall_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 240
-        width: 80
-        height: 80
+        x: 10
+        y: 250
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,10 +138,10 @@ TextureImporter:
       name: AM_KemeticWall_1
       rect:
         serializedVersion: 2
-        x: 80
-        y: 240
-        width: 80
-        height: 80
+        x: 90
+        y: 250
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -160,10 +160,10 @@ TextureImporter:
       name: AM_KemeticWall_2
       rect:
         serializedVersion: 2
-        x: 160
-        y: 240
-        width: 80
-        height: 80
+        x: 170
+        y: 250
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -182,10 +182,10 @@ TextureImporter:
       name: AM_KemeticWall_3
       rect:
         serializedVersion: 2
-        x: 240
-        y: 240
-        width: 80
-        height: 80
+        x: 250
+        y: 250
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -204,10 +204,10 @@ TextureImporter:
       name: AM_KemeticWall_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 160
-        width: 80
-        height: 80
+        x: 10
+        y: 170
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -226,10 +226,10 @@ TextureImporter:
       name: AM_KemeticWall_5
       rect:
         serializedVersion: 2
-        x: 80
-        y: 160
-        width: 80
-        height: 80
+        x: 90
+        y: 170
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -248,10 +248,10 @@ TextureImporter:
       name: AM_KemeticWall_6
       rect:
         serializedVersion: 2
-        x: 160
-        y: 160
-        width: 80
-        height: 80
+        x: 170
+        y: 170
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -270,10 +270,10 @@ TextureImporter:
       name: AM_KemeticWall_7
       rect:
         serializedVersion: 2
-        x: 240
-        y: 160
-        width: 80
-        height: 80
+        x: 250
+        y: 170
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -292,10 +292,10 @@ TextureImporter:
       name: AM_KemeticWall_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 80
-        width: 80
-        height: 80
+        x: 10
+        y: 90
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -314,10 +314,10 @@ TextureImporter:
       name: AM_KemeticWall_9
       rect:
         serializedVersion: 2
-        x: 80
-        y: 80
-        width: 80
-        height: 80
+        x: 90
+        y: 90
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -336,10 +336,10 @@ TextureImporter:
       name: AM_KemeticWall_10
       rect:
         serializedVersion: 2
-        x: 160
-        y: 80
-        width: 80
-        height: 80
+        x: 170
+        y: 90
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -358,10 +358,10 @@ TextureImporter:
       name: AM_KemeticWall_11
       rect:
         serializedVersion: 2
-        x: 240
-        y: 80
-        width: 80
-        height: 80
+        x: 250
+        y: 90
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -380,10 +380,10 @@ TextureImporter:
       name: AM_KemeticWall_12
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 80
-        height: 80
+        x: 10
+        y: 10
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -402,10 +402,10 @@ TextureImporter:
       name: AM_KemeticWall_13
       rect:
         serializedVersion: 2
-        x: 80
-        y: 0
-        width: 80
-        height: 80
+        x: 90
+        y: 10
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -424,10 +424,10 @@ TextureImporter:
       name: AM_KemeticWall_14
       rect:
         serializedVersion: 2
-        x: 160
-        y: 0
-        width: 80
-        height: 80
+        x: 170
+        y: 10
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -446,10 +446,10 @@ TextureImporter:
       name: AM_KemeticWall_15
       rect:
         serializedVersion: 2
-        x: 240
-        y: 0
-        width: 80
-        height: 80
+        x: 250
+        y: 10
+        width: 60
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -478,7 +478,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":4.0},"gridSpriteSize":{"x":80.0,"y":80.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":1,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":4.0},"gridSpriteSize":{"x":60.0,"y":60.0},"gridSpriteOffset":{"x":10.0,"y":10.0},"gridSpritePadding":{"x":20.0,"y":20.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":1,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
       - key: SpriteEditor.SliceOnImport
         value: False
     nameFileIdTable:

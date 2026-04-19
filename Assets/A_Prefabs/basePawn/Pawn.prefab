@@ -157,12 +157,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843eebceb76e0d54a96cb6abe99202dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PawnManager
-  Icon: {fileID: 0}
-  currentGridPos: {x: 0, y: 0}
   bodyData: {fileID: 7392281695847784443}
   headData: {fileID: 419506864584641546}
   hairData: {fileID: 6117740824741160028}
+  oldDirection: 1
   rb: {fileID: -6656611525869205240}
+  lastQueuePosCache: {x: 0, y: 0}
+  idleTime: 2
+  currentIdleTime: 0
 --- !u!50 &-6656611525869205240
 Rigidbody2D:
   serializedVersion: 5

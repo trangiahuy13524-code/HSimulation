@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[Serializable]
+[Serializable, CreateAssetMenu(fileName = "New AutoTilling Tile", menuName = "Tiles/AutoTilling Tile")]
 public class AutoTillingTile : TileBase
 {
     public Sprite[] sprites;
@@ -12,17 +12,8 @@ public class AutoTillingTile : TileBase
         ITilemap tilemap,
         ref TileData tileData)
     {
-        tileData.sprite = sprites[GetIndex(position, tilemap)];
-    }
-
-    public override void RefreshTile(Vector3Int position, ITilemap tilemap)
-    {
-        for (int x = -1; x <= 1; x++)
-            for (int y = -1; y <= 1; y++)
-            {
-                Vector3Int p = position + new Vector3Int(x, y, 0);
-                tilemap.RefreshTile(p);
-            }
+        if (sprites != null && sprites.Length > 0) tileData.sprite = sprites[GetIndex(position, tilemap)];
+        
     }
 
     private int GetIndex(Vector3Int position, ITilemap tilemap)
