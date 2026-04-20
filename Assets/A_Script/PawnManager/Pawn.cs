@@ -55,9 +55,13 @@ public class Pawn : ObjectBase
             if (currentIdleTime < idleTime)
             {
                 currentIdleTime += Time.deltaTime;
-                return;
             }
-            GetRandomPosition();
+            else
+            {
+                currentIdleTime = 0f;
+                GetRandomPosition();
+            }
+            
         }
     }
 
@@ -130,16 +134,15 @@ public class Pawn : ObjectBase
 
         while (!isValid)
         {
-            Vector2Int currentPos = currentGridPos;
 
-            int x = Random.Range(-10, 10);
-            int y = Random.Range(-10, 10);
+            int x = Random.Range(8, 22);
+            int y = Random.Range(10, 20);
 
-            Vector2Int targetPos = currentPos + new Vector2Int(x, y);
+            Vector2Int targetPos = new Vector2Int(x, y);
 
             if (World.Instance.IsPositionValid(targetPos))
             {
-                var path = AStarPathfinder.FindPath(currentPos, targetPos);
+                var path = AStarPathfinder.FindPath(currentGridPos, targetPos);
 
                 if (path != null)
                 {

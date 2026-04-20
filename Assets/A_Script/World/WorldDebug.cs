@@ -32,7 +32,7 @@ public class WorldDebug : MonoBehaviour
             {
                 world.GenerateWall(wallTile, new Vector2Int(x, 12));
             }
-            for (int y = 10; y < 21; y++)
+            for (int y = 12; y < 19; y++)
             {
                 world.GenerateWall(wallTile, new Vector2Int(10, y));
             }
@@ -40,7 +40,7 @@ public class WorldDebug : MonoBehaviour
             {
                 world.GenerateWall(wallTile, new Vector2Int(x, 18));
             }
-            for (int y = 10; y < 21; y++)
+            for (int y = 12; y < 19; y++)
             {
                 world.GenerateWall(wallTile, new Vector2Int(20, y));
             }
