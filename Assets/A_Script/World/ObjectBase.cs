@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class ObjectBase : MonoBehaviour
 {
-    protected Sprite iconSprite;
-    protected Vector2Int currentGridPos;
+    [SerializeField] protected Sprite iconSprite;
+    [SerializeField] protected Vector2Int currentGridPos;
     protected virtual Vector2 size => Vector2.one;
     protected virtual bool isPassable => true;
     public bool IsPassable => isPassable;

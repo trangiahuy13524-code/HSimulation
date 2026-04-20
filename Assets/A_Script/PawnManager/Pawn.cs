@@ -18,6 +18,7 @@ public class Pawn : ObjectBase
     [SerializeField] float idleTime = 2f;
     [SerializeField] float currentIdleTime = 0f;
     Queue<Vector2Int> paths;
+    [SerializeField] Vector2Int oldDestination;
 
     struct DirectionData
     {
@@ -71,6 +72,13 @@ public class Pawn : ObjectBase
             return true;
 
         Vector2Int nextPos = paths.Peek();
+
+        if (!World.Instance.IsPositionValid(nextPos))
+        {
+            ReCalculatePath();
+            return false;
+        }
+
         Vector2 pos = rb.position;
 
         // Always face target while moving
@@ -146,11 +154,39 @@ public class Pawn : ObjectBase
 
                 if (path != null)
                 {
+                    oldDestination = targetPos;
                     AddPathtoQueue(path);
                     isValid = true;
                 }
             }
         }
+    }
+
+    public void ReCalculatePath()
+    {
+        if (paths.Count == 0) return;
+        Vector2Int targetPos = oldDestination;
+        if (!World.Instance.IsPositionValid(targetPos))
+        {
+            PathReset();
+            return;
+        }
+        var path = AStarPathfinder.FindPath(currentGridPos, targetPos);
+        if (path != null)
+        {
+            paths.Clear();
+            AddPathtoQueue(path);
+        }
+        else
+        {
+            PathReset();
+        }
+    }
+
+    private void PathReset()
+    {
+        paths.Clear();
+        paths.Enqueue(currentGridPos);
     }
 
 

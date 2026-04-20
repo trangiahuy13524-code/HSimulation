@@ -49,7 +49,7 @@ public static class AStarPathfinder
             Node current = GetLowestFCost(openList);
 
             if (current.position == target)
-                return SmoothPath(RetracePath(current));
+                return RetracePath(current);
 
             openList.Remove(current);
             closed.Add(current.position);
@@ -124,7 +124,7 @@ public static class AStarPathfinder
 
         Node current = endNode;
 
-        while (current.parent != null)
+        while (current != null)
         {
             path.Add(current.position);
             current = current.parent;
@@ -201,30 +201,30 @@ public static class AStarPathfinder
     //    return true;
     //}
 
-    static List<Vector2Int> SmoothPath(List<Vector2Int> path)
-    {
-        if (path == null || path.Count < 3)
-            return path;
+    //static List<Vector2Int> SmoothPath(List<Vector2Int> path)
+    //{
+    //    if (path == null || path.Count < 3)
+    //        return path;
 
-        List<Vector2Int> result = new();
-        result.Add(path[0]);
+    //    List<Vector2Int> result = new();
+    //    result.Add(path[0]);
 
-        Vector2Int lastDir = path[1] - path[0];
+    //    Vector2Int lastDir = path[1] - path[0];
 
-        for (int i = 2; i < path.Count; i++)
-        {
-            Vector2Int newDir = path[i] - path[i - 1];
+    //    for (int i = 2; i < path.Count; i++)
+    //    {
+    //        Vector2Int newDir = path[i] - path[i - 1];
 
-            // direction changed → keep corner
-            if (newDir != lastDir)
-            {
-                result.Add(path[i - 1]);
-                lastDir = newDir;
-            }
-        }
+    //        // direction changed → keep corner
+    //        if (newDir != lastDir)
+    //        {
+    //            result.Add(path[i - 1]);
+    //            lastDir = newDir;
+    //        }
+    //    }
 
-        result.Add(path[^1]);
+    //    result.Add(path[^1]);
 
-        return result;
-    }
+    //    return result;
+    //}
 }

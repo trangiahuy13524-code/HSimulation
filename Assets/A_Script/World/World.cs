@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class World : MonoBehaviour
 {
@@ -71,6 +69,14 @@ public class World : MonoBehaviour
         return objects[x, y];
     }
 
+    public void SetWallTile(Vector2Int position, Tile tile)
+    {
+        int x = position.x;
+        int y = position.y;
+        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
+        wallTileMap.SetTile(new Vector3Int(x, y, 0), tile);
+        RefreshNeighborWall(x, y);
+    }
 
     public void GenerateWall(AutoTillingTile wallTile, Vector2Int position)
     {
@@ -84,18 +90,18 @@ public class World : MonoBehaviour
         Transform dummyTf = Instantiate(wallDummyPrefab).transform;
         dummyTf.parent = wallDummies;
         Wall dummy = dummyTf.GetComponent<Wall>();
+        dummy.CurrentGridPosition = position;
         objects[x, y] = dummy;
     }
 
-    public void RemoveWall(Vector2Int position)
+    public void RemoveObject(Vector2Int position)
     {
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
-        if (objects[x, y] is not Wall wall)
-            return;
-        wallTileMap.SetTile(new Vector3Int(x, y, 0), null);
-        RefreshNeighborWall(x, y);
+        ObjectBase ob = objects[x, y];
+        if (ob == null) return;
+        Destroy(ob.gameObject);
         objects[x, y] = null;
     }
 

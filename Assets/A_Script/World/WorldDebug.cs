@@ -44,7 +44,7 @@ public class WorldDebug : MonoBehaviour
             {
                 world.GenerateWall(wallTile, new Vector2Int(20, y));
             }
-            world.RemoveWall(new Vector2Int(15, 12));
+            //world.RemoveObject(new Vector2Int(15, 12));
         }
 
     }
@@ -58,7 +58,7 @@ public class WorldDebug : MonoBehaviour
         }
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
-            world.RemoveWall(spawnPos);
+            world.RemoveObject(spawnPos);
         }
     }
 
