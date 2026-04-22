@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ObjectBase : MonoBehaviour
+public class BaseObject : MonoBehaviour
 {
     [SerializeField] protected Sprite iconSprite;
     [SerializeField] protected Vector2Int currentGridPos;
@@ -24,5 +24,6 @@ public class ObjectBase : MonoBehaviour
     protected virtual void Start()
     {
         transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
+        World.Instance.RegisterObject(this, currentGridPos);
     }
 }
