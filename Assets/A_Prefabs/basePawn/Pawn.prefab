@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 466555669644665755}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -157,6 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843eebceb76e0d54a96cb6abe99202dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PawnManager
+  iconSprite: {fileID: 0}
+  currentGridPos: {x: 0, y: 0}
   bodyData: {fileID: 7392281695847784443}
   headData: {fileID: 419506864584641546}
   hairData: {fileID: 6117740824741160028}
@@ -165,6 +167,7 @@ MonoBehaviour:
   lastQueuePosCache: {x: 0, y: 0}
   idleTime: 2
   currentIdleTime: 0
+  oldDestination: {x: 0, y: 0}
 --- !u!50 &-6656611525869205240
 Rigidbody2D:
   serializedVersion: 5
@@ -219,7 +222,7 @@ Transform:
   m_GameObject: {fileID: 5404997582980211953}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -328,7 +331,7 @@ Transform:
   m_GameObject: {fileID: 6590810990756838384}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
