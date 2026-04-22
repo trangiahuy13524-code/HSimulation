@@ -78,6 +78,23 @@ public class World : MonoBehaviour
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
         objects[x, y] = obj;
     }
+    public void UnregisterObject(Vector2Int position)
+    {
+        int x = position.x;
+        int y = position.y;
+        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
+        objects[x, y] = null;
+    }
+    public void UnregisterObject(Vector2Int position, BaseObject obj)
+    {
+        int x = position.x;
+        int y = position.y;
+        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
+        if (objects[x, y] == obj)
+        {
+            objects[x, y] = null;
+        }
+    }
 
     public void ChangeObjectLocation(BaseObject obj, Vector2Int oldPosition, Vector2Int newPosition)
     {
@@ -125,6 +142,7 @@ public class World : MonoBehaviour
         dummyTf.parent = wallDummies;
         Wall dummy = dummyTf.GetComponent<Wall>();
         dummy.CurrentGridPosition = position;
+        objects[x, y] = dummy;
     }
 
     public void RemoveObject(Vector2Int position)
@@ -168,6 +186,7 @@ public class World : MonoBehaviour
         HairData hairmanager = pawn.HairData;
         if (hairmanager) hairmanager.SetDirectionSpriteData(hairSprite);
         spawned.transform.position = new Vector3Int(x, y, 0);
+        objects[x, y] = pawn;
     }
 
     public void GeneratePawn(Vector2Int position, PawnPreset preset)
@@ -188,29 +207,31 @@ public class World : MonoBehaviour
         if (hairmanager) hairmanager.SetDirectionSpriteData(preset.hair);
         pawn.CurrentGridPosition = position;
         pawn.transform.position = new Vector3Int(x, y, 0);
+        objects[x, y] = pawn;
     }
 
-    public void GeneratePawn(Vector2Int position, GeneticData geneticData)
-    {
-        int x = position.x;
-        int y = position.y;
-        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
-        BaseObject existingObject = objects[x, y];
-        if (existingObject != null) return;
-        if (pawnPrefab == null) return;
-        Pawn pawn = Instantiate(pawnPrefab).GetComponent<Pawn>();
-        if (pawn == null || geneticData == null) return;
-        //BodyData bmanager = pawn.BodyData;
-        //if (bmanager) bmanager.SetDirectionSpriteData(geneticData.bodyData);
-        //HeadData hmanager = pawn.HeadData;
-        //if (hmanager) hmanager.SetDirectionSpriteData(geneticData.headData);
-        //HairData hairmanager = pawn.HairData;
-        //if (hairmanager) hairmanager.SetDirectionSpriteData(geneticData.hairData);
-        pawn.CurrentGridPosition = position;
-        pawn.transform.position = new Vector3Int(x, y, 0);
-    }
+    //public void GeneratePawn(Vector2Int position, GeneticData geneticData)
+    //{
+    //    int x = position.x;
+    //    int y = position.y;
+    //    if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
+    //    BaseObject existingObject = objects[x, y];
+    //    if (existingObject != null) return;
+    //    if (pawnPrefab == null) return;
+    //    Pawn pawn = Instantiate(pawnPrefab).GetComponent<Pawn>();
+    //    if (pawn == null || geneticData == null) return;
+    //    //BodyData bmanager = pawn.BodyData;
+    //    //if (bmanager) bmanager.SetDirectionSpriteData(geneticData.bodyData);
+    //    //HeadData hmanager = pawn.HeadData;
+    //    //if (hmanager) hmanager.SetDirectionSpriteData(geneticData.headData);
+    //    //HairData hairmanager = pawn.HairData;
+    //    //if (hairmanager) hairmanager.SetDirectionSpriteData(geneticData.hairData);
+    //    pawn.CurrentGridPosition = position;
+    //    pawn.transform.position = new Vector3Int(x, y, 0);
+    //    objects[x, y] = pawn;
+    //}
 
-    public void GenerateAttire(Pawn pawn)
+    public static void GenerateAttire(Pawn pawn)
     {
 
     }

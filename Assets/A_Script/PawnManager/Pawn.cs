@@ -19,7 +19,6 @@ public class Pawn : BaseObject
     [SerializeField] float currentIdleTime = 0f;
     Queue<Vector2Int> paths;
     [SerializeField] Vector2Int oldDestination;
-    [SerializeField] Vector2Int oldGridPos;
     public GeneticData geneticData;
 
     struct DirectionData
@@ -48,7 +47,6 @@ public class Pawn : BaseObject
     protected override void Start()
     {
         base.Start();
-        oldGridPos = currentGridPos;
         paths = new Queue<Vector2Int>();
     }
     private void Update()
@@ -74,6 +72,7 @@ public class Pawn : BaseObject
         if (paths.Count == 0)
             return true;
 
+        World.Instance.UnregisterObject(currentGridPos, this);
         Vector2Int nextPos = paths.Peek();
 
         if (World.Instance.IsPositionOccupied(lastQueuePosCache))
@@ -84,7 +83,6 @@ public class Pawn : BaseObject
         }
         if (!World.Instance.IsPositionValid(nextPos))
         {
-            
             ReCalculatePath();
             return false;
         }
@@ -125,9 +123,12 @@ public class Pawn : BaseObject
                 else dir = Direction.South;
                 ChangeDirection(dir);
             }
-            World.Instance.ChangeObjectLocation(this, oldGridPos, currentGridPos);
-            oldGridPos = currentGridPos;
-            return paths.Count == 0;
+            
+            if (paths.Count == 0)
+            {
+                World.Instance.RegisterObject(this, currentGridPos);
+                return true;
+            }
         }
 
         Vector2 tempPos =
@@ -161,9 +162,10 @@ public class Pawn : BaseObject
 
     public void GetRandomPosition()
     {
+        int size = World.Instance.WorldSize - 1;
 
-        int x = Random.Range(8, 22);
-        int y = Random.Range(10, 20);
+        int x = Random.Range(size/4, size*3/4);
+        int y = Random.Range(size/4, size*3/4);
 
         Vector2Int targetPos = new Vector2Int(x, y);
 

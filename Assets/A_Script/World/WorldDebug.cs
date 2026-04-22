@@ -25,23 +25,26 @@ public class WorldDebug : MonoBehaviour
 
         if (wallTile)
         {
-            for (int x = 10; x < 21; x++)
+            int size = world.WorldSize;
+            int min = size / 4;
+            int max = size * 3 / 4 + 1;
+            for (int x = min; x < max; x++)
             {
-                world.GenerateWall(new Vector2Int(x, 12), wallTile);
+                world.GenerateWall(new Vector2Int(x, min + 3), wallTile);
             }
-            for (int y = 12; y < 19; y++)
+            for (int y = min + 3; y < max - 3; y++)
             {
-                world.GenerateWall(new Vector2Int(10, y), wallTile);
+                world.GenerateWall(new Vector2Int(min, y), wallTile);
             }
-            for (int x = 10; x < 21; x++)
+            for (int x = min; x < max; x++)
             {
-                world.GenerateWall(new Vector2Int(x, 18), wallTile);
+                world.GenerateWall(new Vector2Int(x, max - 4), wallTile);
             }
-            for (int y = 12; y < 19; y++)
+            for (int y = min + 3; y < max - 3; y++)
             {
-                world.GenerateWall(new Vector2Int(20, y), wallTile);
+                world.GenerateWall(new Vector2Int(max - 1, y), wallTile);
             }
-            world.RemoveObject(new Vector2Int(15, 12));
+            world.RemoveObject(new Vector2Int(size / 2, min + 3));
         }
 
     }
