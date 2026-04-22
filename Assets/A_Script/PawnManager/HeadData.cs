@@ -6,7 +6,6 @@ public class HeadData : BaseData
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
-        if (pM == null) pM = transform.parent.parent.GetComponent<Pawn>();
         base.Start();
         spriteRenderer.sortingOrder = 60;
 
