@@ -21,11 +21,11 @@ public enum DiagonalDirection
 }
 
 
-//public enum TerrainType
-//{
-//    DeepWater,
-//    ShallowWater,
-//    Sand,
-//    Grass,
-//    Rock
-//}
+public enum TerrainType
+{
+    Water, Sand, Grass, Rocks
+}
+public enum TileDirection : ushort
+{
+    S, SW, W, NW, N, NE, E, SE
+}
