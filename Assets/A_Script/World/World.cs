@@ -15,9 +15,9 @@ public class World : MonoBehaviour
     [SerializeField] GameObject pawnPrefab;
     [SerializeField] Transform cam;
     [SerializeField] short worldSize = 50;
-    float[,] noiseMap;
+    
 
-    ObjectBase[,] objects;
+    BaseObject[,] objects;
 
     //  
     public short WorldSize => worldSize;
@@ -28,17 +28,18 @@ public class World : MonoBehaviour
         Instance = this;
         Application.targetFrameRate = gameFPS;
 
-        objects = new ObjectBase[worldSize, worldSize];
+        objects = new BaseObject[worldSize, worldSize];
         if (cam) cam.position = new Vector3((worldSize - 1) / 2f, (worldSize - 2) / 2f, cam.position.z);
-        for (int x = 0; x < worldSize; x++)
-        {
-            for (int y = 0; y < worldSize; y++)
-            {
-                int count = terrainTiles.Count;
-                Tile tile = terrainTiles[Random.Range(0, count)];
-                terrainTilemap.SetTile(new Vector3Int(x, y, 0), tile);
-            }
-        }
+
+        //for (int x = 0; x < worldSize; x++)
+        //{
+        //    for (int y = 0; y < worldSize; y++)
+        //    {
+        //        int count = terrainTiles.Count;
+        //        Tile tile = terrainTiles[Random.Range(0, count)];
+        //        terrainTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+        //    }
+        //}
     }
 
     // Update is called once per frame
@@ -55,13 +56,45 @@ public class World : MonoBehaviour
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return false;
-        ObjectBase @object = objects[x, y];
+        BaseObject @object = objects[x, y];
         if (@object == null) return true;
         if (!@object.IsPassable) return false;
         return true;
     }
 
-    public ObjectBase GetObjectAtPosition(Vector2Int position)
+    public bool IsPositionOccupied(Vector2Int position)
+    {
+        int x = position.x;
+        int y = position.y;
+        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return false;
+        BaseObject @object = objects[x, y];
+        return @object != null;
+    }
+
+    public void RegisterObject(BaseObject obj, Vector2Int position)
+    {
+        int x = position.x;
+        int y = position.y;
+        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
+        objects[x, y] = obj;
+    }
+
+    public void ChangeObjectLocation(BaseObject obj, Vector2Int oldPosition, Vector2Int newPosition)
+    {
+        if (obj == null) return;
+        if (oldPosition == newPosition) return;
+        int oldX = oldPosition.x;
+        int oldY = oldPosition.y;
+        int newX = newPosition.x;
+        int newY = newPosition.y;
+        if (oldX < 0 || oldX >= worldSize || oldY < 0 || oldY >= worldSize) return;
+        if (newX < 0 || newX >= worldSize || newY < 0 || newY >= worldSize) return;
+        if (objects[newX, newY] != null) return;
+        objects[newX, newY] = obj;
+        objects[oldX, oldY] = null;
+    }
+
+    public BaseObject GetObjectAtPosition(Vector2Int position)
     {
         int x = position.x;
         int y = position.y;
@@ -73,6 +106,7 @@ public class World : MonoBehaviour
     {
         int x = position.x;
         int y = position.y;
+        if (wallTileMap == null) return;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
         wallTileMap.SetTile(new Vector3Int(x, y, 0), tile);
         RefreshNeighborWall(x, y);
@@ -83,7 +117,7 @@ public class World : MonoBehaviour
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
-        ObjectBase existingObject = objects[x, y];
+        BaseObject existingObject = objects[x, y];
         if (objects[x, y] != null) return; 
         wallTileMap.SetTile(new Vector3Int(x, y, 0), wallTile);
         RefreshNeighborWall(x, y);
@@ -91,7 +125,6 @@ public class World : MonoBehaviour
         dummyTf.parent = wallDummies;
         Wall dummy = dummyTf.GetComponent<Wall>();
         dummy.CurrentGridPosition = position;
-        objects[x, y] = dummy;
     }
 
     public void RemoveObject(Vector2Int position)
@@ -99,7 +132,7 @@ public class World : MonoBehaviour
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
-        ObjectBase ob = objects[x, y];
+        BaseObject ob = objects[x, y];
         if (ob == null) return;
         Destroy(ob.gameObject);
         objects[x, y] = null;
@@ -122,7 +155,7 @@ public class World : MonoBehaviour
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
-        ObjectBase existingObject = objects[x, y];
+        BaseObject existingObject = objects[x, y];
         if (existingObject != null) return;
         if (pawnPrefab == null) return;
         GameObject spawned = Instantiate(pawnPrefab);
@@ -142,7 +175,7 @@ public class World : MonoBehaviour
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
-        ObjectBase existingObject = objects[x, y];
+        BaseObject existingObject = objects[x, y];
         if (existingObject != null) return;
         if (pawnPrefab == null) return;
         Pawn pawn = Instantiate(pawnPrefab).GetComponent<Pawn>();
@@ -157,7 +190,25 @@ public class World : MonoBehaviour
         pawn.transform.position = new Vector3Int(x, y, 0);
     }
 
-
+    public void GeneratePawn(Vector2Int position, GeneticData geneticData)
+    {
+        int x = position.x;
+        int y = position.y;
+        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
+        BaseObject existingObject = objects[x, y];
+        if (existingObject != null) return;
+        if (pawnPrefab == null) return;
+        Pawn pawn = Instantiate(pawnPrefab).GetComponent<Pawn>();
+        if (pawn == null || geneticData == null) return;
+        //BodyData bmanager = pawn.BodyData;
+        //if (bmanager) bmanager.SetDirectionSpriteData(geneticData.bodyData);
+        //HeadData hmanager = pawn.HeadData;
+        //if (hmanager) hmanager.SetDirectionSpriteData(geneticData.headData);
+        //HairData hairmanager = pawn.HairData;
+        //if (hairmanager) hairmanager.SetDirectionSpriteData(geneticData.hairData);
+        pawn.CurrentGridPosition = position;
+        pawn.transform.position = new Vector3Int(x, y, 0);
+    }
 
     public void GenerateAttire(Pawn pawn)
     {
@@ -165,70 +216,6 @@ public class World : MonoBehaviour
     }
 
 
-    //public void GenerateTerrain(bool isIsland = false)
-    //{
-
-    //    worldGrid = new float[worldSize, worldSize];
-    //    float scale = 0.05f;
-
-    //    for (int y = 0; y < worldSize; y++)
-    //        for (int x = 0; x < worldSize; x++)
-    //        {
-    //            float nx = x * scale;
-    //            float ny = y * scale;
-
-    //            float noise = FractalNoise(x * 0.01f, y * 0.01f);
-
-
-    //            if (isIsland)
-    //            {
-    //                float island = IslandMask(x, y, worldSize);
-    //                worldGrid[x, y] = noise * island;
-    //            }
-    //            else
-    //            {
-    //                worldGrid[x, y] = noise;
-    //            }
-    //        }
-    //}
-
-    //float FractalNoise(float x, float y)
-    //{
-    //    float value = 0;
-    //    float amplitude = 1;
-    //    float frequency = 1;
-    //    float maxValue = 0;
-
-    //    for (int i = 0; i < 4; i++)
-    //    {
-    //        value += Mathf.PerlinNoise(x * frequency, y * frequency) * amplitude;
-
-    //        maxValue += amplitude;
-    //        amplitude *= 0.5f;
-    //        frequency *= 2f;
-    //    }
-
-    //    return value / maxValue;
-    //}
-    //float IslandMask(int x, int y, float worldSize)
-    //{
-    //    float cx = worldSize / 2f;
-    //    float cy = worldSize / 2f;
-
-    //    float dx = (x - cx) / cx;
-    //    float dy = (y - cy) / cy;
-
-    //    float dist = Mathf.Sqrt(dx * dx + dy * dy);
-
-    //    return Mathf.Clamp01(1f - dist);
-    //}
-    //TerrainType GetTerrain(float v)
-    //{
-    //    if (v < 0.35f) return TerrainType.DeepWater;
-    //    if (v < 0.45f) return TerrainType.ShallowWater;
-    //    if (v < 0.5f) return TerrainType.Sand;
-    //    if (v < 0.75f) return TerrainType.Grass;
-
-    //    return TerrainType.Rock;
-    //}
+    
+    
 }
