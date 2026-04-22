@@ -6,9 +6,6 @@ using UnityEngine.Tilemaps;
 public class WorldDebug : MonoBehaviour
 {
     [SerializeField] World world;
-    [SerializeField] DirectionSpriteData bodySprite;
-    [SerializeField] DirectionSpriteData headSprite;
-    [SerializeField] DirectionSpriteData hairSprite;
     [SerializeField] List<PawnPreset> pawnPreset = new();
     [SerializeField] AutoTillingTile wallTile;
     [SerializeField] Vector2Int spawnPos = Vector2Int.zero;
@@ -44,7 +41,7 @@ public class WorldDebug : MonoBehaviour
             {
                 world.GenerateWall(wallTile, new Vector2Int(20, y));
             }
-            //world.RemoveObject(new Vector2Int(15, 12));
+            world.RemoveObject(new Vector2Int(15, 12));
         }
 
     }
