@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Wall : ObjectBase
+public class Wall : BaseObject
 {
     protected override bool isPassable => false;
     void OnDestroy()
