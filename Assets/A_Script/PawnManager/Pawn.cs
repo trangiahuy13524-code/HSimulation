@@ -2,7 +2,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Pawn : ObjectBase
+public class Pawn : BaseObject
 {
     [SerializeField] BodyData bodyData;
     [SerializeField] HeadData headData;
@@ -19,6 +19,8 @@ public class Pawn : ObjectBase
     [SerializeField] float currentIdleTime = 0f;
     Queue<Vector2Int> paths;
     [SerializeField] Vector2Int oldDestination;
+    [SerializeField] Vector2Int oldGridPos;
+    public GeneticData geneticData;
 
     struct DirectionData
     {
@@ -46,6 +48,7 @@ public class Pawn : ObjectBase
     protected override void Start()
     {
         base.Start();
+        oldGridPos = currentGridPos;
         paths = new Queue<Vector2Int>();
     }
     private void Update()
@@ -62,8 +65,8 @@ public class Pawn : ObjectBase
                 currentIdleTime = 0f;
                 GetRandomPosition();
             }
-            
         }
+        
     }
 
     public bool Move()
@@ -73,6 +76,12 @@ public class Pawn : ObjectBase
 
         Vector2Int nextPos = paths.Peek();
 
+        if (World.Instance.IsPositionOccupied(lastQueuePosCache))
+        {
+            paths.Clear();
+            paths.Enqueue(currentGridPos);
+            return false;
+        }
         if (!World.Instance.IsPositionValid(nextPos))
         {
             ReCalculatePath();
@@ -82,28 +91,30 @@ public class Pawn : ObjectBase
         Vector2 pos = rb.position;
 
         // Always face target while moving
-        Vector2Int delta = nextPos - currentGridPos;
-
-        if (delta != Vector2Int.zero)
-        {
-            int x = delta.x;
-            int y = delta.y;
-            Direction dir;
-            if (x > 0) dir = Direction.East;
-            else if (x < 0) dir = Direction.West;
-            else if (y > 0) dir = Direction.North;
-            else dir = Direction.South;
-            ChangeDirection(dir);
-        }
+        
 
         // reached tile
         if (pos == nextPos)
         {
-            rb.MovePosition(nextPos);
-
-            currentGridPos = nextPos;
             paths.Dequeue();
-
+            currentGridPos = nextPos;
+            nextPos = paths.Count > 0 ? paths.Peek() : currentGridPos;
+            Vector2Int delta = nextPos - currentGridPos;
+            
+            
+            if (delta != Vector2Int.zero)
+            {
+                int x = delta.x;
+                int y = delta.y;
+                Direction dir;
+                if (x > 0) dir = Direction.East;
+                else if (x < 0) dir = Direction.West;
+                else if (y > 0) dir = Direction.North;
+                else dir = Direction.South;
+                ChangeDirection(dir);
+            }
+            World.Instance.ChangeObjectLocation(this, oldGridPos, currentGridPos);
+            oldGridPos = currentGridPos;
             return paths.Count == 0;
         }
 
@@ -138,27 +149,18 @@ public class Pawn : ObjectBase
 
     public void GetRandomPosition()
     {
-        bool isValid = false;
 
-        while (!isValid)
+        int x = Random.Range(8, 22);
+        int y = Random.Range(10, 20);
+
+        Vector2Int targetPos = new Vector2Int(x, y);
+
+        var path = AStarPathfinder.FindPath(currentGridPos, targetPos);
+
+        if (path != null)
         {
-
-            int x = Random.Range(8, 22);
-            int y = Random.Range(10, 20);
-
-            Vector2Int targetPos = new Vector2Int(x, y);
-
-            if (World.Instance.IsPositionValid(targetPos))
-            {
-                var path = AStarPathfinder.FindPath(currentGridPos, targetPos);
-
-                if (path != null)
-                {
-                    oldDestination = targetPos;
-                    AddPathtoQueue(path);
-                    isValid = true;
-                }
-            }
+            oldDestination = targetPos;
+            AddPathtoQueue(path);
         }
     }
 
