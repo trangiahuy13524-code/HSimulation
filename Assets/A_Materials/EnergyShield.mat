@@ -46,9 +46,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _Distortion: 0
-    - _EdgePower: 0.2
+    - _EdgePower: 0.16
     - _EnableExternalAlpha: 0
-    - _Glow: 1.5
+    - _Glow: 1.98
     - _NoiseSpeed: 1
     - _ZWrite: 0
     m_Colors:

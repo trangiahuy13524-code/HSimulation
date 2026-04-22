@@ -27,19 +27,19 @@ public class WorldDebug : MonoBehaviour
         {
             for (int x = 10; x < 21; x++)
             {
-                world.GenerateWall(wallTile, new Vector2Int(x, 12));
+                world.GenerateWall(new Vector2Int(x, 12), wallTile);
             }
             for (int y = 12; y < 19; y++)
             {
-                world.GenerateWall(wallTile, new Vector2Int(10, y));
+                world.GenerateWall(new Vector2Int(10, y), wallTile);
             }
             for (int x = 10; x < 21; x++)
             {
-                world.GenerateWall(wallTile, new Vector2Int(x, 18));
+                world.GenerateWall(new Vector2Int(x, 18), wallTile);
             }
             for (int y = 12; y < 19; y++)
             {
-                world.GenerateWall(wallTile, new Vector2Int(20, y));
+                world.GenerateWall(new Vector2Int(20, y), wallTile);
             }
             world.RemoveObject(new Vector2Int(15, 12));
         }
@@ -51,7 +51,7 @@ public class WorldDebug : MonoBehaviour
     {
         if (Keyboard.current.eKey.wasPressedThisFrame)
         {
-            world.GenerateWall(wallTile, spawnPos);
+            world.GenerateWall(spawnPos, wallTile);
         }
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {

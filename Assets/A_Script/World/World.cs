@@ -112,7 +112,7 @@ public class World : MonoBehaviour
         RefreshNeighborWall(x, y);
     }
 
-    public void GenerateWall(AutoTillingTile wallTile, Vector2Int position)
+    public void GenerateWall(Vector2Int position, AutoTillingTile wallTile)
     {
         int x = position.x;
         int y = position.y;
