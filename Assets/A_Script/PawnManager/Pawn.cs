@@ -84,8 +84,20 @@ public class Pawn : BaseObject
         }
         if (!World.Instance.IsPositionValid(nextPos))
         {
+            
             ReCalculatePath();
             return false;
+        }
+        Vector2Int delta = nextPos - currentGridPos;
+        int x = delta.x;
+        int y = delta.y;
+        if (x != 0 && y != 0)
+        {
+            if (!World.Instance.IsPositionValid(nextPos - new Vector2Int(x, 0)) || !World.Instance.IsPositionValid(nextPos - new Vector2Int(0, y)))
+            {
+                ReCalculatePath();
+                return false;
+            }
         }
 
         Vector2 pos = rb.position;
@@ -99,13 +111,13 @@ public class Pawn : BaseObject
             paths.Dequeue();
             currentGridPos = nextPos;
             nextPos = paths.Count > 0 ? paths.Peek() : currentGridPos;
-            Vector2Int delta = nextPos - currentGridPos;
+            delta = nextPos - currentGridPos;
             
             
             if (delta != Vector2Int.zero)
             {
-                int x = delta.x;
-                int y = delta.y;
+                x = delta.x;
+                y = delta.y;
                 Direction dir;
                 if (x > 0) dir = Direction.East;
                 else if (x < 0) dir = Direction.West;
