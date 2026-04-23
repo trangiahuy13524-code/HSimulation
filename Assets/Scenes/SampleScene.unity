@@ -177,7 +177,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9840a9b2c0b84964488cefde0787ede2, type: 2}
+  - {fileID: 2100000, guid: 6aed18d7a7422484fbc4eb67f2c86131, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1700,7 +1700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc408a23ceb7944e93a95cb7ce4fdc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainData
-  noiseFrequency: 20
+  noiseFrequency: 30
 --- !u!1 &1621294683
 GameObject:
   m_ObjectHideFlags: 0
@@ -1838,6 +1838,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1819015516}
   - component: {fileID: 1819015517}
+  - component: {fileID: 1819015518}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -1899,6 +1900,25 @@ MonoBehaviour:
   pawnPrefab: {fileID: 3841082101150572428, guid: 98aeb43687677c84dac3183fd6135da7, type: 3}
   cam: {fileID: 519420032}
   worldSize: 41
+--- !u!114 &1819015518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819015514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 263f93fbf49004f40b26d61d2983f1cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldDebug
+  world: {fileID: 1819015517}
+  pawnPreset:
+  - {fileID: 11400000, guid: b17fe482491bd9d46837fb8b378f0e67, type: 2}
+  - {fileID: 11400000, guid: c618f1e59aa20484994b92cd5323a7b2, type: 2}
+  wallTile: {fileID: 11400000, guid: c0c35e3181e41a2448e75ff377666282, type: 2}
+  spawnPos: {x: 0, y: 0}
+  spawnCount: 1
 --- !u!1 &1831696274
 GameObject:
   m_ObjectHideFlags: 0
