@@ -19,6 +19,7 @@ public class Pawn : BaseObject
     [SerializeField] float currentIdleTime = 0f;
     Queue<Vector2Int> paths;
     [SerializeField] Vector2Int oldDestination;
+    [SerializeField] Vector2Int oldGridPos;
     public GeneticData geneticData;
 
     struct DirectionData
@@ -48,6 +49,8 @@ public class Pawn : BaseObject
     {
         base.Start();
         paths = new Queue<Vector2Int>();
+        oldGridPos = currentGridPos;
+        world.ModifyPawnCountGrid(currentGridPos, true);
     }
     private void Update()
     {
@@ -72,16 +75,16 @@ public class Pawn : BaseObject
         if (paths.Count == 0)
             return true;
 
-        World.Instance.UnregisterObject(currentGridPos, this);
+        world.UnregisterObject(currentGridPos, this);
         Vector2Int nextPos = paths.Peek();
 
-        if (World.Instance.IsPositionOccupied(lastQueuePosCache))
+        if (world.IsPositionOccupied(lastQueuePosCache))
         {
             paths.Clear();
             paths.Enqueue(currentGridPos);
             return false;
         }
-        if (!World.Instance.IsPositionValid(nextPos))
+        if (!world.IsPositionValid(nextPos))
         {
             ReCalculatePath();
             return false;
@@ -91,7 +94,7 @@ public class Pawn : BaseObject
         int y = delta.y;
         if (x != 0 && y != 0)
         {
-            if (!World.Instance.IsPositionValid(nextPos - new Vector2Int(x, 0)) || !World.Instance.IsPositionValid(nextPos - new Vector2Int(0, y)))
+            if (!world.IsPositionValid(nextPos - new Vector2Int(x, 0)) || !world.IsPositionValid(nextPos - new Vector2Int(0, y)))
             {
                 ReCalculatePath();
                 return false;
@@ -123,16 +126,26 @@ public class Pawn : BaseObject
                 else dir = Direction.South;
                 ChangeDirection(dir);
             }
-            
+            world.ModifyPawnCountGrid(currentGridPos, true);
+            world.ModifyPawnCountGrid(oldGridPos, false);
+            oldGridPos = currentGridPos;
             if (paths.Count == 0)
             {
-                World.Instance.RegisterObject(this, currentGridPos);
+                world.RegisterObject(this, currentGridPos);
                 return true;
             }
         }
-
-        Vector2 tempPos =
-            Vector2.MoveTowards(pos, nextPos, Time.deltaTime);
+        float moveSpeed = Time.deltaTime;
+        Vector2 tempPos;
+        if (nextPos == currentGridPos)
+        {
+            tempPos = Vector2.MoveTowards(pos, nextPos, moveSpeed * 2);
+        }
+        else
+        {
+            tempPos = Vector2.MoveTowards(pos, nextPos, moveSpeed);
+        }
+        
 
         rb.MovePosition(tempPos);
 
@@ -182,7 +195,7 @@ public class Pawn : BaseObject
     {
         if (paths.Count == 0) return;
         Vector2Int targetPos = oldDestination;
-        if (!World.Instance.IsPositionValid(targetPos))
+        if (!world.IsPositionValid(targetPos))
         {
             PathReset();
             return;
@@ -204,24 +217,4 @@ public class Pawn : BaseObject
         paths.Clear();
         paths.Enqueue(currentGridPos);
     }
-
-
-    //Dictionary<DiagonalDirection, DirectionData> directionToVector = new()
-    //{
-    //    { DiagonalDirection.North, new DirectionData(Vector2Int.up, Direction.North) },
-    //    { DiagonalDirection.NorthEast, new DirectionData(new Vector2Int(1, 1), Direction.East) },
-    //    { DiagonalDirection.East, new DirectionData(Vector2Int.right, Direction.East) },
-    //    { DiagonalDirection.SouthEast, new DirectionData(new Vector2Int(1, -1), Direction.East) },
-    //    { DiagonalDirection.South, new DirectionData(Vector2Int.down, Direction.South) },
-    //    { DiagonalDirection.SouthWest, new DirectionData(new Vector2Int(-1, -1), Direction.West) },
-    //    { DiagonalDirection.West, new DirectionData(Vector2Int.left, Direction.West) },
-    //    { DiagonalDirection.NorthWest, new DirectionData(new Vector2Int(-1, 1), Direction.West) }
-    //};
-    //public void Walk(DiagonalDirection dir)
-    //{
-    //    DirectionData data = directionToVector[dir];
-    //    ChangeDirection(data.direction);
-    //    Vector2Int destination = data.vector + currentGridPosition;
-    //    AddPathToQueue(destination);
-    //}
 }

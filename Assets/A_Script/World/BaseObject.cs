@@ -4,6 +4,7 @@ public class BaseObject : MonoBehaviour
 {
     [SerializeField] protected Sprite iconSprite;
     [SerializeField] protected Vector2Int currentGridPos;
+    [SerializeField] protected World world;
     protected virtual Vector2 size => Vector2.one;
     protected virtual bool isPassable => true;
     public bool IsPassable => isPassable;
@@ -24,6 +25,7 @@ public class BaseObject : MonoBehaviour
     protected virtual void Start()
     {
         transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
-        World.Instance.RegisterObject(this, currentGridPos);
+        world = World.Instance;
+        world.RegisterObject(this, currentGridPos);
     }
 }

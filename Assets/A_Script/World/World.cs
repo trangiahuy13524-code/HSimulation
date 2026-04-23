@@ -18,6 +18,7 @@ public class World : MonoBehaviour
     
 
     BaseObject[,] objects;
+    byte[,] pawnCountOnGrid;
 
     //  
     public short WorldSize => worldSize;
@@ -29,6 +30,14 @@ public class World : MonoBehaviour
         Application.targetFrameRate = gameFPS;
 
         objects = new BaseObject[worldSize, worldSize];
+        pawnCountOnGrid = new byte[worldSize, worldSize];
+        for (int x = 0; x < worldSize; x++)
+        {
+            for (int y = 0; y < worldSize; y++)
+            {
+                pawnCountOnGrid[x, y] = 0;
+            }
+        }
         if (cam) cam.position = new Vector3((worldSize - 1) / 2f, (worldSize - 2) / 2f, cam.position.z);
 
         //for (int x = 0; x < worldSize; x++)
@@ -129,11 +138,23 @@ public class World : MonoBehaviour
         RefreshNeighborWall(x, y);
     }
 
+    public void ModifyPawnCountGrid(Vector2Int position, bool add)
+    {
+        int x = position.x;
+        int y = position.y;
+        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
+        if (add)
+            pawnCountOnGrid[x, y]++;
+        else
+            pawnCountOnGrid[x, y]--;
+    }
+
     public void GenerateWall(Vector2Int position, AutoTillingTile wallTile)
     {
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
+        if (pawnCountOnGrid[x, y] > 0) return;
         BaseObject existingObject = objects[x, y];
         if (objects[x, y] != null) return; 
         wallTileMap.SetTile(new Vector3Int(x, y, 0), wallTile);
