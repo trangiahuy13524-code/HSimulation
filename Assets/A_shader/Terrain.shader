@@ -31,7 +31,7 @@ Shader "Game/TerrainTiles"
         // if you textures are 512x512 and you do o.uv = v.vertex.xy you will have in each tile full texture.
         // But if you do v.vertex.xy/8 a 512x512 texture will cover 8x8 tiles.
         // If you use seemless textures, this is nice for rendering tile map grounds. 
-        o.uv = v.vertex.xy/8; 
+        o.uv = v.vertex.xy/20; 
         return o;
       }
       half4 frag (v2f i) : COLOR {

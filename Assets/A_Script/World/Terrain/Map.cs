@@ -31,8 +31,7 @@ public class Map
             for (int y = 0; y < this.size.y; y++)
             {
                 float value = noiseMap[x, y];
-                this.tiles[x, y] = new CustomTile(x, y, TerrainData.GetTerrain(value), this);
-                //this.SetRect(x, y, 1, 1, World.GetTerrain(value));
+                this.tiles[x, y] = new CustomTile(x, y, Terrain.GetTerrain(value), this);
             }
         }
        

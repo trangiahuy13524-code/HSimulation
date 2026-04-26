@@ -9,11 +9,16 @@ public class ScreenAndTouchManager : MonoBehaviour
     [SerializeField] Camera cam;
     [SerializeField] Transform selectionHighlight;
     [SerializeField] Vector2Int selectedGrid;
+    [SerializeField] World world;
     public Vector2Int SelectedGrid => selectedGrid;
 
     Vector3 dragStartWorldPos;
     bool dragging;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Start()
+    {
+        world = World.Instance;
+    }
     void OnEnable()
     {
         EnhancedTouchSupport.Enable();
@@ -30,6 +35,7 @@ public class ScreenAndTouchManager : MonoBehaviour
         if (selectionHighlight != null)
         {
             selectionHighlight.position = new Vector3(selectedGrid.x, selectedGrid.y - 0.5f, selectionHighlight.position.z);
+            touchPositionText.text = $"Grid Position: {selectedGrid}, pawn count: {world.GetPawnCount(selectedGrid)}";
         }
         //touchPositionText.text = $"Grid Position: {gridPos}";
 
@@ -95,5 +101,22 @@ public class ScreenAndTouchManager : MonoBehaviour
         pos.y = Mathf.Clamp(pos.y, min, max);
 
         cam.transform.position = pos;
+    }
+
+    void CheckPawnAtScreenCenter()
+    {
+        Vector2 center = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+
+        Vector2 worldPoint = cam.ScreenToWorldPoint(center);
+
+        RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+
+        if (hit.collider != null)
+        {
+            Pawn pawn = hit.collider.GetComponent<Pawn>();
+
+            if (pawn != null)
+                Debug.Log("Selected Pawn: " + pawn.name);
+        }
     }
 }

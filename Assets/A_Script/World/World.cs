@@ -149,6 +149,14 @@ public class World : MonoBehaviour
             pawnCountOnGrid[x, y]--;
     }
 
+    public byte GetPawnCount(Vector2Int position)
+    {
+        int x = position.x;
+        int y = position.y;
+        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return 0;
+        return pawnCountOnGrid[x, y];
+    }
+
     public void GenerateWall(Vector2Int position, AutoTillingTile wallTile)
     {
         int x = position.x;

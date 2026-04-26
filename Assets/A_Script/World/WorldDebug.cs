@@ -18,33 +18,29 @@ public class WorldDebug : MonoBehaviour
             if (world == null) return;
             int count = pawnPreset.Count;
             if (count == 0) return;
-            Vector2Int spawnPosition = new Vector2Int((world.WorldSize + 1)/2 - spawnCount + i*2, 15);
+            int size = world.WorldSize;
+            Vector2Int spawnPosition = new Vector2Int((size + 1)/2 - spawnCount + i*2, (size - 1) / 2);
             int index = Random.Range(0, count);
             world.GeneratePawn(spawnPosition, pawnPreset[index]);
         }
 
         if (wallTile)
         {
-            int size = world.WorldSize;
-            int min = size / 4;
-            int max = size * 3 / 4 + 1;
-            for (int x = min; x < max; x++)
+            int size = world.WorldSize - 1;
+            int mid = size / 2;
+            int min = mid - 3;
+            int max = mid + 3;
+            for (int x = min; x < max + 1; x++)
             {
-                world.GenerateWall(new Vector2Int(x, min + 3), wallTile);
+                world.GenerateWall(new Vector2Int(x, min), wallTile);
+                world.GenerateWall(new Vector2Int(x, max), wallTile);
             }
-            for (int y = min + 3; y < max - 3; y++)
+            for (int y = min; y < max + 1; y++)
             {
                 world.GenerateWall(new Vector2Int(min, y), wallTile);
+                world.GenerateWall(new Vector2Int(max, y), wallTile);
             }
-            for (int x = min; x < max; x++)
-            {
-                world.GenerateWall(new Vector2Int(x, max - 4), wallTile);
-            }
-            for (int y = min + 3; y < max - 3; y++)
-            {
-                world.GenerateWall(new Vector2Int(max - 1, y), wallTile);
-            }
-            world.RemoveObject(new Vector2Int(size / 2, min + 3));
+            world.RemoveObject(new Vector2Int(mid, min));
         }
 
     }

@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class TerrainData : MonoBehaviour
+public class Terrain : MonoBehaviour
 {
-    public static TerrainData Instance { get; private set; }
+    public TerrainBiome terrainData;
+    public static Terrain Instance { get; private set; }
     public float[,] noiseMap;
     [SerializeField] float noiseFrequency = 1f;
 
@@ -52,8 +53,8 @@ public class TerrainData : MonoBehaviour
         {
             value += Mathf.PerlinNoise(x * frequency, y * frequency) * amplitude;
             maxValue += amplitude;
-            amplitude *= 2f;
-            frequency *= .5f;
+            amplitude *= .5f;
+            frequency *= 2f;
         }
 
         return value / maxValue;
@@ -73,9 +74,14 @@ public class TerrainData : MonoBehaviour
 
     public static TerrainType GetTerrain(float v)
     {
-        if (v < 0.3f) return TerrainType.Water;
-        else if (v < 0.5f) return TerrainType.Sand;
-        else if (v < 0.7f) return TerrainType.Grass;
-        else return TerrainType.Rocks;
+        TerrainBiome terrainData = Instance.terrainData;
+        for (int i = 0; i < terrainData.terrainTypes.Length; i++)
+        {
+            if (v <= terrainData.terrainTypes[i].heightThreshold)
+            {
+                return terrainData.terrainTypes[i];
+            }
+        }
+        return terrainData.terrainTypes[terrainData.terrainTypes.Length - 1];
     }
 }

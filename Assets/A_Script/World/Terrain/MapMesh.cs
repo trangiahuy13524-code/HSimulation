@@ -59,7 +59,7 @@ public class MapMesh
                     if (
                         neighbour.terrainType != tile.terrainType && // We add only if its different than current tile.
                         !neighboursTerrainList.Contains(neighbour.terrainType) && // And if it's not in the list.
-                        (int)neighbour.terrainType >= (int)tile.terrainType // And we only blend when we're on top.
+                        neighbour.terrainType.layer >= tile.terrainType.layer // And we only blend when we're on top.
                     )
                     {
                         neighboursTerrainList.Add(neighbour.terrainType);

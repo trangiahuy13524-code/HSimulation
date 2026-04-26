@@ -22,10 +22,14 @@ public class BaseObject : MonoBehaviour
     public Sprite IconSprite => iconSprite;
     public Vector2 Size => size;
 
+    protected virtual void Awake()
+    {
+        world = World.Instance;
+    }
+
     protected virtual void Start()
     {
         transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
-        world = World.Instance;
         world.RegisterObject(this, currentGridPos);
     }
 }

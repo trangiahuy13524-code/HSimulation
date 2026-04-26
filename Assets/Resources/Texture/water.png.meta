@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1c0729de4614bc7409ceb8eeeab3a625
+guid: b182c5301e3843741bcf139f348b0bdd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2380170215210489234
-    second: AB_ParchedEarth_0
+      213: 2410779667716283973
+    second: water 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -43,10 +43,10 @@ TextureImporter:
     wrapU: 0
     wrapV: 0
     wrapW: 0
-  nPOTScale: 0
+  nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -55,9 +55,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 1
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
-  textureType: 8
+  textureType: 0
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AB_ParchedEarth_0
+      name: water 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 512
-        height: 512
+        width: 1254
+        height: 1254
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 29516963330180120800000000000000
-      internalID: 2380170215210489234
+      spriteID: 54e96fdb55fc47120800000000000000
+      internalID: 2410779667716283973
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      AB_ParchedEarth_0: 2380170215210489234
+      water 1_0: 2410779667716283973
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

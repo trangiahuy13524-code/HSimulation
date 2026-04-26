@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02dcef4b7e6a1d045b39e4f8f31bd101, type: 3}
+  m_Name: Jungle
+  m_EditorClassIdentifier: Assembly-CSharp::TerrainBiome
+  terrainTypes:
+  - name: Rock
+    heightThreshold: 0.25
+    terrainMaterial: {fileID: 2100000, guid: 32b071241602d3345ba39a02a5f46e94, type: 2}
+    movementCost: 0
+    layer: 0
+  - name: Grass
+    heightThreshold: 0.55
+    terrainMaterial: {fileID: 2100000, guid: 8efac082e5197b34eaf1863d94c55554, type: 2}
+    movementCost: 0
+    layer: 1
+  - name: Sand
+    heightThreshold: 0.7
+    terrainMaterial: {fileID: 2100000, guid: e55a4e05dbd31604c986d3ba5209414d, type: 2}
+    movementCost: 0
+    layer: 2
+  - name: Water
+    heightThreshold: 1
+    terrainMaterial: {fileID: 2100000, guid: 9c09d4f56cf01fe40b1515deea9c552f, type: 2}
+    movementCost: 0
+    layer: 3

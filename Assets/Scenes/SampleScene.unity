@@ -1040,7 +1040,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1641,6 +1641,7 @@ MonoBehaviour:
   cam: {fileID: 519420031}
   selectionHighlight: {fileID: 74201697}
   selectedGrid: {x: 0, y: 0}
+  world: {fileID: 0}
 --- !u!1 &1442092148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1697,10 +1698,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1442092148}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bc408a23ceb7944e93a95cb7ce4fdc7, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e9bf0bc9f2d97145aa112ac6f58f25b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainData
-  noiseFrequency: 30
+  terrainData: {fileID: 11400000, guid: add02f96062abf143a37b687a31c41e7, type: 2}
+  noiseFrequency: 5
 --- !u!1 &1621294683
 GameObject:
   m_ObjectHideFlags: 0
@@ -1899,7 +1901,7 @@ MonoBehaviour:
   wallDummyPrefab: {fileID: 3711314298697693449, guid: a0a0e1285072c174ea8210dd8afdd997, type: 3}
   pawnPrefab: {fileID: 3841082101150572428, guid: 98aeb43687677c84dac3183fd6135da7, type: 3}
   cam: {fileID: 519420032}
-  worldSize: 41
+  worldSize: 51
 --- !u!114 &1819015518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1918,7 +1920,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c618f1e59aa20484994b92cd5323a7b2, type: 2}
   wallTile: {fileID: 11400000, guid: c0c35e3181e41a2448e75ff377666282, type: 2}
   spawnPos: {x: 0, y: 0}
-  spawnCount: 1
+  spawnCount: 2
 --- !u!1 &1831696274
 GameObject:
   m_ObjectHideFlags: 0

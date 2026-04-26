@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1c5dba7b529e2fd4a92dc6d5bfc5999e
+guid: 7026bf523f2383f49aafa30579048668
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7205435771682639562
-    second: AB_FertileFlowerySoil_0
+      213: -4670921119880918102
+    second: AB_LavaTexture_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -55,9 +55,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 1
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
-  textureType: 8
+  textureType: 0
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AB_FertileFlowerySoil_0
+      name: AB_LavaTexture_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 631b6f87756210c90800000000000000
-      internalID: -7205435771682639562
+      spriteID: aabc0a33dfd8d2fb0800000000000000
+      internalID: -4670921119880918102
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      AB_FertileFlowerySoil_0: -7205435771682639562
+      AB_LavaTexture_0: -4670921119880918102
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

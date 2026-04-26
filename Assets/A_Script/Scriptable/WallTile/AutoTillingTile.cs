@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 [Serializable, CreateAssetMenu(fileName = "New AutoTilling Tile", menuName = "Tiles/AutoTilling Tile")]
 public class AutoTillingTile : TileBase
 {
+    public string tileName;
     public Sprite[] sprites;
 
     public override void GetTileData(

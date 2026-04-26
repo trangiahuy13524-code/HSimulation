@@ -20,7 +20,12 @@ public class Pawn : BaseObject
     Queue<Vector2Int> paths;
     [SerializeField] Vector2Int oldDestination;
     [SerializeField] Vector2Int oldGridPos;
-    public GeneticData geneticData;
+    public GeneticDataRT geneticData {  get; private set; }
+
+    public void CreateGeneData(GeneticData geneticData)
+    {
+        this.geneticData = new GeneticDataRT(geneticData);
+    }
 
     struct DirectionData
     {
@@ -44,7 +49,10 @@ public class Pawn : BaseObject
 
 
 
-
+    private void OnDestroy()
+    {
+        if (world != null) world.ModifyPawnCountGrid(currentGridPos, false);
+    }
     protected override void Start()
     {
         base.Start();
@@ -78,12 +86,6 @@ public class Pawn : BaseObject
         world.UnregisterObject(currentGridPos, this);
         Vector2Int nextPos = paths.Peek();
 
-        if (world.IsPositionOccupied(lastQueuePosCache))
-        {
-            paths.Clear();
-            paths.Enqueue(currentGridPos);
-            return false;
-        }
         if (!world.IsPositionValid(nextPos))
         {
             ReCalculatePath();

@@ -59,7 +59,7 @@ public static class AStarPathfinder
         openSet.Add(start);
 
         int iterations = 0;
-        const int MAX_ITERATIONS = 10000;
+        const int MAX_ITERATIONS = 5000;
 
         while (openList.Count > 0)
         {
