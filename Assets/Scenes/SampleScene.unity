@@ -951,7 +951,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 1
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1583,7 +1583,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapRenderer
   ready: 0
-  gizmos: 0
 --- !u!4 &1442092150
 Transform:
   m_ObjectHideFlags: 0
@@ -1612,7 +1611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainData
   terrainData: {fileID: 11400000, guid: add02f96062abf143a37b687a31c41e7, type: 2}
-  IsIsland: 1
+  IsIsland: 0
   noiseFrequency: 5
   noiseOffset: {x: 0, y: 0}
 --- !u!1 &1447518414
@@ -1994,7 +1993,7 @@ MonoBehaviour:
   wallDummyPrefab: {fileID: 3711314298697693449, guid: a0a0e1285072c174ea8210dd8afdd997, type: 3}
   pawnPrefab: {fileID: 3841082101150572428, guid: 98aeb43687677c84dac3183fd6135da7, type: 3}
   cam: {fileID: 519420032}
-  worldSize: 251
+  worldSize: 151
 --- !u!114 &1819015518
 MonoBehaviour:
   m_ObjectHideFlags: 0

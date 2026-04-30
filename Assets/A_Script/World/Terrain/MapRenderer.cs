@@ -34,7 +34,7 @@ public class MapRenderer : MonoBehaviour
             // In our TerrainType enum Water=0, Dirt=1, Grass=2, Rocks=3
             // We always want to draw Rocks over Grass, Grass over Dirt, Dirt over Water
             // So we can just use the negative integer value as the Z position for the GameObject.
-            go.transform.localPosition = new Vector3(0, 0, terrainType.layer-5);
+            go.transform.localPosition = new Vector3(0, 0, terrainType.layer);
 
             // Add a mesh filter and set the mesh to our mesh.
             MeshFilter mf = go.AddComponent<MeshFilter>();

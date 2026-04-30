@@ -34,7 +34,8 @@ public class Terrain : MonoBehaviour
 
                 if (isIsland)
                 {
-                    float island = ContinentMask(x, y, worldSize);
+                    float island = IslandMask(x, y, worldSize);
+                    //float island = ContinentMask(x, y, worldSize);
                     //island *= EdgeFalloff(x, y, worldSize);
                     noiseMap[x, y] = noise * island;
                 }
