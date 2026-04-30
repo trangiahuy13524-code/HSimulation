@@ -188,6 +188,7 @@ MonoBehaviour:
     currentBodyIndex: 0
     currentHeadIndex: 0
     currentHairIndex: 0
+    generation: 0
 --- !u!50 &-6656611525869205240
 Rigidbody2D:
   serializedVersion: 5
@@ -288,7 +289,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 3, y: 5.5, z: 1}
+  m_LocalScale: {x: 4, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4449204958241903541}

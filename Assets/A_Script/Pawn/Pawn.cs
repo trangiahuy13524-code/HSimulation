@@ -72,7 +72,6 @@ public partial class Pawn : WorldObject
         if (paths.Count > 0)
         {
             Vector2Int nextPos = paths.Peek();
-
             if (nextPos != currentGridPos && !world.IsPositionPathValid(nextPos))
             {
                 ReCalculatePath();
@@ -125,7 +124,6 @@ public partial class Pawn : WorldObject
             }
             float moveSpeed = Time.deltaTime * genome.speed;
             if (onDuty) moveSpeed *= 2;
-
             Vector2 tempPos;
             if (nextPos == currentGridPos)
             {
@@ -136,7 +134,6 @@ public partial class Pawn : WorldObject
                 tempPos = Vector2.MoveTowards(pos, nextPos, moveSpeed);
             }
 
-
             rb.MovePosition(tempPos);
 
             return false;
@@ -146,7 +143,6 @@ public partial class Pawn : WorldObject
 
         return true;
     }
-
 
     public void AddPathtoQueue(List<Vector2Int> pathList)
     {

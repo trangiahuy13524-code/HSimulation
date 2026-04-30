@@ -48,7 +48,7 @@ public class World : MonoBehaviour
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return false;
-        if (pawnCountOnGrid[x, y] > 1) return false;
+        if (pawnCountOnGrid[x, y] > 0) return false;
         WorldObject @object = objects[x, y];
         if (@object != null)
         {
@@ -140,7 +140,6 @@ public class World : MonoBehaviour
         else
             pawnCountOnGrid[x, y]--;
     }
-
     public byte GetPawnCount(Vector2Int position)
     {
         int x = position.x;

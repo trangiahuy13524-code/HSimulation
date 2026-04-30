@@ -93,35 +93,6 @@ public class GenomeRT
             UnityEngine.Random.value <= source.femaleBirthChance
             ? Sex.Female
             : Sex.Male;
-
-        //-----------------------------------
-        // Appearance Genes
-        //-----------------------------------
-        currentBodyIndex =
-            InheritOrRandom(
-                parent.currentBodyIndex,
-                source.bodyData.Count);
-
-        currentHeadIndex =
-            InheritOrRandom(
-                parent.currentHeadIndex,
-                source.headData.Count);
-
-        currentHairIndex =
-            InheritOrRandom(
-                parent.currentHairIndex,
-                source.hairData.Count);
-    }
-
-    static short InheritOrRandom(
-    short parentIndex,
-    int maxCount,
-    float inheritChance = 0.5f)
-    {
-        if (UnityEngine.Random.value < inheritChance)
-            return parentIndex;
-
-        return (short)UnityEngine.Random.Range(0, maxCount);
     }
 
     static int offset;

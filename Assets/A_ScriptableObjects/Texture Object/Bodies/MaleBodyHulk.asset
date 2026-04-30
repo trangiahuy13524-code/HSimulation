@@ -15,7 +15,7 @@ MonoBehaviour:
   offset: {x: 0, y: -0.15}
   childOffset: {x: 0, y: 1.25}
   horizontalOffset: 0
-  scale: {x: 0.27, y: 0.27}
+  scale: {x: 0.3, y: 0.3}
   bodySex: 0
   hybridable: 0
   bodyPartShape: {fileID: 11400000, guid: 7c41da51caa047c4cb9f0361a0788d7e, type: 2}

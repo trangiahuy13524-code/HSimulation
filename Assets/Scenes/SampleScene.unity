@@ -1993,7 +1993,7 @@ MonoBehaviour:
   wallDummyPrefab: {fileID: 3711314298697693449, guid: a0a0e1285072c174ea8210dd8afdd997, type: 3}
   pawnPrefab: {fileID: 3841082101150572428, guid: 98aeb43687677c84dac3183fd6135da7, type: 3}
   cam: {fileID: 519420032}
-  worldSize: 151
+  worldSize: 101
 --- !u!114 &1819015518
 MonoBehaviour:
   m_ObjectHideFlags: 0
