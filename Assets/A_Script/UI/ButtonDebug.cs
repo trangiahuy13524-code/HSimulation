@@ -8,15 +8,15 @@ public class ButtonDebug : MonoBehaviour
     [SerializeField] Button wall;
     [SerializeField] Button remove;
     [SerializeField] ScreenAndTouchManager screenAndTouchManager;
-    [SerializeField] List<PawnPreset> pawnPreset = new();
+    [SerializeField] List<GeneticData> pawnGeneticsData = new();
     [SerializeField] AutoTillingTile wallTile;
 
     void Start()
     {
         if (pawn) pawn.onClick.AddListener(() => {
             Vector2Int spawnPos = screenAndTouchManager.SelectedGrid;
-            int index = Random.Range(0, pawnPreset.Count);
-            World.Instance.GeneratePawn(spawnPos, pawnPreset[index]);
+            int index = Random.Range(0, pawnGeneticsData.Count);
+            World.Instance.GeneratePawn(spawnPos, pawnGeneticsData[index]);
         });
         if (wall) wall.onClick.AddListener(() => {
             Vector2Int spawnPos = screenAndTouchManager.SelectedGrid;

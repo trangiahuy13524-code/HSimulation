@@ -20,7 +20,6 @@ public class Map
 {
     public CustomTile[,] tiles;
     public Vector2Int size;
-
     public Map(Vector2Int size, float[,] noiseMap)
     {
         this.size = size;
@@ -37,7 +36,6 @@ public class Map
        
         Debug.Log("Map intialized with a size of" + this.size);
     }
-
     // We just set a rectangle to a terrainType value.
     public void SetRect(int startX, int startY, int width, int height, TerrainType terrainType)
     {
@@ -49,7 +47,6 @@ public class Map
             }
         }
     }
-
     public IEnumerator<CustomTile> GetEnumerator()
     {
         for (int x = 0; x < this.size.x; x++)
@@ -60,7 +57,6 @@ public class Map
             }
         }
     }
-
     public CustomTile this[Vector2Int v2]
     {
         get
@@ -68,7 +64,6 @@ public class Map
             return this[v2.x, v2.y];
         }
     }
-
     public CustomTile this[int x, int y]
     {
         get

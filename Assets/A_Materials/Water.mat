@@ -42,9 +42,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _WaveScale: 30
+    - _WaveScale: 50
     - _WaveSpeed: 0.05
-    - _WaveStrength: 0.001
+    - _WaveStrength: 0.003
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

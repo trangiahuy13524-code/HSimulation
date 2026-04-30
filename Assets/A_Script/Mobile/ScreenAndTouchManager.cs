@@ -18,6 +18,7 @@ public class ScreenAndTouchManager : MonoBehaviour
     private void Start()
     {
         world = World.Instance;
+        worldSize = world.WorldSize;
     }
     void OnEnable()
     {
@@ -31,12 +32,13 @@ public class ScreenAndTouchManager : MonoBehaviour
 
     void Update()
     {
-        selectedGrid = new Vector2Int(Mathf.RoundToInt(cam.transform.position.x + 0.5f), Mathf.RoundToInt(cam.transform.position.y + 0.5f));
+        selectedGrid = new Vector2Int(Mathf.RoundToInt(cam.transform.position.x), Mathf.RoundToInt(cam.transform.position.y + 0.5f));
         if (selectionHighlight != null)
         {
             selectionHighlight.position = new Vector3(selectedGrid.x, selectedGrid.y - 0.5f, selectionHighlight.position.z);
             touchPositionText.text = $"Grid Position: {selectedGrid}, pawn count: {world.GetPawnCount(selectedGrid)}";
         }
+        
         //touchPositionText.text = $"Grid Position: {gridPos}";
 
         if (Touch.activeTouches.Count == 0)
@@ -90,33 +92,17 @@ public class ScreenAndTouchManager : MonoBehaviour
         Vector2 worldPos = cam.ScreenToWorldPoint(screenPos);
         return new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y + 0.5f));
     }
+
+    float worldSize;
     void ClampCameraPosition()
     {
-        float min = -0.5f;
-        float max = World.Instance.WorldSize - 1.5f;
+        
 
         Vector3 pos = cam.transform.position;
 
-        pos.x = Mathf.Clamp(pos.x, min, max);
-        pos.y = Mathf.Clamp(pos.y, min, max);
+        pos.x = Mathf.Clamp(pos.x, 0, worldSize - 1);
+        pos.y = Mathf.Clamp(pos.y, -.5f, worldSize - 1.5f);
 
         cam.transform.position = pos;
-    }
-
-    void CheckPawnAtScreenCenter()
-    {
-        Vector2 center = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-
-        Vector2 worldPoint = cam.ScreenToWorldPoint(center);
-
-        RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-
-        if (hit.collider != null)
-        {
-            Pawn pawn = hit.collider.GetComponent<Pawn>();
-
-            if (pawn != null)
-                Debug.Log("Selected Pawn: " + pawn.name);
-        }
     }
 }

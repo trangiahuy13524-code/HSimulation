@@ -1,0 +1,210 @@
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+public static class AStarPathfinder
+{
+    class Node
+    {
+        public int x;
+        public int y;
+
+        public int gCost;
+        public int hCost;
+
+        public Node parent;
+
+        // search markers (NO RESET NEEDED)
+        public int searchId;
+        public int closedId;
+
+        public int fCost => gCost + hCost;
+    }
+
+    static readonly Vector2Int[] directions =
+    {
+        Vector2Int.up,
+        Vector2Int.down,
+        Vector2Int.left,
+        Vector2Int.right,
+        new Vector2Int(1,1),
+        new Vector2Int(1,-1),
+        new Vector2Int(-1,1),
+        new Vector2Int(-1,-1)
+    };
+
+    static Node[,] nodes;
+    static PriorityQueue<Node> openQueue;
+
+    static int cachedSize = -1;
+    static int currentSearchId = 0;
+
+    // =====================================================
+    // MAIN ENTRY
+    // =====================================================
+    public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int target)
+    {
+        World world = World.Instance;
+        int size = world.WorldSize;
+
+        if (!IsInside(start, size) || !IsInside(target, size))
+            return null;
+
+        if (world.IsNotPassable(target))
+            return null;
+
+        EnsureBuffers(size);
+
+        currentSearchId++;
+        openQueue.Clear();
+
+        Node startNode = GetNode(start.x, start.y);
+        InitNode(startNode);
+
+        startNode.gCost = 0;
+        startNode.hCost = GetDistance(start.x, start.y, target.x, target.y);
+
+        openQueue.Enqueue(startNode, startNode.fCost);
+
+        int iterations = 0;
+        const int MAX_ITERATIONS = 6000;
+
+        while (openQueue.Count > 0)
+        {
+            if (++iterations > MAX_ITERATIONS)
+            {
+                Debug.LogWarning("A* aborted");
+                return null;
+            }
+
+            Node current = openQueue.Dequeue();
+
+            if (current.closedId == currentSearchId)
+                continue;
+
+            current.closedId = currentSearchId;
+
+            if (current.x == target.x && current.y == target.y)
+                return RetracePath(current);
+
+            foreach (var dir in directions)
+            {
+                int nx = current.x + dir.x;
+                int ny = current.y + dir.y;
+
+                if (!IsInside(nx, ny, size))
+                    continue;
+
+                if (!world.IsPositionPathValid(new Vector2Int(nx, ny)))
+                    continue;
+
+                // prevent diagonal cutting
+                if (dir.x != 0 && dir.y != 0)
+                {
+                    if (world.IsNotPassable(new Vector2Int(current.x + dir.x, current.y)) ||
+                        world.IsNotPassable(new Vector2Int(current.x, current.y + dir.y)))
+                        continue;
+                }
+
+                Node neighbor = GetNode(nx, ny);
+                InitNode(neighbor);
+
+                if (neighbor.closedId == currentSearchId)
+                    continue;
+
+                int newCost =
+                    current.gCost +
+                    GetDistance(current.x, current.y, nx, ny);
+
+                if (newCost < neighbor.gCost)
+                {
+                    neighbor.gCost = newCost;
+                    neighbor.hCost = GetDistance(nx, ny, target.x, target.y);
+                    neighbor.parent = current;
+
+                    openQueue.Enqueue(neighbor, neighbor.fCost);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    // =====================================================
+    // NODE MANAGEMENT
+    // =====================================================
+
+    static void EnsureBuffers(int size)
+    {
+        if (cachedSize == size)
+            return;
+
+        nodes = new Node[size, size];
+        openQueue = new PriorityQueue<Node>();
+
+        cachedSize = size;
+    }
+
+    static Node GetNode(int x, int y)
+    {
+        Node n = nodes[x, y];
+
+        if (n == null)
+        {
+            n = new Node { x = x, y = y };
+            nodes[x, y] = n;
+        }
+
+        return n;
+    }
+
+    static void InitNode(Node n)
+    {
+        if (n.searchId == currentSearchId)
+            return;
+
+        n.searchId = currentSearchId;
+        n.gCost = int.MaxValue;
+        n.parent = null;
+    }
+
+    // =====================================================
+    // PATH BUILD
+    // =====================================================
+
+    static List<Vector2Int> RetracePath(Node endNode)
+    {
+        List<Vector2Int> path = new();
+
+        Node current = endNode;
+
+        while (current != null)
+        {
+            path.Add(new Vector2Int(current.x, current.y));
+            current = current.parent;
+        }
+
+        path.Reverse();
+        return path;
+    }
+
+    // =====================================================
+    // HELPERS
+    // =====================================================
+
+    static bool IsInside(Vector2Int pos, int size)
+        => pos.x >= 0 && pos.y >= 0 &&
+           pos.x < size && pos.y < size;
+
+    static bool IsInside(int x, int y, int size)
+        => x >= 0 && y >= 0 &&
+           x < size && y < size;
+
+    static int GetDistance(int ax, int ay, int bx, int by)
+    {
+        int dx = Mathf.Abs(ax - bx);
+        int dy = Mathf.Abs(ay - by);
+
+        return 14 * Mathf.Min(dx, dy)
+             + 10 * Mathf.Abs(dx - dy);
+    }
+}

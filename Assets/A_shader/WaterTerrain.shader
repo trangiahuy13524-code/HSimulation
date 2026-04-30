@@ -55,7 +55,7 @@ Shader "Game/WaterTerrainTiles"
                 o.color = v.color;
 
                 // world space tiling (NO SEAMS)
-                o.worldUV = worldPos.xy / 20;
+                o.worldUV = worldPos.xy / 10;
 
                 o.uv = o.worldUV;
 

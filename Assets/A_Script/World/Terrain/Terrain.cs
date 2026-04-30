@@ -5,12 +5,14 @@ public class Terrain : MonoBehaviour
     public TerrainBiome terrainData;
     public static Terrain Instance { get; private set; }
     public float[,] noiseMap;
+    public bool IsIsland = false;
     [SerializeField] float noiseFrequency = 1f;
+    [SerializeField] Vector2 noiseOffset;
 
     private void Start()
     {
         Instance = this;
-        GenerateTerrain();
+        GenerateTerrain(IsIsland);
     }
 
 
@@ -27,12 +29,13 @@ public class Terrain : MonoBehaviour
                 float nx = x * scale;
                 float ny = y * scale;
 
-                float noise = FractalNoise(x * 0.01f, y * 0.01f, noiseFrequency);
+                float noise = FractalNoise((x + noiseOffset.x) * 0.01f, (y + noiseOffset.y) * 0.01f, noiseFrequency);
 
 
                 if (isIsland)
                 {
-                    float island = IslandMask(x, y, worldSize);
+                    float island = ContinentMask(x, y, worldSize);
+                    //island *= EdgeFalloff(x, y, worldSize);
                     noiseMap[x, y] = noise * island;
                 }
                 else
@@ -58,6 +61,32 @@ public class Terrain : MonoBehaviour
         }
 
         return value / maxValue;
+    }
+    float ContinentMask(int x, int y, int worldSize)
+    {
+        float scale = 0.003f; // VERY large continents
+
+        float nx = x * scale;
+        float ny = y * scale;
+
+        float continent = Mathf.PerlinNoise(nx, ny);
+
+        // push oceans deeper & continents clearer
+        continent = Mathf.Pow(continent, 1.5f);
+
+        return continent;
+    }
+    float EdgeFalloff(int x, int y, int worldSize)
+    {
+        float cx = worldSize * 0.5f;
+        float cy = worldSize * 0.5f;
+
+        float dx = Mathf.Abs(x - cx) / cx;
+        float dy = Mathf.Abs(y - cy) / cy;
+
+        float d = Mathf.Max(dx, dy);
+
+        return Mathf.Clamp01(1f - d * d);
     }
     float IslandMask(int x, int y, float worldSize)
     {

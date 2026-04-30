@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Wall : BaseObject
+public class Wall : WorldObject
 {
     protected override bool isPassable => false;
     protected override void Start()

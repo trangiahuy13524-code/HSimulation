@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 public class WorldDebug : MonoBehaviour
 {
     [SerializeField] World world;
-    [SerializeField] List<PawnPreset> pawnPreset = new();
+    [SerializeField] List<GeneticData> pawnGeneticsData = new();
     [SerializeField] AutoTillingTile wallTile;
     [SerializeField] Vector2Int spawnPos = Vector2Int.zero;
     [SerializeField] byte spawnCount = 1;
@@ -16,12 +16,12 @@ public class WorldDebug : MonoBehaviour
         for (int i = 0; i < spawnCount; i++)
         {
             if (world == null) return;
-            int count = pawnPreset.Count;
+            int count = pawnGeneticsData.Count;
             if (count == 0) return;
             int size = world.WorldSize;
             Vector2Int spawnPosition = new Vector2Int((size + 1)/2 - spawnCount + i*2, (size - 1) / 2);
             int index = Random.Range(0, count);
-            world.GeneratePawn(spawnPosition, pawnPreset[index]);
+            world.GeneratePawn(spawnPosition, pawnGeneticsData[index]);
         }
 
         if (wallTile)
@@ -40,22 +40,9 @@ public class WorldDebug : MonoBehaviour
                 world.GenerateWall(new Vector2Int(min, y), wallTile);
                 world.GenerateWall(new Vector2Int(max, y), wallTile);
             }
-            world.RemoveObject(new Vector2Int(mid, min));
+            //world.RemoveObject(new Vector2Int(mid, min));
         }
 
-    }
-
-    
-    void Update()
-    {
-        if (Keyboard.current.eKey.wasPressedThisFrame)
-        {
-            world.GenerateWall(spawnPos, wallTile);
-        }
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            world.RemoveObject(spawnPos);
-        }
     }
 
     

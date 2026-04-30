@@ -1,18 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class MapMesh
 {
     public Map map;
     public Dictionary<TerrainType, MeshData> meshes;
-
     public MapMesh(Map map)
     {
         this.map = map;
         this.meshes = new Dictionary<TerrainType, MeshData>();
         this.GenerateMesh();
     }
-
     public void GenerateMesh()
     {
         List<TerrainType> neighboursTerrainList = new List<TerrainType>();
@@ -59,7 +58,7 @@ public class MapMesh
                     if (
                         neighbour.terrainType != tile.terrainType && // We add only if its different than current tile.
                         !neighboursTerrainList.Contains(neighbour.terrainType) && // And if it's not in the list.
-                        neighbour.terrainType.layer >= tile.terrainType.layer // And we only blend when we're on top.
+                        neighbour.terrainType.layer <= tile.terrainType.layer // And we only blend when we're on top.
                     )
                     {
                         neighboursTerrainList.Add(neighbour.terrainType);
@@ -142,13 +141,11 @@ public class MapMesh
                 meshData.AddTriangle(verticeIndex, 8, 4, 5);
             }
         }
-
         foreach (MeshData meshData in this.meshes.Values)
         {
             meshData.Build();
         }
     }
-
     public MeshData GetMesh(TerrainType terrainType)
     {
         if (this.meshes.ContainsKey(terrainType))
@@ -166,7 +163,6 @@ public class MeshData
     public List<int> triangles;
     public List<Color> colors;
     public Mesh mesh;
-
     // You can use multiple constructor, for example one to specify the size of each list (or just use arrays)
     // Because we already know our vertice size (4 vertices per tile, so 4*width*height) 
     // and the same goes for triangles/indices (6*width*height).
@@ -177,20 +173,17 @@ public class MeshData
         this.colors = new List<Color>();
         this.mesh = new Mesh();
     }
-
     public void AddTriangle(int vi, int a, int b, int c)
     {
         this.triangles.Add(vi + a);
         this.triangles.Add(vi + b);
         this.triangles.Add(vi + c);
     }
-
     public void NewMesh()
     {
         UnityEngine.Object.Destroy(this.mesh);
         this.mesh = new Mesh();
     }
-
     public void Clear()
     {
         this.vertices.Clear();
@@ -198,14 +191,16 @@ public class MeshData
         this.colors.Clear();
         this.NewMesh();
     }
-
     public void Build()
     {
-        this.mesh.SetVertices(this.vertices);
-        this.mesh.SetTriangles(this.triangles, 0);
-        if (this.colors.Count > 0)
-        {
-            this.mesh.SetColors(this.colors);
-        }
+        mesh.indexFormat = IndexFormat.UInt32; // IMPORTANT
+
+        mesh.SetVertices(vertices);
+        mesh.SetTriangles(triangles, 0);
+
+        if (colors.Count > 0)
+            mesh.SetColors(colors);
+
+        mesh.RecalculateNormals();
     }
 }

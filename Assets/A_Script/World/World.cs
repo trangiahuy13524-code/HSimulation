@@ -8,7 +8,6 @@ public class World : MonoBehaviour
 
     [SerializeField] byte gameFPS = 48;
     [SerializeField] Tilemap terrainTilemap;
-    [SerializeField] List<Tile> terrainTiles = new();
     [SerializeField] Tilemap wallTileMap;
     [SerializeField] Transform wallDummies;
     [SerializeField] GameObject wallDummyPrefab;
@@ -17,10 +16,10 @@ public class World : MonoBehaviour
     [SerializeField] short worldSize = 50;
     
 
-    BaseObject[,] objects;
+    WorldObject[,] objects;
+
     byte[,] pawnCountOnGrid;
 
-    //  
     public short WorldSize => worldSize;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,7 +28,7 @@ public class World : MonoBehaviour
         Instance = this;
         Application.targetFrameRate = gameFPS;
 
-        objects = new BaseObject[worldSize, worldSize];
+        objects = new WorldObject[worldSize, worldSize];
         pawnCountOnGrid = new byte[worldSize, worldSize];
         for (int x = 0; x < worldSize; x++)
         {
@@ -39,53 +38,46 @@ public class World : MonoBehaviour
             }
         }
         if (cam) cam.position = new Vector3((worldSize - 1) / 2f, (worldSize - 2) / 2f, cam.position.z);
-
-        //for (int x = 0; x < worldSize; x++)
-        //{
-        //    for (int y = 0; y < worldSize; y++)
-        //    {
-        //        int count = terrainTiles.Count;
-        //        Tile tile = terrainTiles[Random.Range(0, count)];
-        //        terrainTilemap.SetTile(new Vector3Int(x, y, 0), tile);
-        //    }
-        //}
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
 
     
 
-    public bool IsPositionValid(Vector2Int position)
+    public bool IsPositionPathValid(Vector2Int position)
     {
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return false;
-        BaseObject @object = objects[x, y];
-        if (@object == null) return true;
-        if (!@object.IsPassable) return false;
+        if (pawnCountOnGrid[x, y] > 1) return false;
+        WorldObject @object = objects[x, y];
+        if (@object != null)
+        {
+            if (!@object.IsPassable) return false;
+        }
         return true;
     }
 
-    public bool IsPositionOccupied(Vector2Int position)
+    public bool IsNotPassable(Vector2Int position)
+    {
+        int x = position.x;
+        int y = position.y;
+        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return true;
+        WorldObject @object = objects[x, y];
+        if (@object != null)
+        {
+            if (!@object.IsPassable) return true;
+        }
+        return false;
+    }
+
+    public bool RegisterObject(WorldObject obj, Vector2Int position)
     {
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return false;
-        BaseObject @object = objects[x, y];
-        return @object != null;
-    }
-
-    public void RegisterObject(BaseObject obj, Vector2Int position)
-    {
-        int x = position.x;
-        int y = position.y;
-        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
+        if (objects[x, y] != null) return false;
         objects[x, y] = obj;
+        return true;
     }
     public void UnregisterObject(Vector2Int position)
     {
@@ -94,7 +86,7 @@ public class World : MonoBehaviour
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
         objects[x, y] = null;
     }
-    public void UnregisterObject(Vector2Int position, BaseObject obj)
+    public void UnregisterObject(Vector2Int position, WorldObject obj)
     {
         int x = position.x;
         int y = position.y;
@@ -105,7 +97,7 @@ public class World : MonoBehaviour
         }
     }
 
-    public void ChangeObjectLocation(BaseObject obj, Vector2Int oldPosition, Vector2Int newPosition)
+    public void ChangeObjectLocation(WorldObject obj, Vector2Int oldPosition, Vector2Int newPosition)
     {
         if (obj == null) return;
         if (oldPosition == newPosition) return;
@@ -120,7 +112,7 @@ public class World : MonoBehaviour
         objects[oldX, oldY] = null;
     }
 
-    public BaseObject GetObjectAtPosition(Vector2Int position)
+    public WorldObject GetObjectAtPosition(Vector2Int position)
     {
         int x = position.x;
         int y = position.y;
@@ -163,7 +155,7 @@ public class World : MonoBehaviour
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
         if (pawnCountOnGrid[x, y] > 0) return;
-        BaseObject existingObject = objects[x, y];
+        WorldObject existingObject = objects[x, y];
         if (objects[x, y] != null) return; 
         wallTileMap.SetTile(new Vector3Int(x, y, 0), wallTile);
         RefreshNeighborWall(x, y);
@@ -171,7 +163,6 @@ public class World : MonoBehaviour
         dummyTf.parent = wallDummies;
         Wall dummy = dummyTf.GetComponent<Wall>();
         dummy.CurrentGridPosition = position;
-        objects[x, y] = dummy;
     }
 
     public void RemoveObject(Vector2Int position)
@@ -179,10 +170,9 @@ public class World : MonoBehaviour
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
-        BaseObject ob = objects[x, y];
+        WorldObject ob = objects[x, y];
         if (ob == null) return;
         Destroy(ob.gameObject);
-        objects[x, y] = null;
     }
 
     private void RefreshNeighborWall(int x, int y)
@@ -197,75 +187,23 @@ public class World : MonoBehaviour
         }
     }
 
-    public void GeneratePawn(Vector2Int position, DirectionSpriteData bodySprite, DirectionSpriteData headSprite = null, DirectionSpriteData hairSprite = null)
+    public Pawn GeneratePawn(Vector2Int position, GeneticData geneticData)
     {
+        if (pawnPrefab == null || geneticData == null) return null;
         int x = position.x;
         int y = position.y;
-        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
-        BaseObject existingObject = objects[x, y];
-        if (existingObject != null) return;
-        if (pawnPrefab == null) return;
-        GameObject spawned = Instantiate(pawnPrefab);
-        Pawn pawn = spawned.GetComponent<Pawn>();
-        if (pawn == null || bodySprite == null || headSprite == null) return;
-        BodyData bmanager = pawn.BodyData;
-        if (bmanager) bmanager.SetDirectionSpriteData(bodySprite);
-        HeadData hmanager = pawn.HeadData;
-        if (hmanager) hmanager.SetDirectionSpriteData(headSprite);
-        HairData hairmanager = pawn.HairData;
-        if (hairmanager) hairmanager.SetDirectionSpriteData(hairSprite);
-        spawned.transform.position = new Vector3Int(x, y, 0);
-        objects[x, y] = pawn;
-    }
-
-    public void GeneratePawn(Vector2Int position, PawnPreset preset)
-    {
-        int x = position.x;
-        int y = position.y;
-        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
-        BaseObject existingObject = objects[x, y];
-        if (existingObject != null) return;
-        if (pawnPrefab == null) return;
+        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return null;
+        if (pawnCountOnGrid[x, y] > 1) return null;
+        WorldObject existingObject = objects[x, y];
+        if (existingObject != null)
+        {
+            if (!existingObject.IsPassable) return null;
+        }
         Pawn pawn = Instantiate(pawnPrefab).GetComponent<Pawn>();
-        if (pawn == null || preset == null) return;
-        BodyData bmanager = pawn.BodyData;
-        if (bmanager) bmanager.SetDirectionSpriteData(preset.body);
-        HeadData hmanager = pawn.HeadData;
-        if (hmanager) hmanager.SetDirectionSpriteData(preset.head);
-        HairData hairmanager = pawn.HairData;
-        if (hairmanager) hairmanager.SetDirectionSpriteData(preset.hair);
+        if (pawn == null) return null;
+        pawn.InitializePawn(geneticData);
         pawn.CurrentGridPosition = position;
         pawn.transform.position = new Vector3Int(x, y, 0);
-        objects[x, y] = pawn;
+        return pawn;
     }
-
-    //public void GeneratePawn(Vector2Int position, GeneticData geneticData)
-    //{
-    //    int x = position.x;
-    //    int y = position.y;
-    //    if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return;
-    //    BaseObject existingObject = objects[x, y];
-    //    if (existingObject != null) return;
-    //    if (pawnPrefab == null) return;
-    //    Pawn pawn = Instantiate(pawnPrefab).GetComponent<Pawn>();
-    //    if (pawn == null || geneticData == null) return;
-    //    //BodyData bmanager = pawn.BodyData;
-    //    //if (bmanager) bmanager.SetDirectionSpriteData(geneticData.bodyData);
-    //    //HeadData hmanager = pawn.HeadData;
-    //    //if (hmanager) hmanager.SetDirectionSpriteData(geneticData.headData);
-    //    //HairData hairmanager = pawn.HairData;
-    //    //if (hairmanager) hairmanager.SetDirectionSpriteData(geneticData.hairData);
-    //    pawn.CurrentGridPosition = position;
-    //    pawn.transform.position = new Vector3Int(x, y, 0);
-    //    objects[x, y] = pawn;
-    //}
-
-    public static void GenerateAttire(Pawn pawn)
-    {
-
-    }
-
-
-    
-    
 }
