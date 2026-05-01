@@ -14,8 +14,8 @@ public class World : MonoBehaviour
     [SerializeField] GameObject pawnPrefab;
     [SerializeField] Transform cam;
     [SerializeField] short worldSize = 50;
-    
 
+    [SerializeField] byte maxPawnCount = 2;
     WorldObject[,] objects;
 
     byte[,] pawnCountOnGrid;
@@ -29,6 +29,7 @@ public class World : MonoBehaviour
         Application.targetFrameRate = gameFPS;
 
         objects = new WorldObject[worldSize, worldSize];
+        if (maxPawnCount == 0) maxPawnCount = 1;
         pawnCountOnGrid = new byte[worldSize, worldSize];
         for (int x = 0; x < worldSize; x++)
         {
@@ -42,13 +43,20 @@ public class World : MonoBehaviour
 
 
     
-
+    public bool GridMaxPawn(Vector2Int position)
+    {
+        int x = position.x;
+        int y = position.y;
+        if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return false;
+        if (pawnCountOnGrid[x, y] >= maxPawnCount) return true;
+        return false;
+    }
     public bool IsPositionPathValid(Vector2Int position)
     {
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return false;
-        if (pawnCountOnGrid[x, y] > 0) return false;
+        if (pawnCountOnGrid[x, y] >= maxPawnCount) return false;
         WorldObject @object = objects[x, y];
         if (@object != null)
         {
@@ -192,7 +200,7 @@ public class World : MonoBehaviour
         int x = position.x;
         int y = position.y;
         if (x < 0 || x >= worldSize || y < 0 || y >= worldSize) return null;
-        if (pawnCountOnGrid[x, y] > 1) return null;
+        if (pawnCountOnGrid[x, y] >= maxPawnCount) return null;
         WorldObject existingObject = objects[x, y];
         if (existingObject != null)
         {

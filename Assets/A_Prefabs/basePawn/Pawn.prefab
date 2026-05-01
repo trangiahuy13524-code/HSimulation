@@ -26,13 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 466555669644665755}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7023130453621345657}
-  - {fileID: 5739998390535231999}
   m_Father: {fileID: 3075056145432365867}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7392281695847784443
@@ -144,6 +143,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5739998390535231999}
   - {fileID: 4449204958241903541}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -159,6 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843eebceb76e0d54a96cb6abe99202dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PawnManager
+  displayName: 
   iconSprite: {fileID: 0}
   currentGridPos: {x: 0, y: 0}
   world: {fileID: 0}
@@ -166,7 +167,6 @@ MonoBehaviour:
   bodyData: {fileID: 7392281695847784443}
   headData: {fileID: 419506864584641546}
   hairData: {fileID: 6117740824741160028}
-  facial: {fileID: 0}
   oldDirection: 1
   rb: {fileID: -6656611525869205240}
   lastQueuePosCache: {x: 0, y: 0}
@@ -174,6 +174,7 @@ MonoBehaviour:
   currentIdleTime: 0
   oldDestination: {x: 0, y: 0}
   oldGridPos: {x: 0, y: 0}
+  maxSearch: 8
   onDuty: 0
   initialized: 0
   genome:
@@ -185,9 +186,9 @@ MonoBehaviour:
     magicAttack: 0
     speed: 0
     sex: 0
-    currentBodyIndex: 0
-    currentHeadIndex: 0
-    currentHairIndex: 0
+    currentBody: {fileID: 0}
+    currentHead: {fileID: 0}
+    currentHair: {fileID: 0}
     generation: 0
 --- !u!50 &-6656611525869205240
 Rigidbody2D:
@@ -288,11 +289,11 @@ Transform:
   m_GameObject: {fileID: 4880795307573488387}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 4, y: 5, z: 1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4449204958241903541}
+  m_Father: {fileID: 3075056145432365867}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2424436195387275205
 SpriteRenderer:

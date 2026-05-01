@@ -3,6 +3,10 @@ using UnityEngine;
 
 public static class AStarPathfinder
 {
+    // =====================================================
+    // NODE
+    // =====================================================
+
     class Node
     {
         public int x;
@@ -13,12 +17,13 @@ public static class AStarPathfinder
 
         public Node parent;
 
-        // search markers (NO RESET NEEDED)
         public int searchId;
         public int closedId;
 
         public int fCost => gCost + hCost;
     }
+
+    // =====================================================
 
     static readonly Vector2Int[] directions =
     {
@@ -41,15 +46,16 @@ public static class AStarPathfinder
     // =====================================================
     // MAIN ENTRY
     // =====================================================
-    public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int target)
+
+    public static List<Vector2Int> FindPath(
+        Vector2Int start,
+        Vector2Int target,
+        int maxRange)
     {
         World world = World.Instance;
         int size = world.WorldSize;
 
-        if (!IsInside(start, size) || !IsInside(target, size))
-            return null;
-
-        if (world.IsNotPassable(target))
+        if (!IsInside(start, size))
             return null;
 
         EnsureBuffers(size);
@@ -61,30 +67,44 @@ public static class AStarPathfinder
         InitNode(startNode);
 
         startNode.gCost = 0;
-        startNode.hCost = GetDistance(start.x, start.y, target.x, target.y);
+        startNode.hCost =
+            GetDistance(start.x, start.y, target.x, target.y);
 
         openQueue.Enqueue(startNode, startNode.fCost);
 
+        Node bestNode = startNode; // ⭐ fallback result
+
         int iterations = 0;
-        const int MAX_ITERATIONS = 6000;
+        const int MAX_ITERATIONS = 5000;
 
         while (openQueue.Count > 0)
         {
             if (++iterations > MAX_ITERATIONS)
+                break;
+
+            Node current;
+
+            do
             {
-                Debug.LogWarning("A* aborted");
-                return null;
-            }
+                if (openQueue.Count == 0)
+                    return BuildPath(bestNode);
 
-            Node current = openQueue.Dequeue();
+                current = openQueue.Dequeue();
 
-            if (current.closedId == currentSearchId)
-                continue;
+            } while (current.closedId == currentSearchId);
 
             current.closedId = currentSearchId;
 
-            if (current.x == target.x && current.y == target.y)
-                return RetracePath(current);
+            // ⭐ Track best reachable node
+            if (current.hCost < bestNode.hCost)
+                bestNode = current;
+
+            // reached target
+            if (current.x == target.x &&
+                current.y == target.y)
+            {
+                return BuildPath(current);
+            }
 
             foreach (var dir in directions)
             {
@@ -94,14 +114,26 @@ public static class AStarPathfinder
                 if (!IsInside(nx, ny, size))
                     continue;
 
-                if (!world.IsPositionPathValid(new Vector2Int(nx, ny)))
+                // ⭐ Manhattan search limit
+                int manhattan =
+                    Mathf.Abs(nx - start.x) +
+                    Mathf.Abs(ny - start.y);
+
+                if (manhattan > maxRange)
                     continue;
 
-                // prevent diagonal cutting
+                Vector2Int neighborPos = new(nx, ny);
+
+                if (!world.IsPositionPathValid(neighborPos))
+                    continue;
+
+                // prevent diagonal corner cutting
                 if (dir.x != 0 && dir.y != 0)
                 {
-                    if (world.IsNotPassable(new Vector2Int(current.x + dir.x, current.y)) ||
-                        world.IsNotPassable(new Vector2Int(current.x, current.y + dir.y)))
+                    if (world.IsNotPassable(
+                        new Vector2Int(current.x + dir.x, current.y)) ||
+                        world.IsNotPassable(
+                        new Vector2Int(current.x, current.y + dir.y)))
                         continue;
                 }
 
@@ -118,7 +150,9 @@ public static class AStarPathfinder
                 if (newCost < neighbor.gCost)
                 {
                     neighbor.gCost = newCost;
-                    neighbor.hCost = GetDistance(nx, ny, target.x, target.y);
+                    neighbor.hCost =
+                        GetDistance(nx, ny, target.x, target.y);
+
                     neighbor.parent = current;
 
                     openQueue.Enqueue(neighbor, neighbor.fCost);
@@ -126,11 +160,12 @@ public static class AStarPathfinder
             }
         }
 
-        return null;
+        // ⭐ RETURN BEST POSSIBLE PATH
+        return BuildPath(bestNode);
     }
 
     // =====================================================
-    // NODE MANAGEMENT
+    // BUFFERS
     // =====================================================
 
     static void EnsureBuffers(int size)
@@ -163,6 +198,7 @@ public static class AStarPathfinder
             return;
 
         n.searchId = currentSearchId;
+        n.closedId = -1;
         n.gCost = int.MaxValue;
         n.parent = null;
     }
@@ -171,8 +207,11 @@ public static class AStarPathfinder
     // PATH BUILD
     // =====================================================
 
-    static List<Vector2Int> RetracePath(Node endNode)
+    static List<Vector2Int> BuildPath(Node endNode)
     {
+        if (endNode == null)
+            return null;
+
         List<Vector2Int> path = new();
 
         Node current = endNode;

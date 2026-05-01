@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class HeadData : BaseSpriteData
 {
-
-    protected override void ApplyDirection(Direction dir)
+    protected override void Start()
     {
-        base.ApplyDirection(dir);
+        base.Start();
+        layerOffset += 1;
+    }
+
+    protected override bool ApplyDirection(Direction dir)
+    {
+        if (!base.ApplyDirection(dir)) return false;
         float h = spriteDirectionData.horizontalOffset;
         switch (dir)
         {
@@ -19,6 +24,6 @@ public class HeadData : BaseSpriteData
                 transform.localPosition = offset;
                 break;
         }
-        
+        return true;
     }
 }

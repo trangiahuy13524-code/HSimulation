@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea6f0e5e3636a94386f143f8a9c04e3, type: 3}
+  m_Name: OcularSlinger
+  m_EditorClassIdentifier: Assembly-CSharp::DirectionSpriteScriptable
+  offset: {x: 0, y: -0.3}
+  childOffset: {x: 0, y: 0}
+  horizontalOffset: 0
+  scale: {x: 0.7, y: 0.7}
+  bodySex: 2
+  hybridable: 0
+  bodyPartShape: {fileID: 0}
+  northSprite: {fileID: 21300000, guid: 960e1784739496449843aed5fcaac608, type: 3}
+  southSprite: {fileID: 21300000, guid: ccee1c2868d5b7a4fbedbc1b500dff13, type: 3}
+  eastSprite: {fileID: 21300000, guid: 2513fbb879b2d0c47b37df8c93efce70, type: 3}

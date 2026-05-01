@@ -7,6 +7,7 @@ public class Terrain : MonoBehaviour
     public float[,] noiseMap;
     public bool IsIsland = false;
     [SerializeField] float noiseFrequency = 1f;
+    [SerializeField] byte octaves = 4;
     [SerializeField] Vector2 noiseOffset;
 
     private void Start()
@@ -53,7 +54,7 @@ public class Terrain : MonoBehaviour
         float maxValue = 0;
         float frequency = noiseFrequency;
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < octaves; i++)
         {
             value += Mathf.PerlinNoise(x * frequency, y * frequency) * amplitude;
             maxValue += amplitude;

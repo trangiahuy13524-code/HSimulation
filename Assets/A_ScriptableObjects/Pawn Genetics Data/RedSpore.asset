@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c6d6ecc303401d4e9cde1bf7e620004, type: 3}
+  m_Name: RedSpore
+  m_EditorClassIdentifier: Assembly-CSharp::GeneticData
+  raceName: Red Spore
+  raceDescription: 
+  raceIcon: {fileID: 21300000, guid: 5fb44908003c7ef45adfde523e6e2c02, type: 3}
+  baseHealth: 2
+  baseMana: 20
+  baseDefense: 1
+  baseAttack: 1
+  baseMagicAttack: 15
+  baseSpeed: 1
+  reproductionType: 2
+  femaleBirthChance: 0.5
+  birthType: 0
+  bodyData:
+  - {fileID: 11400000, guid: c49519982fe138d49964dd1f50670188, type: 2}
+  headData: []
+  hairData: []

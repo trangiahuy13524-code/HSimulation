@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu]
-public class BodyPartShapeScriptable : ScriptableObject
+public class BodyPartShape : ScriptableObject
 {
     public string bodyName;
 }

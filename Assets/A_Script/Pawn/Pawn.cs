@@ -9,13 +9,12 @@ public partial class Pawn : WorldObject
     [SerializeField] BodyData bodyData;
     [SerializeField] HeadData headData;
     [SerializeField] HairData hairData;
-    [SerializeField] FacialAnimator facial;
+    //[SerializeField] FacialAnimator facial;
     [SerializeField] Direction oldDirection = Direction.South;
     public BodyData BodyData => bodyData;
     public HeadData HeadData => headData;
     public HairData HairData => hairData;
-    public FacialAnimator Facial => facial;
-
+    //public FacialAnimator Facial => facial;
 
     [SerializeField] Rigidbody2D rb;
     [SerializeField] Vector2Int lastQueuePosCache;
@@ -24,6 +23,7 @@ public partial class Pawn : WorldObject
     Queue<Vector2Int> paths;
     [SerializeField] Vector2Int oldDestination;
     [SerializeField] Vector2Int oldGridPos;
+    [SerializeField] int maxSearch = 10;
 
     public bool onDuty = false;
     public void ChangeDirection(Direction dir)
@@ -33,9 +33,14 @@ public partial class Pawn : WorldObject
         if (bodyData) bodyData.SetDirection(dir);
         if (headData) headData.SetDirection(dir);
         if (hairData) hairData.SetDirection(dir);
-        if (facial) facial.SetDirection(dir);
+        //if (facial) facial.SetDirection(dir);
     }
-
+    void UpdateLayer()
+    {
+        if (bodyData) bodyData.UpdateLayer();
+        if (headData) headData.UpdateLayer();
+        if (hairData) hairData.UpdateLayer();
+    }
 
 
     private void OnDestroy()
@@ -47,7 +52,9 @@ public partial class Pawn : WorldObject
         transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
         paths = new Queue<Vector2Int>();
         oldGridPos = currentGridPos;
+        oldDestination = currentGridPos;
         world.ModifyPawnCountGrid(currentGridPos, true);
+        UpdateLayer();
     }
     private void Update()
     {
@@ -61,17 +68,28 @@ public partial class Pawn : WorldObject
             else
             {
                 currentIdleTime = 0f;
-                GetRandomPosition();
+                CalculatePath(GetRandomPosition());
             }
         }
         
     }
 
+    bool isRecalculating = false;
     public bool Move()
     {
         if (paths.Count > 0)
         {
             Vector2Int nextPos = paths.Peek();
+            if (isRecalculating)
+            {
+                if (paths.Count == 1 && nextPos == currentGridPos)
+                {
+                    PathReset();
+                    isRecalculating = false;
+                    oldDestination = currentGridPos;
+                    return false;
+                }
+            }
             if (nextPos != currentGridPos && !world.IsPositionPathValid(nextPos))
             {
                 ReCalculatePath();
@@ -82,7 +100,7 @@ public partial class Pawn : WorldObject
             int y = delta.y;
             if (x != 0 && y != 0)
             {
-                if (!world.IsPositionPathValid(nextPos - new Vector2Int(x, 0)) || !world.IsPositionPathValid(nextPos - new Vector2Int(0, y)))
+                if (world.IsNotPassable(nextPos - new Vector2Int(x, 0)) || world.IsNotPassable(nextPos - new Vector2Int(0, y)))
                 {
                     ReCalculatePath();
                     return false;
@@ -119,6 +137,8 @@ public partial class Pawn : WorldObject
                 oldGridPos = currentGridPos;
                 if (paths.Count == 0)
                 {
+                    UpdateLayer();
+                    isRecalculating = false;
                     return true;
                 }
             }
@@ -138,8 +158,14 @@ public partial class Pawn : WorldObject
 
             return false;
         }
-
-        
+        else
+        {
+            if (currentGridPos != oldDestination)
+            {
+                ReCalculatePath();
+                return false;
+            }
+        }
 
         return true;
     }
@@ -165,36 +191,40 @@ public partial class Pawn : WorldObject
         lastQueuePosCache = path;
     }
 
-    public void GetRandomPosition()
+    public Vector2Int GetRandomPosition()
     {
-        int size = World.Instance.WorldSize - 1;
+        int size = (world.WorldSize - 1)/2;
 
-        int x = Random.Range(size/4, size*3/4);
-        int y = Random.Range(size/4, size*3/4);
+        int x = Random.Range(size - 10, size + 11);
+        int y = Random.Range(size - 10, size + 11);
 
-        Vector2Int targetPos = new Vector2Int(x, y);
+        return new Vector2Int(x, y);
+    }
 
-        var path = AStarPathfinder.FindPath(currentGridPos, targetPos);
+    public void CalculatePath(Vector2Int target)
+    {
+        var path = AStarPathfinder.FindPath(currentGridPos, target, maxSearch);
 
         if (path != null)
         {
-            oldDestination = targetPos;
+            oldDestination = target;
             AddPathtoQueue(path);
+        }
+        else
+        {
+            Debug.Log("NoPath! nullxx");
         }
     }
 
     public void ReCalculatePath()
     {
-        if (paths.Count == 0) return;
+        
         Vector2Int targetPos = oldDestination;
-        if (!world.IsPositionPathValid(targetPos))
-        {
-            PathReset();
-            return;
-        }
-        var path = AStarPathfinder.FindPath(currentGridPos, targetPos);
+        var path = AStarPathfinder.FindPath(currentGridPos, targetPos, maxSearch);
         if (path != null)
         {
+            //Debug.LogWarning("Recalculate!" + path.Count);
+            isRecalculating = true;
             paths.Clear();
             AddPathtoQueue(path);
         }

@@ -6,6 +6,7 @@ public class GeneticData : ScriptableObject
 {
     public string raceName;
     public string raceDescription;
+    public Sprite raceIcon;
 
     [Header("Base Stats")]
     public int baseHealth;
@@ -14,7 +15,6 @@ public class GeneticData : ScriptableObject
     public int baseAttack;
     public int baseMagicAttack;
     public float baseSpeed;
-    public int offsetRange;
 
     [Header("Reproduction")]
     public ReproductionType reproductionType;
@@ -23,7 +23,7 @@ public class GeneticData : ScriptableObject
     public BirthType birthType;
 
     [Header("Body")]
-    public List<DirectionSpriteScriptable> bodyData;
-    public List<DirectionSpriteScriptable> headData;
-    public List<DirectionSpriteScriptable> hairData;
+    public List<BodySpritePart> bodyData;
+    public List<BodySpritePart> headData;
+    public List<BodySpritePart> hairData;
 }

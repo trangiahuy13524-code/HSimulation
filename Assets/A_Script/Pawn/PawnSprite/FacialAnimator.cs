@@ -34,8 +34,8 @@ public class FacialSpritePack
 {
     public DynamicSpriteScriptable head;
     public DynamicSpriteScriptable brows;
-    public DirectionSpriteScriptable eyes;
-    public DirectionSpriteScriptable eyesHightlight;
+    public BodySpritePart eyes;
+    public BodySpritePart eyesHightlight;
     public DynamicSpriteScriptable mouth;
     public DynamicSpriteScriptable lids;
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public partial class Pawn : WorldObject
 {
-    static readonly List<DirectionSpriteScriptable> spriteBuffer = new();
+    static readonly List<BodySpritePart> spriteBuffer = new();
     [SerializeField] bool initialized = false;
     [SerializeField] GenomeRT genome;
     public GenomeRT Genome => genome;
@@ -22,32 +22,73 @@ public partial class Pawn : WorldObject
         //-----------------------------------
         GenerateBody(geneticData);
 
+        iconSprite = geneticData.raceIcon;
+
         initialized = true;
     }
 
-    
+    public void InitializePawn(GenomeRT parent)
+    {
+        if (initialized) return;
+
+        //-----------------------------------
+        // 1. Create Runtime Genome
+        //-----------------------------------
+        genome = new GenomeRT(parent);
+
+        //-----------------------------------
+        // 2. Generate Appearance
+        //-----------------------------------
+        GenerateBody(parent);
+
+        iconSprite = parent.source.raceIcon;
+
+        initialized = true;
+    }
 
     void GenerateBody(GeneticData data)
     {
         bool restrictBody = data.reproductionType == ReproductionType.Sexual;
 
         // Body => restricted only for sexual species
-        DirectionSpriteScriptable body =
-            PickValidSprite(data.bodyData, restrictBody);
+        BodySpritePart body = PickValidSprite(data.bodyData, restrictBody);
 
         // Head => same rule as body
-        DirectionSpriteScriptable head =
-            PickValidSprite(data.headData, restrictBody);
+        BodySpritePart head = PickValidSprite(data.headData, restrictBody);
 
         // Hair => same restricted
-        DirectionSpriteScriptable hair =
-            PickValidSprite(data.hairData, restrictBody);
+        BodySpritePart hair = PickValidSprite(data.hairData, restrictBody);
 
+        genome.currentBody = body;
+        genome.currentHead = head;
+        genome.currentHair = hair;
         SetBodySprite(body, head, hair);
     }
 
-    DirectionSpriteScriptable PickValidSprite(
-    List<DirectionSpriteScriptable> list,
+    void GenerateBody(GenomeRT parent)
+    {
+        bool restrictBody = parent.source.reproductionType == ReproductionType.Sexual;
+
+        // Body => restricted only for sexual species
+        BodySpritePart body = Random.Range(0, 10) > 6 ?
+            parent.currentBody : PickValidSprite(parent.source.bodyData, restrictBody);
+
+        // Head => same rule as body
+        BodySpritePart head = Random.Range(0, 10) > 6 ?
+            parent.currentHead : PickValidSprite(parent.source.headData, restrictBody);
+
+        // Hair => same restricted
+        BodySpritePart hair = Random.Range(0, 10) > 6 ?
+            parent.currentHair : PickValidSprite(parent.source.hairData, restrictBody);
+
+        genome.currentBody = body;
+        genome.currentHead = head;
+        genome.currentHair = hair;
+        SetBodySprite(body, head, hair);
+    }
+
+    BodySpritePart PickValidSprite(
+    List<BodySpritePart> list,
     bool restrictBySex)
     {
         if (list == null || list.Count == 0)
@@ -86,7 +127,7 @@ public partial class Pawn : WorldObject
         return spriteBuffer[Random.Range(0, spriteBuffer.Count)];
     }
 
-    void SetBodySprite(DirectionSpriteScriptable bodySprite, DirectionSpriteScriptable headSprite = null, DirectionSpriteScriptable hairSprite = null)
+    void SetBodySprite(BodySpritePart bodySprite, BodySpritePart headSprite = null, BodySpritePart hairSprite = null)
     {
         bodyData.SetDirectionSpriteData(bodySprite);
         headData.SetDirectionSpriteData(headSprite);

@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class BaseSpriteData : BaseOffset
 {
-    [SerializeField] protected DirectionSpriteScriptable spriteDirectionData;
+    [SerializeField] protected BodySpritePart spriteDirectionData;
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected Pawn pM;
     [SerializeField] protected List<BaseOffset> children = new List<BaseOffset>();
+    protected int layerOffset = 0;
 
-    public DirectionSpriteScriptable SpriteData => spriteDirectionData;
+    public BodySpritePart SpriteData => spriteDirectionData;
     public SpriteRenderer SpriteRenderer => spriteRenderer;
     
 
@@ -18,7 +19,7 @@ public class BaseSpriteData : BaseOffset
 
     protected override void Start()
     {
-        
+        layerOffset = (World.Instance.WorldSize - 1)*5 + 10;
         if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
         {
@@ -45,10 +46,10 @@ public class BaseSpriteData : BaseOffset
     
 
 
-    protected virtual void ApplyDirection(Direction dir)
+    protected virtual bool ApplyDirection(Direction dir)
     {
         if (spriteDirectionData == null)
-            return;
+            return false;
         switch (dir)
         {
             case Direction.North:
@@ -71,9 +72,10 @@ public class BaseSpriteData : BaseOffset
                 spriteRenderer.flipX = true;
                 break;
         }
+        return true;
     }
 
-    public virtual void SetDirectionSpriteData(DirectionSpriteScriptable spriteData)
+    public virtual void SetDirectionSpriteData(BodySpritePart spriteData)
     {
         spriteDirectionData = spriteData;
         if (initialized)
@@ -92,5 +94,10 @@ public class BaseSpriteData : BaseOffset
     protected virtual void UpdateFacing()
     {
         ApplyDirection(currentDirection);
+    }
+
+    public virtual void UpdateLayer()
+    {
+        spriteRenderer.sortingOrder = layerOffset - pM.CurrentGridPosition.y * 5;
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class WorldObject : MonoBehaviour
 {
+    public string displayName;
     [SerializeField] protected Sprite iconSprite;
     [SerializeField] protected Vector2Int currentGridPos;
     [SerializeField] protected World world;

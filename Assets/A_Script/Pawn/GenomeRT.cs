@@ -14,21 +14,14 @@ public class GenomeRT
     public float speed;
     public Sex sex;
 
-    public short currentBodyIndex;
-    public short currentHeadIndex;
-    public short currentHairIndex;
+    public BodySpritePart currentBody;
+    public BodySpritePart currentHead;
+    public BodySpritePart currentHair;
     public int generation;
 
     public GenomeRT(GeneticData geneticData)
     {
         source = geneticData;
-
-        health = geneticData.baseHealth;
-        mana = geneticData.baseMana;
-        defense = geneticData.baseDefense;
-        attack = geneticData.baseAttack;
-        magicAttack = geneticData.baseMagicAttack;
-        speed = geneticData.baseSpeed;
         //generation = 0;
 
         //-----------------------------------
@@ -59,18 +52,18 @@ public class GenomeRT
         //-----------------------------------
         // 3. Apply Genetic Variance
         //-----------------------------------
-        health = RandomizeStatInt(health);
-        mana = RandomizeStatInt(mana);
-        defense = RandomizeStatInt(defense);
-        attack = RandomizeStatInt(attack);
-        magicAttack = RandomizeStatInt(magicAttack);
-        speed = RandomizeStatFloat(speed);
+        health = RandomizeStatInt(geneticData.baseHealth);
+        mana = RandomizeStatInt(geneticData.baseMana);
+        defense = RandomizeStatInt(geneticData.baseDefense);
+        attack = RandomizeStatInt(geneticData.baseAttack);
+        magicAttack = RandomizeStatInt(geneticData.baseMagicAttack);
+        speed = RandomizeStatFloat(geneticData.baseSpeed);
     }
 
     public GenomeRT(GenomeRT parent)
     {
         source = parent.source;
-        generation += 1;
+        generation = parent.generation + 1;
         float mul = 1f + generation / 20;
         //-----------------------------------
         // INT STATS
