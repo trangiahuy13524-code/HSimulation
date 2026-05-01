@@ -3,47 +3,84 @@ using UnityEngine;
 
 public class MapRenderer : MonoBehaviour
 {
+    public Vector2Int chunkSize = new Vector2Int(32, 32);
+    private Dictionary<Vector2Int, MapChunk> chunks = new Dictionary<Vector2Int, MapChunk>();
     public Map map;
     public bool ready = false;
 
     void Start()
     {
         Terrain terrain = Terrain.Instance;
+
         if (terrain == null)
         {
-            Debug.LogError("No Terrain instance found in the scene. Please add a Terrain component to a GameObject.");
+            Debug.LogError("No Terrain instance found.");
             return;
         }
-        if (terrain.terrainData == null || terrain.terrainData.terrainTypes == null || terrain.terrainData.terrainTypes.Length == 0)
+
+        if (terrain.terrainData == null ||
+            terrain.terrainData.terrainTypes == null ||
+            terrain.terrainData.terrainTypes.Length == 0)
         {
-            Debug.LogError("Terrain instance does not have terrainData assigned. Please assign a TerrainBiome to the Terrain component.");
+            Debug.LogError("Terrain data missing.");
             return;
         }
+
         int size = World.Instance.WorldSize;
-        this.map = new Map(new Vector2Int(size, size), terrain.noiseMap);
 
-        MapMesh mapMesh = new MapMesh(this.map);
+        map = new Map(
+            new Vector2Int(size, size),
+            terrain.noiseMap);
 
-        foreach (KeyValuePair<TerrainType, MeshData> kv in mapMesh.meshes)
+        CreateChunks();
+
+        ready = true;
+    }
+
+    void CreateChunks()
+    {
+        int chunkCountX = Mathf.CeilToInt((float)map.size.x / chunkSize.x);
+        int chunkCountY = Mathf.CeilToInt((float)map.size.y / chunkSize.y);
+
+        for (int cx = 0; cx < chunkCountX; cx++)
         {
-            MeshData meshData = kv.Value; // It's just easier to read, you don't need to do this.
-            TerrainType terrainType = kv.Key; // It's just easier to read, you don't need to do this.
-            GameObject go = new GameObject("Mesh for " + terrainType.ToString());
-            go.transform.SetParent(this.transform);
+            for (int cy = 0; cy < chunkCountY; cy++)
+            {
+                Vector2Int coord = new Vector2Int(cx, cy);
 
-            // In our TerrainType enum Water=0, Dirt=1, Grass=2, Rocks=3
-            // We always want to draw Rocks over Grass, Grass over Dirt, Dirt over Water
-            // So we can just use the negative integer value as the Z position for the GameObject.
-            go.transform.localPosition = new Vector3(0, 0, terrainType.layer);
+                MapChunk chunk =
+                    new MapChunk(map, coord, chunkSize);
 
-            // Add a mesh filter and set the mesh to our mesh.
+                chunks.Add(coord, chunk);
+
+                CreateChunkGameObjects(chunk);
+            }
+        }
+    }
+
+    void CreateChunkGameObjects(MapChunk chunk)
+    {
+        foreach (var kv in chunk.mesh.meshes)
+        {
+            TerrainType terrainType = kv.Key;
+            MeshData meshData = kv.Value;
+
+            GameObject go =
+                new GameObject($"Chunk {chunk.chunkCoord} - {terrainType}");
+
+            go.transform.SetParent(transform);
+
+            go.transform.localPosition =
+                new Vector3(
+                    chunk.StartX,
+                    chunk.StartY,
+                    terrainType.layer);
+
             MeshFilter mf = go.AddComponent<MeshFilter>();
             mf.mesh = meshData.mesh;
 
             MeshRenderer mr = go.AddComponent<MeshRenderer>();
             mr.material = terrainType.terrainMaterial;
         }
-
-        this.ready = true;
     }
 }
