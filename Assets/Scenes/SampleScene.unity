@@ -256,6 +256,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 158177104}
   m_CullTransparentMesh: 1
+--- !u!1 &445384737
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 445384739}
+  - component: {fileID: 445384738}
+  m_Layer: 0
+  m_Name: JobManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &445384738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445384737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1cf4446d2a9ac64ea6fe1133d10247d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JobManager
+--- !u!4 &445384739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445384737}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,6 +1750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152f33266524c3a488166c8678c692e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapRenderer
+  chunkSize: {x: 16, y: 16}
   ready: 0
 --- !u!4 &1442092150
 Transform:
@@ -1953,7 +1998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectFinder
   pawnIcon: {fileID: 343495132928356036, guid: 7f57456479503d94e99b38066a1e4f64, type: 3}
   image: {fileID: 6105240662230838357, guid: 7f57456479503d94e99b38066a1e4f64, type: 3}
-  text: {fileID: 5218838037271315753, guid: eaea7b3925230394cbb0574dcf59c15f, type: 3}
+  text: {fileID: -3903176832216252574, guid: eaea7b3925230394cbb0574dcf59c15f, type: 3}
   objectGridPanel: {fileID: 1447518415}
 --- !u!1 &1621294683
 GameObject:
@@ -2035,7 +2080,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -2127,6 +2172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4aad93b457c1b47a682dd3fe8cc51c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::World
+  mapRenderer: {fileID: 1442092149}
+  wallDummyTile: {fileID: 11400000, guid: e7d08097c128a5e4fa7bc2fb55724f83, type: 2}
   gameFPS: 48
   terrainTilemap: {fileID: 1831696277}
   wallTileMap: {fileID: 1621294686}
@@ -2134,7 +2181,7 @@ MonoBehaviour:
   wallDummyPrefab: {fileID: 3711314298697693449, guid: a0a0e1285072c174ea8210dd8afdd997, type: 3}
   pawnPrefab: {fileID: 3841082101150572428, guid: 98aeb43687677c84dac3183fd6135da7, type: 3}
   cam: {fileID: 519420032}
-  worldSize: 101
+  worldSize: 80
   maxPawnCount: 1
 --- !u!114 &1819015518
 MonoBehaviour:
@@ -2149,9 +2196,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WorldDebug
   world: {fileID: 1819015517}
+  mapRenderer: {fileID: 1442092149}
+  screenAndTouchManager: {fileID: 1403548826}
   pawnGeneticsData:
   - {fileID: 11400000, guid: 929f73aa2e71865409282e24d3565be9, type: 2}
   wallTile: {fileID: 11400000, guid: c0c35e3181e41a2448e75ff377666282, type: 2}
+  tileToPlace: {fileID: 11400000, guid: 27cfe5d6c1924e54da66ec58d0b0e28f, type: 2}
   spawnPos: {x: 0, y: 0}
   spawnCount: 1
 --- !u!1 &1831696274
@@ -2647,3 +2697,4 @@ SceneRoots:
   - {fileID: 901410685}
   - {fileID: 1101040888}
   - {fileID: 7191811205099315357}
+  - {fileID: 445384739}

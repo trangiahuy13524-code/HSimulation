@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
 
 public class CustomTile
 {
@@ -18,6 +20,8 @@ public class CustomTile
 
 public class Map
 {
+    Dictionary<Vector2Int, TerrainType> oldTiles = new();
+    public System.Action<CustomTile> OnTileChanged;
     public CustomTile[,] tiles;
     public Vector2Int size;
     public Map(Vector2Int size, float[,] noiseMap)
@@ -36,27 +40,6 @@ public class Map
        
         Debug.Log("Map intialized with a size of" + this.size);
     }
-    // We just set a rectangle to a terrainType value.
-    public void SetRect(int startX, int startY, int width, int height, TerrainType terrainType)
-    {
-        for (int x = startX; x < startX + width; x++)
-        {
-            for (int y = startY; y < startY + height; y++)
-            {
-                this[x, y].terrainType = terrainType;
-            }
-        }
-    }
-    public IEnumerator<CustomTile> GetEnumerator()
-    {
-        for (int x = 0; x < this.size.x; x++)
-        {
-            for (int y = 0; y < this.size.y; y++)
-            {
-                yield return this[x, y];
-            }
-        }
-    }
     public CustomTile this[Vector2Int v2]
     {
         get
@@ -74,5 +57,42 @@ public class Map
             }
             return null;
         }
+    }
+    public void RevertToTerrainTile(Vector2Int position)
+    {
+        if (!oldTiles.TryGetValue(position, out var terrainTile))
+            return;
+
+        CustomTile tile = tiles[position.x, position.y];
+
+        tile.terrainType = terrainTile;
+
+        oldTiles.Remove(position); // IMPORTANT
+
+        OnTileChanged?.Invoke(tile);
+    }
+    public void RevertToTerrainTile(int x, int y)
+    {
+        RevertToTerrainTile(new Vector2Int(x, y));
+    }
+    public void SetTile(int x, int y, PlaceableTile placingTile)
+    {
+        SetTile(new Vector2Int(x, y), placingTile);
+    }
+    public void SetTile(Vector2Int position, PlaceableTile placingTile)
+    {
+        CustomTile tile = this[position.x, position.y];
+
+        if (tile == null)
+            return;
+
+        if (tile.terrainType.source == placingTile)
+            return;
+
+        oldTiles.TryAdd(position, tile.terrainType);
+
+        tile.terrainType = TerrainType.Get(placingTile);
+
+        OnTileChanged?.Invoke(tile);
     }
 }

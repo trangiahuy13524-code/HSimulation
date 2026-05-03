@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 public class ScreenAndTouchManager : MonoBehaviour
 {
+    public static ScreenAndTouchManager Instance;
     [SerializeField] TextMeshProUGUI touchPositionText;
     [SerializeField] Camera cam;
     [SerializeField] Transform selectionHighlight;
@@ -22,6 +23,7 @@ public class ScreenAndTouchManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
+        Instance = this;
         world = World.Instance;
         worldSize = world.WorldSize;
     }

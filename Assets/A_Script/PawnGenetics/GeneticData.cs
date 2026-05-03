@@ -13,7 +13,7 @@ public class GeneticData : ScriptableObject
     public int baseMana;
     public int baseDefense;
     public int baseAttack;
-    public int baseMagicAttack;
+    public float magicPotential;
     public float baseSpeed;
 
     [Header("Reproduction")]
@@ -26,4 +26,7 @@ public class GeneticData : ScriptableObject
     public List<BodySpritePart> bodyData;
     public List<BodySpritePart> headData;
     public List<BodySpritePart> hairData;
+
+    [Header("Skill")]
+    public List<Skill> pawnSkills;
 }

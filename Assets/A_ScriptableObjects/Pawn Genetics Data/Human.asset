@@ -20,7 +20,7 @@ MonoBehaviour:
   baseMana: 5
   baseDefense: 10
   baseAttack: 10
-  baseMagicAttack: 5
+  magicPotential: 0.2
   baseSpeed: 1
   reproductionType: 1
   femaleBirthChance: 0.6
@@ -44,3 +44,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 921a2de723751ce45b327f49dbd9fa89, type: 2}
   - {fileID: 11400000, guid: c4bb394d0bc963d4181fb9aaba72a6c0, type: 2}
   - {fileID: 11400000, guid: 4cb854df1641fbe4db134c3534c61831, type: 2}
+  pawnSkills:
+  - {fileID: 11400000, guid: 9c1190f8bf453fb4ca393556d7ec92d7, type: 2}
+  - {fileID: 11400000, guid: 8ec3d834cfd3ff04b8486c4eb68abc2a, type: 2}

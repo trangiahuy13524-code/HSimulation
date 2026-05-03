@@ -2,24 +2,32 @@ using UnityEngine;
 
 public class MapChunk
 {
+    public GameObject root;
     public Vector2Int chunkCoord;
     public Vector2Int size;
     public Map map;
 
     public MapMesh mesh;
 
-    public MapChunk(Map map, Vector2Int chunkCoord, Vector2Int size)
+    public MapChunk(Map map, Vector2Int coord, Vector2Int size)
     {
         this.map = map;
-        this.chunkCoord = chunkCoord;
+        this.chunkCoord = coord;
         this.size = size;
-
-        Generate();
     }
 
     public void Generate()
     {
         mesh = new MapMesh(map, this);
+    }
+    public void Rebuild()
+    {
+        if (root != null)
+            GameObject.Destroy(root);
+
+        mesh = new MapMesh(map, this);
+
+        root = new GameObject($"Chunk {chunkCoord}");
     }
 
     public int StartX => chunkCoord.x * size.x;

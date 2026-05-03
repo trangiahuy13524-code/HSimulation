@@ -10,7 +10,7 @@ public class GenomeRT
     public int mana;
     public int defense;
     public int attack;
-    public int magicAttack;
+    public float magicPotential;
     public float speed;
     public Sex sex;
 
@@ -52,32 +52,32 @@ public class GenomeRT
         //-----------------------------------
         // 3. Apply Genetic Variance
         //-----------------------------------
-        health = RandomizeStatInt(geneticData.baseHealth);
-        mana = RandomizeStatInt(geneticData.baseMana);
-        defense = RandomizeStatInt(geneticData.baseDefense);
-        attack = RandomizeStatInt(geneticData.baseAttack);
-        magicAttack = RandomizeStatInt(geneticData.baseMagicAttack);
-        speed = RandomizeStatFloat(geneticData.baseSpeed);
+        health = RandomizeStat(geneticData.baseHealth);
+        mana = RandomizeStat(geneticData.baseMana);
+        defense = RandomizeStat(geneticData.baseDefense);
+        attack = RandomizeStat(geneticData.baseAttack);
+        magicPotential = RandomizeStat(geneticData.magicPotential);
+        speed = RandomizeStat(geneticData.baseSpeed);
     }
 
     public GenomeRT(GenomeRT parent)
     {
         source = parent.source;
         generation = parent.generation + 1;
-        float mul = 1f + generation / 20;
+        float mul = 1f + generation / 10;
         //-----------------------------------
         // INT STATS
         //-----------------------------------
-        health = ApplyGenerationInt(source.baseHealth, mul);
-        mana = ApplyGenerationInt(source.baseMana, mul);
-        defense = ApplyGenerationInt(source.baseDefense, mul);
-        attack = ApplyGenerationInt(source.baseAttack, mul);
-        magicAttack = ApplyGenerationInt(source.baseMagicAttack, mul);
+        health = ApplyGeneration(source.baseHealth, mul);
+        mana = ApplyGeneration(source.baseMana, mul);
+        defense = ApplyGeneration(source.baseDefense, mul);
+        attack = ApplyGeneration(source.baseAttack, mul);
+        magicPotential = ApplyGeneration(source.magicPotential, mul);
 
         //-----------------------------------
         // FLOAT STATS
         //-----------------------------------
-        speed = ApplyGenerationFloat(source.baseSpeed, mul);
+        speed = ApplyGeneration(source.baseSpeed, mul);
 
         //-----------------------------------
         // Sex
@@ -89,26 +89,26 @@ public class GenomeRT
     }
 
     static int offset;
-    int RandomizeStatInt(int baseValue)
+    int RandomizeStat(int baseValue)
     {
         offset = baseValue / 3;
         return baseValue + UnityEngine.Random.Range(-offset, offset + 1);
     }
 
     static float offsetF;
-    float RandomizeStatFloat(float baseValue)
+    float RandomizeStat(float baseValue)
     {
         offsetF = baseValue / 3f;
         return baseValue + UnityEngine.Random.Range(-offsetF, offsetF);
     }
 
-    int ApplyGenerationInt(int baseValue, float mul)
+    int ApplyGeneration(int baseValue, float mul)
     {
-        return RandomizeStatInt((int)(baseValue * mul));
+        return RandomizeStat((int)(baseValue * mul));
     }
 
-    float ApplyGenerationFloat(float baseValue, float mul)
+    float ApplyGeneration(float baseValue, float mul)
     {
-        return RandomizeStatFloat(baseValue * mul);
+        return RandomizeStat(baseValue * mul);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu()]
@@ -22,10 +23,10 @@ public class TerrainBiome : ScriptableObject
         }
 
         // Assign layers
-        for (int i = 0; i < terrainTypes.Length; i++)
-        {
-            terrainTypes[i].layer = (byte)i;
-        }
+        //for (int i = 0; i < terrainTypes.Length; i++)
+        //{
+        //    terrainTypes[i].layer = (byte)i;
+        //}
 
         // Force last terrain to height = 1
         terrainTypes[^1].heightThreshold = 1f;
@@ -35,9 +36,40 @@ public class TerrainBiome : ScriptableObject
 [Serializable]
 public class TerrainType
 {
-    public string name;
+    public string terrainName;
     [Range(0, 1f)] public float heightThreshold;
     public Material terrainMaterial;
+    public bool blend = true;
     public short movementCost;
     public byte layer;
+
+    public PlaceableTile source;
+
+    // SHARED INSTANCE CACHE
+    static Dictionary<PlaceableTile, TerrainType> cache = new();
+
+    private TerrainType(PlaceableTile tile)
+    {
+        terrainName = tile.tileName;
+        terrainMaterial = tile.terrainMaterial;
+        blend = tile.blend;
+        movementCost = tile.movementCost;
+        layer = tile.layer;
+        source = tile;
+    }
+
+    // FACTORY METHOD
+    public static TerrainType Get(PlaceableTile tile)
+    {
+        if (tile == null)
+            return null;
+
+        if (!cache.TryGetValue(tile, out var terrain))
+        {
+            terrain = new TerrainType(tile);
+            cache.Add(tile, terrain);
+        }
+
+        return terrain;
+    }
 }

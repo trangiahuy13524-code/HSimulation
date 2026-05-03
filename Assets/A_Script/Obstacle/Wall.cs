@@ -10,7 +10,7 @@ public class Wall : WorldObject
     }
     void OnDestroy()
     {
-        if (world == null) world = World.Instance;
-        world.SetWallTile(currentGridPos, null);
+        if (world != null) world.SetWallTile(currentGridPos, null);
+        if (mapRenderer != null) mapRenderer.map.RevertToTerrainTile(currentGridPos);
     }
 }

@@ -50,3 +50,31 @@ public enum FacialState
     Sleeping,
     Dead
 }
+
+public enum ItemClass
+{
+    Poor,
+    Advanced,
+    Epic,
+    Legendary,
+    Ultimate,
+    Artifact,
+    World,
+    Universal
+}
+public enum Element
+{
+    Light,
+    Darkness,
+    Fire,
+    Water,
+    Earth,
+    Wind,
+    Lightning,
+    Leaf
+}
+public enum State
+{
+    Normal,
+    Anti
+}

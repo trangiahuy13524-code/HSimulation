@@ -6,13 +6,17 @@ using UnityEngine.Tilemaps;
 public class WorldDebug : MonoBehaviour
 {
     [SerializeField] World world;
+    [SerializeField] MapRenderer mapRenderer;
+    [SerializeField] ScreenAndTouchManager screenAndTouchManager;
     [SerializeField] List<GeneticData> pawnGeneticsData = new();
     [SerializeField] AutoTillingTile wallTile;
+    [SerializeField] PlaceableTile tileToPlace;
     [SerializeField] Vector2Int spawnPos = Vector2Int.zero;
     [SerializeField] byte spawnCount = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        screenAndTouchManager = ScreenAndTouchManager.Instance;
         for (int i = 0; i < spawnCount; i++)
         {
             if (world == null) return;
@@ -45,5 +49,15 @@ public class WorldDebug : MonoBehaviour
 
     }
 
-    
+    private void Update()
+    {
+        if (Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            mapRenderer.map.SetTile(screenAndTouchManager.SelectedGrid, tileToPlace);
+        }
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            mapRenderer.map.RevertToTerrainTile(screenAndTouchManager.SelectedGrid);
+        }
+    }
 }

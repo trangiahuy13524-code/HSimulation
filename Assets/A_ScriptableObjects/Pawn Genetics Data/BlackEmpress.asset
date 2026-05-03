@@ -19,7 +19,7 @@ MonoBehaviour:
   baseMana: 40
   baseDefense: 15
   baseAttack: 20
-  baseMagicAttack: 15
+  magicPotential: 5
   baseSpeed: 0.5
   reproductionType: 2
   femaleBirthChance: 0.5

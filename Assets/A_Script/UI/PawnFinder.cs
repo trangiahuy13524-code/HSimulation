@@ -17,8 +17,8 @@ public class PawnFinder : MonoBehaviour
     {
         Pawn pawn = collision.GetComponent<Pawn>();
         if (pawn == null) return;
-        if (image) image.sprite = pawn.IconSprite;
-        if (text) text.text = pawn.displayName;
+        image.sprite = pawn.IconSprite;
+        text.text = pawn.ObjectName;
         GameObject icon = Instantiate(pawnIcon, objectGridPanel);
         Instantiate(text.gameObject, icon.transform);
         pawn.hightlight.SetActive(true);

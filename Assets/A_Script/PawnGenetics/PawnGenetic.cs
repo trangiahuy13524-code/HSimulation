@@ -22,6 +22,11 @@ public partial class Pawn : WorldObject
         //-----------------------------------
         GenerateBody(geneticData);
 
+        //-----------------------------------
+        // 3. Skills (CORRECT PLACE)
+        //-----------------------------------
+        pawnSkills = new HashSet<Skill>(geneticData.pawnSkills);
+
         iconSprite = geneticData.raceIcon;
 
         initialized = true;
@@ -40,6 +45,11 @@ public partial class Pawn : WorldObject
         // 2. Generate Appearance
         //-----------------------------------
         GenerateBody(parent);
+
+        //-----------------------------------
+        // 3. Skills (CORRECT PLACE)
+        //-----------------------------------
+        pawnSkills = new HashSet<Skill>(parent.source.pawnSkills);
 
         iconSprite = parent.source.raceIcon;
 

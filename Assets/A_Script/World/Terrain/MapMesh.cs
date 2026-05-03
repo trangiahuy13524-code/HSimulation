@@ -35,13 +35,15 @@ public class MapMesh
                 neighboursTerrainList.Clear();
 
                 MeshData meshData = this.GetMesh(tile.terrainType); // Get or create a new mesh
-                                                                    // Get the verticeIndex, it's just the vertice count in our MeshData object.
+
+                Vector2Int local =
+                tile.position - new Vector2Int(chunk.StartX, chunk.StartY);// Get the verticeIndex, it's just the vertice count in our MeshData object.
 
                 int verticeIndex = meshData.vertices.Count;
-                meshData.vertices.Add(new Vector3(tile.position.x, tile.position.y)); // Vertice 0 (check image)
-                meshData.vertices.Add(new Vector3(tile.position.x, tile.position.y + 1)); // Vertice 1
-                meshData.vertices.Add(new Vector3(tile.position.x + 1, tile.position.y + 1)); // Vertice 2
-                meshData.vertices.Add(new Vector3(tile.position.x + 1, tile.position.y)); // Vertice 3
+                meshData.vertices.Add(new Vector3(local.x, local.y)); // Vertice 0 (check image)
+                meshData.vertices.Add(new Vector3(local.x, local.y + 1)); // Vertice 1
+                meshData.vertices.Add(new Vector3(local.x + 1, local.y + 1)); // Vertice 2
+                meshData.vertices.Add(new Vector3(local.x + 1, local.y)); // Vertice 3
 
                 meshData.colors.Add(Color.white);
                 meshData.colors.Add(Color.white);
@@ -70,7 +72,8 @@ public class MapMesh
                         if (
                             neighbour.terrainType != tile.terrainType && // We add only if its different than current tile.
                             !neighboursTerrainList.Contains(neighbour.terrainType) && // And if it's not in the list.
-                            neighbour.terrainType.layer <= tile.terrainType.layer // And we only blend when we're on top.
+                            neighbour.terrainType.layer < tile.terrainType.layer && // And we only blend when we're on top.
+                            neighbour.terrainType.blend
                         )
                         {
                             neighboursTerrainList.Add(neighbour.terrainType);
@@ -88,15 +91,15 @@ public class MapMesh
                     meshData = this.GetMesh(terrainType); // Get the new meshData (rocks for this example)
                     verticeIndex = meshData.vertices.Count; // Get the meshData verticeIndx
 
-                    meshData.vertices.Add(new Vector3(tile.position.x + .5f, tile.position.y)); // 0
-                    meshData.vertices.Add(new Vector3(tile.position.x, tile.position.y)); // 1
-                    meshData.vertices.Add(new Vector3(tile.position.x, tile.position.y + .5f)); // 2
-                    meshData.vertices.Add(new Vector3(tile.position.x, tile.position.y + 1)); // 3
-                    meshData.vertices.Add(new Vector3(tile.position.x + .5f, tile.position.y + 1)); // 4
-                    meshData.vertices.Add(new Vector3(tile.position.x + 1, tile.position.y + 1)); // 5
-                    meshData.vertices.Add(new Vector3(tile.position.x + 1, tile.position.y + .5f)); // 6
-                    meshData.vertices.Add(new Vector3(tile.position.x + 1, tile.position.y)); // 7
-                    meshData.vertices.Add(new Vector3(tile.position.x + .5f, tile.position.y + .5f)); //8
+                    meshData.vertices.Add(new Vector3(local.x + .5f, local.y)); // 0
+                    meshData.vertices.Add(new Vector3(local.x, local.y)); // 1
+                    meshData.vertices.Add(new Vector3(local.x, local.y + .5f)); // 2
+                    meshData.vertices.Add(new Vector3(local.x, local.y + 1)); // 3
+                    meshData.vertices.Add(new Vector3(local.x + .5f, local.y + 1)); // 4
+                    meshData.vertices.Add(new Vector3(local.x + 1, local.y + 1)); // 5
+                    meshData.vertices.Add(new Vector3(local.x + 1, local.y + .5f)); // 6
+                    meshData.vertices.Add(new Vector3(local.x + 1, local.y)); // 7
+                    meshData.vertices.Add(new Vector3(local.x + .5f, local.y + .5f)); //8
 
                     for (int i = 0; i < _cols.Length; i++)
                     {
@@ -206,7 +209,7 @@ public class MeshData
     }
     public void Build()
     {
-        mesh.indexFormat = IndexFormat.UInt32; // IMPORTANT
+        //mesh.indexFormat = IndexFormat.UInt32; // IMPORTANT
 
         mesh.SetVertices(vertices);
         mesh.SetTriangles(triangles, 0);

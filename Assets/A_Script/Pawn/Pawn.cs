@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
 
 public partial class Pawn : WorldObject
@@ -16,16 +16,29 @@ public partial class Pawn : WorldObject
     public HairData HairData => hairData;
     //public FacialAnimator Facial => facial;
 
+    
+
+    public override string ObjectName
+    {
+        get
+        {
+            return objectName;
+        }
+        set
+        {
+            objectName = value;
+            if (displayTextName) displayTextName.text = value;
+        }
+    }
+    [SerializeField] TextMeshPro displayTextName;
     [SerializeField] Rigidbody2D rb;
     [SerializeField] Vector2Int lastQueuePosCache;
-    [SerializeField] float idleTime = 2f;
-    [SerializeField] float currentIdleTime = 0f;
+    
     Queue<Vector2Int> paths;
     [SerializeField] Vector2Int oldDestination;
-    [SerializeField] Vector2Int oldGridPos;
     [SerializeField] int maxSearch = 10;
 
-    public bool onDuty = false;
+    
     public void ChangeDirection(Direction dir)
     {
         if (dir == oldDirection) return;
@@ -42,37 +55,13 @@ public partial class Pawn : WorldObject
         if (hairData) hairData.UpdateLayer();
     }
 
-
+    
     private void OnDestroy()
     {
         if (world != null) world.ModifyPawnCountGrid(currentGridPos, false);
     }
-    protected override void Start()
-    {
-        transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
-        paths = new Queue<Vector2Int>();
-        oldGridPos = currentGridPos;
-        oldDestination = currentGridPos;
-        world.ModifyPawnCountGrid(currentGridPos, true);
-        UpdateLayer();
-    }
-    private void Update()
-    {
-        bool donePathing = Move();
-        if (donePathing)
-        {
-            if (currentIdleTime < idleTime)
-            {
-                currentIdleTime += Time.deltaTime;
-            }
-            else
-            {
-                currentIdleTime = 0f;
-                CalculatePath(GetRandomPosition());
-            }
-        }
-        
-    }
+    
+    
 
     bool isRecalculating = false;
     public bool Move()
@@ -174,24 +163,25 @@ public partial class Pawn : WorldObject
     {
         foreach (Vector2Int path in pathList)
         {
-            AddPathToQueue(path);
+            //AddPathToQueue(path);
+            paths.Enqueue(path);
         }
     }
 
-    public void AddPathToQueue(Vector2Int path)
-    {
-        if (paths.Count > 0)
-        {
-            if (lastQueuePosCache == path)
-            {
-                return;
-            }
-        }
-        paths.Enqueue(path);
-        lastQueuePosCache = path;
-    }
+    //void AddPathToQueue(Vector2Int path)
+    //{
+    //    if (paths.Count > 0)
+    //    {
+    //        if (lastQueuePosCache == path)
+    //        {
+    //            return;
+    //        }
+    //    }
+    //    paths.Enqueue(path);
+    //    lastQueuePosCache = path;
+    //}
 
-    public Vector2Int GetRandomPosition()
+    Vector2Int GetRandomPosition()
     {
         int size = (world.WorldSize - 1)/2;
 
@@ -201,7 +191,7 @@ public partial class Pawn : WorldObject
         return new Vector2Int(x, y);
     }
 
-    public void CalculatePath(Vector2Int target)
+    public void MakePath(Vector2Int target)
     {
         var path = AStarPathfinder.FindPath(currentGridPos, target, maxSearch);
 
@@ -216,7 +206,7 @@ public partial class Pawn : WorldObject
         }
     }
 
-    public void ReCalculatePath()
+    void ReCalculatePath()
     {
         
         Vector2Int targetPos = oldDestination;
