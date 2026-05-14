@@ -78,3 +78,10 @@ public enum State
     Normal,
     Anti
 }
+
+public enum WorkResult
+{
+    Success,
+    Failed,
+    Cancelled
+}

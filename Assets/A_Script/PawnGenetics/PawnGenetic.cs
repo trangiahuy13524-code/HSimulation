@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public partial class Pawn : WorldObject
@@ -25,33 +26,36 @@ public partial class Pawn : WorldObject
         //-----------------------------------
         // 3. Skills (CORRECT PLACE)
         //-----------------------------------
-        pawnSkills = new HashSet<Skill>(geneticData.pawnSkills);
+        pawnSkills = geneticData.pawnSkills
+        .ToDictionary(skill => skill, skill => (byte)0);
 
-        iconSprite = geneticData.raceIcon;
+            iconSprite = geneticData.raceIcon;
 
-        initialized = true;
-    }
+            initialized = true;
+        }
 
-    public void InitializePawn(GenomeRT parent)
+    public void InitializePawn(GenomeRT mother)
     {
         if (initialized) return;
 
         //-----------------------------------
         // 1. Create Runtime Genome
         //-----------------------------------
-        genome = new GenomeRT(parent);
+        genome = new GenomeRT(mother);
 
         //-----------------------------------
         // 2. Generate Appearance
         //-----------------------------------
-        GenerateBody(parent);
+        GenerateBody(mother);
 
         //-----------------------------------
         // 3. Skills (CORRECT PLACE)
         //-----------------------------------
-        pawnSkills = new HashSet<Skill>(parent.source.pawnSkills);
+        pawnSkills = mother.source.pawnSkills
+        .ToDictionary(skill => skill, skill => (byte)0);
 
-        iconSprite = parent.source.raceIcon;
+
+        iconSprite = mother.source.raceIcon;
 
         initialized = true;
     }
@@ -75,21 +79,21 @@ public partial class Pawn : WorldObject
         SetBodySprite(body, head, hair);
     }
 
-    void GenerateBody(GenomeRT parent)
+    void GenerateBody(GenomeRT mother)
     {
-        bool restrictBody = parent.source.reproductionType == ReproductionType.Sexual;
+        bool restrictBody = mother.source.reproductionType == ReproductionType.Sexual;
 
         // Body => restricted only for sexual species
         BodySpritePart body = Random.Range(0, 10) > 6 ?
-            parent.currentBody : PickValidSprite(parent.source.bodyData, restrictBody);
+            mother.currentBody : PickValidSprite(mother.source.bodyData, restrictBody);
 
         // Head => same rule as body
         BodySpritePart head = Random.Range(0, 10) > 6 ?
-            parent.currentHead : PickValidSprite(parent.source.headData, restrictBody);
+            mother.currentHead : PickValidSprite(mother.source.headData, restrictBody);
 
         // Hair => same restricted
         BodySpritePart hair = Random.Range(0, 10) > 6 ?
-            parent.currentHair : PickValidSprite(parent.source.hairData, restrictBody);
+            mother.currentHair : PickValidSprite(mother.source.hairData, restrictBody);
 
         genome.currentBody = body;
         genome.currentHead = head;

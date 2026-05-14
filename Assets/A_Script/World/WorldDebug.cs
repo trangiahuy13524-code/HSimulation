@@ -13,6 +13,8 @@ public class WorldDebug : MonoBehaviour
     [SerializeField] PlaceableTile tileToPlace;
     [SerializeField] Vector2Int spawnPos = Vector2Int.zero;
     [SerializeField] byte spawnCount = 1;
+    [SerializeField] BuildingObject building;
+    [SerializeField] Direction buildingDirection = Direction.South;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -58,6 +60,10 @@ public class WorldDebug : MonoBehaviour
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
             mapRenderer.map.RevertToTerrainTile(screenAndTouchManager.SelectedGrid);
+        }
+        if (Keyboard.current.bKey.wasPressedThisFrame)
+        {
+            world.GenerateBuilding(screenAndTouchManager.SelectedGrid, building, buildingDirection);
         }
     }
 }

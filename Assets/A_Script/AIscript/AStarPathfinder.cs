@@ -50,7 +50,7 @@ public static class AStarPathfinder
     public static List<Vector2Int> FindPath(
         Vector2Int start,
         Vector2Int target,
-        int maxRange)
+        byte maxRange)
     {
         World world = World.Instance;
         int size = world.WorldSize;
@@ -161,6 +161,130 @@ public static class AStarPathfinder
         }
 
         // ⭐ RETURN BEST POSSIBLE PATH
+        return BuildPath(bestNode);
+    }
+
+    public static List<Vector2Int> FindPath(
+    Vector2Int start,
+    Vector2Int target,
+    byte maxRange,
+    Vector2Int currentPawnPos)
+    {
+        World world = World.Instance;
+        int size = world.WorldSize;
+
+        if (!IsInside(start, size))
+            return null;
+
+        EnsureBuffers(size);
+
+        currentSearchId++;
+        openQueue.Clear();
+
+        Node startNode = GetNode(start.x, start.y);
+        InitNode(startNode);
+
+        startNode.gCost = 0;
+        startNode.hCost =
+            GetDistance(start.x, start.y, target.x, target.y);
+
+        openQueue.Enqueue(startNode, startNode.fCost);
+
+        Node bestNode = startNode;
+
+        int iterations = 0;
+        const int MAX_ITERATIONS = 5000;
+
+        while (openQueue.Count > 0)
+        {
+            if (++iterations > MAX_ITERATIONS)
+                break;
+
+            Node current;
+
+            do
+            {
+                if (openQueue.Count == 0)
+                    return BuildPath(bestNode);
+
+                current = openQueue.Dequeue();
+
+            } while (current.closedId == currentSearchId);
+
+            current.closedId = currentSearchId;
+
+            if (current.hCost < bestNode.hCost)
+                bestNode = current;
+
+            if (current.x == target.x &&
+                current.y == target.y)
+            {
+                return BuildPath(current);
+            }
+
+            foreach (var dir in directions)
+            {
+                int nx = current.x + dir.x;
+                int ny = current.y + dir.y;
+
+                if (!IsInside(nx, ny, size))
+                    continue;
+
+                int manhattan =
+                    Mathf.Abs(nx - start.x) +
+                    Mathf.Abs(ny - start.y);
+
+                if (manhattan > maxRange)
+                    continue;
+
+                Vector2Int neighborPos = new(nx, ny);
+
+                // ⭐ IMPORTANT FIX
+                bool isOwnPawnTile = neighborPos == currentPawnPos;
+
+                if (!isOwnPawnTile &&
+                    !world.IsPositionPathValid(neighborPos))
+                    continue;
+
+                // prevent diagonal corner cutting
+                if (dir.x != 0 && dir.y != 0)
+                {
+                    Vector2Int sideA =
+                        new(current.x + dir.x, current.y);
+
+                    Vector2Int sideB =
+                        new(current.x, current.y + dir.y);
+
+                    if ((!isOwnPawnTile &&
+                         world.IsNotPassable(sideA)) ||
+                        (!isOwnPawnTile &&
+                         world.IsNotPassable(sideB)))
+                        continue;
+                }
+
+                Node neighbor = GetNode(nx, ny);
+                InitNode(neighbor);
+
+                if (neighbor.closedId == currentSearchId)
+                    continue;
+
+                int newCost =
+                    current.gCost +
+                    GetDistance(current.x, current.y, nx, ny);
+
+                if (newCost < neighbor.gCost)
+                {
+                    neighbor.gCost = newCost;
+                    neighbor.hCost =
+                        GetDistance(nx, ny, target.x, target.y);
+
+                    neighbor.parent = current;
+
+                    openQueue.Enqueue(neighbor, neighbor.fCost);
+                }
+            }
+        }
+
         return BuildPath(bestNode);
     }
 

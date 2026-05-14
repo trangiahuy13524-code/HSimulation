@@ -60,10 +60,10 @@ public class GenomeRT
         speed = RandomizeStat(geneticData.baseSpeed);
     }
 
-    public GenomeRT(GenomeRT parent)
+    public GenomeRT(GenomeRT mother)
     {
-        source = parent.source;
-        generation = parent.generation + 1;
+        source = mother.source;
+        generation = mother.generation + 1;
         float mul = 1f + generation / 10;
         //-----------------------------------
         // INT STATS
@@ -88,17 +88,15 @@ public class GenomeRT
             : Sex.Male;
     }
 
-    static int offset;
     int RandomizeStat(int baseValue)
     {
-        offset = baseValue / 3;
+        int offset = baseValue / 3;
         return baseValue + UnityEngine.Random.Range(-offset, offset + 1);
     }
 
-    static float offsetF;
     float RandomizeStat(float baseValue)
     {
-        offsetF = baseValue / 3f;
+        float offsetF = baseValue / 3f;
         return baseValue + UnityEngine.Random.Range(-offsetF, offsetF);
     }
 

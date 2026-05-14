@@ -29,12 +29,46 @@ public class Building : WorldObject
             for (int j = yRange.x; j < yRange.y; j++)
                 world.RegisterObject(this, new Vector2Int(i, j));
 
+        render.UpdateLayer(world.WorldSize);
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
         for (int i = xRange.x; i < xRange.y; i++)
             for (int j = yRange.x; j < yRange.y; j++)
                 world.RemoveObject(new Vector2Int(i, j));
+        base.OnDestroy();
+    }
+
+    public virtual bool checkPlaceable(Vector2Int position, Direction direction, World world)
+    {
+        bool isVert = checkVert(direction);
+        int sizeX = isVert?buildingGridSize.y:buildingGridSize.x;
+        int sizeY = isVert ? buildingGridSize.x : buildingGridSize.y;
+        Vector2Int tempPos;
+        for (int i = position.x; i < position.x + sizeX; i++)
+            for (int j = position.y; j < position.y + sizeY; j++)
+            {
+                tempPos = new Vector2Int(i, j);
+                if (!world.IsInside(tempPos)) return false;
+                if (world.GetFastObjectAtPosition(tempPos) != null) return false;
+                if (world.FastGridMaxPawn(tempPos)) return false;
+            }
+        return true;
+    }
+
+    bool checkVert(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.North:
+                return false;
+            case Direction.South:
+                return false;
+            case Direction.East:
+                return true;
+            default:
+                return true;
+        }
     }
 }

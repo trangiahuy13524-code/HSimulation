@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1661a4fff31105b41988257fc24d8d1b, type: 3}
+  m_Name: Control Pawn
+  m_EditorClassIdentifier: Assembly-CSharp::AbilityControlPawn
+  icon: {fileID: 21300000, guid: 2ddcf8604e67fa94c9fa8e213f33e48d, type: 3}
+  onControl: {fileID: 21300000, guid: ccae9da277225f94685c163591c60776, type: 3}

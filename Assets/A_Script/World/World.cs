@@ -59,9 +59,8 @@ public class World : MonoBehaviour
         return p.x >= 0 && p.y >= 0 &&
                p.x < worldSize && p.y < worldSize;
     }
-    public bool GridMaxPawn(Vector2Int position)
+    public bool FastGridMaxPawn(Vector2Int position)
     {
-        if (!IsInside(position)) return false;
         if (pawnCountOnGrid[position.x, position.y] >= maxPawnCount) return true;
         return false;
     }
@@ -136,6 +135,15 @@ public class World : MonoBehaviour
         return objects[position.x, position.y];
     }
 
+    public WorldObject GetFastObjectAtPosition(Vector2Int position)
+    {
+        return objects[position.x, position.y];
+    }
+    //public WorldObject GetFastObjectAtPosition(int x, int y)
+    //{
+    //    return objects[x, y];
+    //}
+
     public void SetWallTile(Vector2Int position, Tile tile)
     {
         if (wallTileMap == null) return;
@@ -174,6 +182,7 @@ public class World : MonoBehaviour
         dummyTf.parent = wallDummies;
         Wall dummy = dummyTf.GetComponent<Wall>();
         dummy.CurrentGridPosition = position;
+        //dummy.wallTile = wallTile;
         mapRenderer.map.SetTile(position, wallDummyTile);
     }
 
@@ -259,5 +268,27 @@ public class World : MonoBehaviour
         pawn.transform.position = new Vector3Int(x, y, 0);
         pawn.InitializePawn(geneticData);
         return pawn;
+    }
+
+    public void GenerateBuilding(Vector2Int position, BuildingObject buildingObject, Direction direction)
+    {
+        if (buildingObject == null) return;
+        if (!buildingObject.building.checkPlaceable(position, direction, this)) return;
+        buildingObject.building.direction = direction;
+        buildingObject.building.CurrentGridPosition = position;
+        Instantiate(buildingObject.prefab);
+    }
+}
+
+public static class WorldUtility
+{
+    public static Vector2Int WorldPosToGridPos(Vector2 worldPos)
+    {
+        return new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y + 0.5f));
+    }
+
+    public static Vector3 GridToWorld(Vector2Int grid)
+    {
+        return new Vector3(grid.x, grid.y - 0.5f, 0);
     }
 }

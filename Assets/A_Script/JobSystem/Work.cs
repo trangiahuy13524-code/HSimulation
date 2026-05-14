@@ -1,23 +1,13 @@
-using System;
-using UnityEngine;
-using System.Collections.Generic;
+//using System;
+//using UnityEngine;
+//using System.Collections.Generic;
 
-[Serializable]
-public class Work
-{
-    public short finishedWorks = 0;
-    public List<Action> works;
+//public class Work
+//{
+//    public Action<Pawn> work;
 
-    public Work(List<Action> performAction)
-    {
-        works = new List<Action>(performAction);
-
-        for (int i = 0; i < works.Count; i++)
-        {
-            works[i] += () =>
-            {
-                finishedWorks++;
-            };
-        }
-    }
-}
+//    public Work(Action<Pawn> performAction)
+//    {
+//        work = new Action<Pawn>(performAction);
+//    }
+//}

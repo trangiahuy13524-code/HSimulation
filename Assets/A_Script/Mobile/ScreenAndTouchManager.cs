@@ -4,6 +4,7 @@ using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class ScreenAndTouchManager : MonoBehaviour
 {
@@ -13,19 +14,36 @@ public class ScreenAndTouchManager : MonoBehaviour
     [SerializeField] Transform selectionHighlight;
     [SerializeField] Vector2Int selectedGrid;
     [SerializeField] World world;
+    
+    [Header("Zoom")]
     [SerializeField] float zoomSpeed = 0.01f;
     [SerializeField] float minZoom = 4f;
     [SerializeField] float maxZoom = 20f;
+    [Header("Tap")]
+    [SerializeField] float tapMaxTime = 0.25f;
+    [SerializeField] float tapMaxMovement = 15f;
+    [Header("AbilityIcon")]
+    [SerializeField] AbilityIconUI abilityIconPrefab;
+    [SerializeField] Transform abilityGrid;
+    [Header("DeselectButton")]
+    [SerializeField] GameObject deselectIcon;
+    [SerializeField] Button deselectButton;
+
     public Vector2Int SelectedGrid => selectedGrid;
 
     Vector3 dragStartWorldPos;
     bool dragging;
+    float touchStartTime;
+    Vector2 touchStartScreenPos;
+    bool potentialTap;
+    Pawn selectedPawn = null;
+    WorldObject selectedObject = null;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         Instance = this;
-        world = World.Instance;
         worldSize = world.WorldSize;
+        deselectButton.onClick.AddListener(DeselectObject);
     }
     void OnEnable()
     {
@@ -96,6 +114,11 @@ public class ScreenAndTouchManager : MonoBehaviour
         switch (touch.phase)
         {
             case UnityEngine.InputSystem.TouchPhase.Began:
+
+                touchStartTime = Time.time;
+                touchStartScreenPos = touch.screenPosition;
+                potentialTap = true;
+
                 dragStartWorldPos = cam.ScreenToWorldPoint(
                     new Vector3(
                         touch.screenPosition.x,
@@ -106,6 +129,11 @@ public class ScreenAndTouchManager : MonoBehaviour
                 break;
 
             case UnityEngine.InputSystem.TouchPhase.Moved:
+
+                // movement cancels tap
+                if (Vector2.Distance(touch.screenPosition, touchStartScreenPos) > tapMaxMovement)
+                    potentialTap = false;
+
                 if (!dragging) return;
 
                 Vector3 currentWorldPos = cam.ScreenToWorldPoint(
@@ -121,6 +149,18 @@ public class ScreenAndTouchManager : MonoBehaviour
                 break;
 
             case UnityEngine.InputSystem.TouchPhase.Ended:
+
+                dragging = false;
+
+                float touchTime = Time.time - touchStartTime;
+
+                if (potentialTap && touchTime <= tapMaxTime)
+                {
+                    HandleTap(touch.screenPosition);
+                }
+
+                break;
+
             case UnityEngine.InputSystem.TouchPhase.Canceled:
                 dragging = false;
                 break;
@@ -130,7 +170,7 @@ public class ScreenAndTouchManager : MonoBehaviour
     Vector2Int ScreenToGridPosition(Vector2 screenPos)
     {
         Vector2 worldPos = cam.ScreenToWorldPoint(screenPos);
-        return new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y + 0.5f));
+        return WorldUtility.WorldPosToGridPos(worldPos);
     }
 
     float worldSize;
@@ -189,5 +229,84 @@ public class ScreenAndTouchManager : MonoBehaviour
         cam.transform.position += beforeZoom - afterZoom;
 
         ClampCameraPosition();
+    }
+
+    void HandleTap(Vector2 screenPos)
+    {
+        if (selectedObject == null) return;
+
+        if (selectedPawn)
+        {
+            if (selectedPawn.isControlled)
+            {
+                selectedPawn.MakePathContinuous(ScreenToGridPosition(screenPos));
+            }
+            else
+            {
+                DeselectObject();
+            }
+            return;
+        }
+        DeselectObject();
+
+        //Debug.Log($"Tapped grid: {gridPos}");
+
+        // TODO:
+        // Select pawn
+        // Place building
+        // Open UI
+    }
+
+    public void SelectObject(WorldObject worldObject)
+    {
+        if (selectedObject != null)
+        {
+            selectedObject.SetSelected(false);
+            //if (selectedPawn != null)
+            //{
+            //    selectedPawn.StopControlPawn();
+            //}
+        }
+        selectedObject = worldObject;
+        selectedObject.SetSelected(true);
+        selectedPawn = selectedObject as Pawn;
+        ShowAbilities(selectedObject);
+        deselectIcon.SetActive(true);
+    }
+
+    public void ShowAbilities(WorldObject @object)
+    {
+        // Clear old UI
+        RemoveGridAbilities();
+
+        foreach (Ability ability in @object.abilities)
+        {
+            AbilityIconUI icon =
+                Instantiate(abilityIconPrefab, abilityGrid);
+
+            icon.Setup(ability, @object);
+        }
+    }
+    public void DeselectObject()
+    {
+        deselectIcon.SetActive(false);
+        selectedObject.SetSelected(false);
+        selectedPawn = null;
+        selectedObject = null;
+        RemoveGridAbilities();
+    }
+    public void RemoveGridAbilities()
+    {
+        foreach (Transform child in abilityGrid)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+    void LateUpdate()
+    {
+        if (selectedPawn != null)
+        {
+            PathDrawer.Instance.DrawPath(selectedPawn.CurrentWorldPos, selectedPawn.Paths);
+        }
     }
 }

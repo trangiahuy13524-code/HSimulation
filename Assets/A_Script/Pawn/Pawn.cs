@@ -4,7 +4,7 @@ using UnityEngine;
 
 public partial class Pawn : WorldObject
 {
-    public GameObject hightlight;
+    [SerializeField] GameObject hightlight;
 
     [SerializeField] BodyData bodyData;
     [SerializeField] HeadData headData;
@@ -16,7 +16,10 @@ public partial class Pawn : WorldObject
     public HairData HairData => hairData;
     //public FacialAnimator Facial => facial;
 
-    
+    public override Vector3 GetWorldPos()
+    {
+        return new Vector3(rb.position.x, rb.position.y - .5f, 0);
+    }
 
     public override string ObjectName
     {
@@ -32,12 +35,13 @@ public partial class Pawn : WorldObject
     }
     [SerializeField] TextMeshPro displayTextName;
     [SerializeField] Rigidbody2D rb;
+    public Vector2 CurrentWorldPos => rb.position;
     [SerializeField] Vector2Int lastQueuePosCache;
     
     Queue<Vector2Int> paths;
     [SerializeField] Vector2Int oldDestination;
-    [SerializeField] int maxSearch = 10;
-
+    [SerializeField] byte maxSearch = 10;
+    public Queue<Vector2Int> Paths => paths;
     
     public void ChangeDirection(Direction dir)
     {
@@ -56,32 +60,39 @@ public partial class Pawn : WorldObject
     }
 
     
-    private void OnDestroy()
-    {
-        if (world != null) world.ModifyPawnCountGrid(currentGridPos, false);
-    }
+    
     
     
 
     bool isRecalculating = false;
-    public bool Move()
+    public bool Move(byte speed)
     {
         if (paths.Count > 0)
         {
             Vector2Int nextPos = paths.Peek();
+            if (!IsCurrentJobStillValid())
+            {
+                PathReset();
+                return false;
+            }
             if (isRecalculating)
             {
                 if (paths.Count == 1 && nextPos == currentGridPos)
                 {
                     PathReset();
-                    isRecalculating = false;
-                    oldDestination = currentGridPos;
                     return false;
                 }
             }
             if (nextPos != currentGridPos && !world.IsPositionPathValid(nextPos))
             {
-                ReCalculatePath();
+                if (onDuty)
+                {
+                    ReCalculatePath();
+                }
+                else
+                {
+                    PathReset();
+                }
                 return false;
             }
             Vector2Int delta = nextPos - currentGridPos;
@@ -91,14 +102,19 @@ public partial class Pawn : WorldObject
             {
                 if (world.IsNotPassable(nextPos - new Vector2Int(x, 0)) || world.IsNotPassable(nextPos - new Vector2Int(0, y)))
                 {
-                    ReCalculatePath();
+                    if (onDuty)
+                    {
+                        ReCalculatePath();
+                    }
+                    else
+                    {
+                        PathReset();
+                    }
                     return false;
                 }
             }
 
             Vector2 pos = rb.position;
-
-            // Always face target while moving
 
 
             // reached tile
@@ -124,14 +140,23 @@ public partial class Pawn : WorldObject
                 world.ModifyPawnCountGrid(currentGridPos, true);
                 world.ModifyPawnCountGrid(oldGridPos, false);
                 oldGridPos = currentGridPos;
+                UpdateLayer();
                 if (paths.Count == 0)
                 {
-                    UpdateLayer();
+                    if (currentGridPos != oldDestination)
+                    {
+                        ReCalculatePath();
+                        return false;
+                    }
                     isRecalculating = false;
+                    if (isControlled)
+                    {
+                        ChangeDirection(Direction.South);
+                    }
                     return true;
                 }
             }
-            float moveSpeed = Time.deltaTime * genome.speed;
+            float moveSpeed = Time.deltaTime * genome.speed * speed;
             if (onDuty) moveSpeed *= 2;
             Vector2 tempPos;
             if (nextPos == currentGridPos)
@@ -149,11 +174,7 @@ public partial class Pawn : WorldObject
         }
         else
         {
-            if (currentGridPos != oldDestination)
-            {
-                ReCalculatePath();
-                return false;
-            }
+            
         }
 
         return true;
@@ -163,8 +184,9 @@ public partial class Pawn : WorldObject
     {
         foreach (Vector2Int path in pathList)
         {
-            //AddPathToQueue(path);
+            if (lastQueuePosCache == path && paths.Count > 0) continue;
             paths.Enqueue(path);
+            lastQueuePosCache = path;
         }
     }
 
@@ -197,6 +219,34 @@ public partial class Pawn : WorldObject
 
         if (path != null)
         {
+            paths.Clear();
+            oldDestination = target;
+            AddPathtoQueue(path);
+        }
+        else
+        {
+            Debug.Log("NoPath! nullxx");
+        }
+    }
+
+    public void MakePathContinuous(Vector2Int target)
+    {
+        List<Vector2Int> path;
+        if (paths.Count > 0)
+        {
+            Vector2Int next = paths.Peek();
+            path = AStarPathfinder.FindPath(next, target, maxSearch, currentGridPos);
+        }
+        else
+        {
+            path = AStarPathfinder.FindPath(currentGridPos, target, maxSearch);
+        }
+
+        
+
+        if (path != null)
+        {
+            paths.Clear();
             oldDestination = target;
             AddPathtoQueue(path);
         }
@@ -208,12 +258,9 @@ public partial class Pawn : WorldObject
 
     void ReCalculatePath()
     {
-        
-        Vector2Int targetPos = oldDestination;
-        var path = AStarPathfinder.FindPath(currentGridPos, targetPos, maxSearch);
+        var path = AStarPathfinder.FindPath(currentGridPos, oldDestination, maxSearch);
         if (path != null)
         {
-            //Debug.LogWarning("Recalculate!" + path.Count);
             isRecalculating = true;
             paths.Clear();
             AddPathtoQueue(path);
@@ -224,9 +271,30 @@ public partial class Pawn : WorldObject
         }
     }
 
-    private void PathReset()
+    public void PathReset()
     {
         paths.Clear();
         paths.Enqueue(currentGridPos);
+        oldDestination = currentGridPos;
+        destinationInvalid = true;
+        reachDestination = true;
+        isRecalculating = false;
     }
+
+    //public void PathResetContinuous()
+    //{
+    //    if (paths.Count > 0)
+    //    {
+    //        Vector2Int next = paths.Peek();
+    //        paths.Clear();
+    //        paths.Enqueue(next);
+    //        oldDestination = next;
+    //        canReachWork = false;
+    //        isRecalculating = false;
+    //    }
+    //    else
+    //    {
+    //        PathReset();
+    //    }
+    //}
 }

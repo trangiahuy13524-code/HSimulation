@@ -4,6 +4,8 @@ public class BuildingSpriteRender : MonoBehaviour
 {
     [SerializeField] BuildingSprite sprite;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Building building;
+    int layerOffset;
 
     private void Start()
     {
@@ -43,5 +45,10 @@ public class BuildingSpriteRender : MonoBehaviour
             transform.localPosition = new Vector3(sprite.horizontalOffset.x, sprite.horizontalOffset.y, 0);
         }
         return vert;
+    }
+
+    public virtual void UpdateLayer(int worldSize)
+    {
+        spriteRenderer.sortingOrder = (worldSize - 1) * 5 + 10 - building.CurrentGridPosition.y * 5;
     }
 }

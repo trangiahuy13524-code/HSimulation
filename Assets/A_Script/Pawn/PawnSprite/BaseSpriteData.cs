@@ -19,7 +19,7 @@ public class BaseSpriteData : BaseOffset
 
     protected override void Start()
     {
-        layerOffset = (World.Instance.WorldSize - 1)*5 + 10;
+        layerOffset = (World.Instance.WorldSize - 1)*5 + 11;
         if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
         {
