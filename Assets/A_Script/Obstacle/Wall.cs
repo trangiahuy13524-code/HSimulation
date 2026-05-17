@@ -4,8 +4,6 @@ using UnityEngine;
 public class Wall : WorldObject
 {
     [SerializeField] protected MapRenderer mapRenderer;
-    public AutoTillingTile wallTile;
-    public override Sprite IconSprite => wallTile.currentSprite;
     protected override bool isPassable => false;
     protected override void Start()
     {

@@ -191,7 +191,7 @@ public class World : MonoBehaviour
         if (!IsInside(position)) return;
         WorldObject ob = objects[position.x, position.y];
         if (ob == null) return;
-        Destroy(ob.gameObject);
+        ob.Despawn();
     }
 
     private void RefreshNeighborWall(int x, int y)

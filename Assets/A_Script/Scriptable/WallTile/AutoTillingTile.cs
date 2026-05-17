@@ -7,7 +7,6 @@ public class AutoTillingTile : TileBase
 {
     public string tileName;
     public Sprite[] sprites;
-    public Sprite currentSprite;
 
     public override void GetTileData(
         Vector3Int position,
@@ -15,7 +14,6 @@ public class AutoTillingTile : TileBase
         ref TileData tileData)
     {
         if (sprites != null && sprites.Length > 0) tileData.sprite = sprites[GetIndex(position, tilemap)];
-        currentSprite = tileData.sprite;
     }
 
     private int GetIndex(Vector3Int position, ITilemap tilemap)

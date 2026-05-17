@@ -6,10 +6,13 @@ public class ProgressBar : MonoBehaviour
     [SerializeField] Image fill;
 
     Transform target;
+    [SerializeField] float heightOffset = 0f;
 
-    public void Setup(Transform followTarget)
+    public void Setup(Transform followTarget, float heightOffset)
     {
         target = followTarget;
+        this.heightOffset = heightOffset;
+        transform.position = target.position + Vector3.up * heightOffset;
     }
 
     public void SetProgress(float value)
@@ -17,9 +20,9 @@ public class ProgressBar : MonoBehaviour
         fill.fillAmount = Mathf.Clamp01(value);
     }
 
-    void LateUpdate()
-    {
-        if (target != null)
-            transform.position = target.position + Vector3.up * 1.2f;
-    }
+    //void LateUpdate()
+    //{
+    //    if (target != null)
+    //        transform.position = target.position + Vector3.up * heightOffset;
+    //}
 }

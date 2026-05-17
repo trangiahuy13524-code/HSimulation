@@ -34,19 +34,19 @@ public partial class Pawn : WorldObject
             initialized = true;
         }
 
-    public void InitializePawn(GenomeRT mother)
+    public void InitializePawn(GenomeRT mother, GenomeRT father)
     {
         if (initialized) return;
 
         //-----------------------------------
         // 1. Create Runtime Genome
         //-----------------------------------
-        genome = new GenomeRT(mother);
+        genome = new GenomeRT(mother, father);
 
         //-----------------------------------
         // 2. Generate Appearance
         //-----------------------------------
-        GenerateBody(mother);
+        GenerateBody(mother, father);
 
         //-----------------------------------
         // 3. Skills (CORRECT PLACE)
@@ -79,26 +79,52 @@ public partial class Pawn : WorldObject
         SetBodySprite(body, head, hair);
     }
 
-    void GenerateBody(GenomeRT mother)
+    void GenerateBody(GenomeRT mother, GenomeRT father)
     {
-        bool restrictBody = mother.source.reproductionType == ReproductionType.Sexual;
+        bool restrictBody =
+            mother.source.reproductionType == ReproductionType.Sexual;
 
-        // Body => restricted only for sexual species
-        BodySpritePart body = Random.Range(0, 10) > 6 ?
-            mother.currentBody : PickValidSprite(mother.source.bodyData, restrictBody);
+        genome.currentBody = InheritPart(
+            mother.currentBody,
+            father.currentBody,
+            mother.source.bodyData,
+            restrictBody);
 
-        // Head => same rule as body
-        BodySpritePart head = Random.Range(0, 10) > 6 ?
-            mother.currentHead : PickValidSprite(mother.source.headData, restrictBody);
+        genome.currentHead = InheritPart(
+            mother.currentHead,
+            father.currentHead,
+            mother.source.headData,
+            restrictBody);
 
-        // Hair => same restricted
-        BodySpritePart hair = Random.Range(0, 10) > 6 ?
-            mother.currentHair : PickValidSprite(mother.source.hairData, restrictBody);
+        genome.currentHair = InheritPart(
+            mother.currentHair,
+            father.currentHair,
+            mother.source.hairData,
+            restrictBody);
 
-        genome.currentBody = body;
-        genome.currentHead = head;
-        genome.currentHair = hair;
-        SetBodySprite(body, head, hair);
+        SetBodySprite(
+            genome.currentBody,
+            genome.currentHead,
+            genome.currentHair);
+    }
+    BodySpritePart InheritPart(
+    BodySpritePart motherPart,
+    BodySpritePart fatherPart,
+    List<BodySpritePart> speciesPool,
+    bool restrict)
+    {
+        spriteBuffer.Clear();
+        spriteBuffer.Add(motherPart);
+        if (fatherPart != null)
+        {
+            spriteBuffer.Add(fatherPart);
+        }
+
+        bool inheritFromParent = Random.Range(0, 10) > 6;
+
+        return inheritFromParent
+            ? PickValidSprite(spriteBuffer, restrict)
+            : PickValidSprite(speciesPool, restrict);
     }
 
     BodySpritePart PickValidSprite(

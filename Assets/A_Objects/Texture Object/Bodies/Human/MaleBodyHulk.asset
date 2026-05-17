@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea6f0e5e3636a94386f143f8a9c04e3, type: 3}
   m_Name: MaleBodyHulk
   m_EditorClassIdentifier: Assembly-CSharp::DirectionSpriteData
-  offset: {x: 0, y: -0.3}
+  offset: {x: 0, y: -0.1}
   childOffset: {x: 0, y: 1.3}
   horizontalOffset: 0
   scale: {x: 0.27, y: 0.27}

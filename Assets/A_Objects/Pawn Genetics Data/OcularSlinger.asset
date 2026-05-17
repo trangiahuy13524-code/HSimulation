@@ -19,12 +19,13 @@ MonoBehaviour:
   baseMana: 0
   baseDefense: 15
   baseAttack: 2
-  baseMagicAttack: 0
+  magicPotential: 0
   baseSpeed: 1.6
   reproductionType: 2
-  femaleBirthChance: 0.6
+  femaleBirthChance: 0.5
   birthType: 0
   bodyData:
   - {fileID: 11400000, guid: e0f0ea417806d1f4886900e77d54e48f, type: 2}
   headData: []
   hairData: []
+  pawnSkills: []

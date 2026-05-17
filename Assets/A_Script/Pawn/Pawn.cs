@@ -16,9 +16,9 @@ public partial class Pawn : WorldObject
     public HairData HairData => hairData;
     //public FacialAnimator Facial => facial;
 
-    public override Vector3 GetWorldPos()
+    public override Vector2 GetWorldPos()
     {
-        return new Vector3(rb.position.x, rb.position.y - .5f, 0);
+        return new Vector2(rb.position.x, rb.position.y - .5f);
     }
 
     public override string ObjectName
@@ -149,7 +149,7 @@ public partial class Pawn : WorldObject
                         return false;
                     }
                     isRecalculating = false;
-                    if (isControlled)
+                    if (currentState == PawnState.Controlled)
                     {
                         ChangeDirection(Direction.South);
                     }

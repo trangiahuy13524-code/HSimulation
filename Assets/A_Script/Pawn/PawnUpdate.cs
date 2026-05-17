@@ -5,9 +5,11 @@ public partial class Pawn : WorldObject
 {
     [SerializeField] float idleTime = 2f;
     [SerializeField] float currentIdleTime = 0f;
-    public byte selectThreshHold = 0;
+    
 
-    public bool onDuty => currentJob != null || isControlled;
+    [SerializeField] PawnState currentState = PawnState.Idle;
+    public PawnState PawnState => currentState;
+    public bool onDuty => currentState == PawnState.Working || currentState == PawnState.Controlled;
     public string taskID;
     protected override void Start()
     {
@@ -18,8 +20,8 @@ public partial class Pawn : WorldObject
         oldDestination = currentGridPos;
         world.ModifyPawnCountGrid(currentGridPos, true);
         UpdateLayer();
-        ObjectName = "Noob";
-        currentJob = null;
+        //ObjectName = "Noob";
+        //currentJob = null;
     }
 
     private void Update()
@@ -31,17 +33,17 @@ public partial class Pawn : WorldObject
     {
         bool donePathing = Move(speed);
 
-        if (isControlled)
+        if (currentState == PawnState.Controlled)
         {
             return;
         }
 
         if (donePathing)
         {
-            if (currentJob != null)
+            if (currentState == PawnState.Working)
             {
                 reachDestination = true;
-                //ChangeDirection(currentJob.workBuilding.direction);
+                return;
             }
 
             if (currentIdleTime < idleTime)
@@ -57,23 +59,20 @@ public partial class Pawn : WorldObject
                 {
                     reachDestination = false;
                     destinationInvalid = false;
-                    currentJob.workBuilding.PerformWork(this);
+                    currentState = PawnState.Working;
+                    StartCoroutine(currentJob.workBuilding.WorkToDo(this));
                     return;
                 }
                 MakePath(GetRandomPosition());
             }
         }
-
-        //if (currentJob != null)
-        //{
-        //    currentJob.workBuilding.DoTask(this, taskID);
-        //}
     }
 
     protected override void OnDestroy()
     {
         if (world != null) world.ModifyPawnCountGrid(currentGridPos, false);
         ReturnJob();
+        if (progressBarInstance != null) Destroy(progressBarInstance.gameObject);
         base.OnDestroy();
     }
 
@@ -83,6 +82,7 @@ public partial class Pawn : WorldObject
         SetSelectThreshold(value);
     }
 
+    public byte selectThreshHold = 0;
     public void SetSelectThreshold(bool value)
     {
         if (value)

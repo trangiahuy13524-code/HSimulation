@@ -21,7 +21,6 @@ public abstract class Workable : Building
     }
     public WorkPosition GetAvailableWorkPos(Pawn pawn)
     {
-        Debug.Log(workPos.Count);
         if (workPos.Count > 0)
         {
             foreach(WorkPosition pos in workPos)
@@ -34,6 +33,7 @@ public abstract class Workable : Building
                 }
             }
         }
+        Debug.LogWarning("No available work position for " + pawn.ObjectName + " at " + objectName);
         return null;
     }
 
@@ -66,14 +66,10 @@ public abstract class Workable : Building
             workPos.Add(wP);
         }
     }
-    public virtual void PerformWork(Pawn pawn)
-    {
-        StartCoroutine(WorkToDo(pawn));
-    }
 
     protected abstract IEnumerator WorkRoutine(Pawn pawn, WorkPosition wP);
 
-    IEnumerator WorkToDo(Pawn pawn)
+    public IEnumerator WorkToDo(Pawn pawn)
     {
         WorkPosition wP = GetAvailableWorkPos(pawn);
         if (wP == null)

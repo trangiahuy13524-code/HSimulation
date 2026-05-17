@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(menuName = "Game/AbilityUI/controlPawn")]
+[CreateAssetMenu(menuName = "Game/AbilityUI", fileName = "controlPawn")]
 public class AbilityControlPawn : Ability
 {
     [SerializeField] Sprite onControl;
@@ -10,7 +10,7 @@ public class AbilityControlPawn : Ability
     {
         Pawn pawn = caster as Pawn;
         if (pawn == null) return;
-        if (pawn.isControlled)
+        if (pawn.PawnState == PawnState.Controlled)
         {
             pawn.StopControlPawn();
             image.sprite = icon;
@@ -27,7 +27,7 @@ public class AbilityControlPawn : Ability
         Pawn p = caster as Pawn;
         if (p != null)
         {
-            if (p.isControlled)
+            if (p.PawnState == PawnState.Controlled)
             {
                 return onControl;
             }

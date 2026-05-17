@@ -2,21 +2,20 @@ using UnityEngine;
 
 public partial class Pawn : WorldObject
 {
-    public bool isControlled { get; private set; } = false;
 
     public void ControlPawn()
     {
-        if (isControlled) return;
-        isControlled = true;
+        if (currentState == PawnState.Controlled) return;
         ChangeDirection(Direction.South);
         ReturnJob();
+        currentState = PawnState.Controlled;
         PathReset();
     }
 
     public void StopControlPawn()
     {
-        if (!isControlled) return;
-        isControlled = false;
+        if (currentState != PawnState.Controlled) return;
+        currentState = PawnState.Idle;
         PathReset();
     }
 }

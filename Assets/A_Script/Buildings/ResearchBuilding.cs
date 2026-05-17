@@ -27,34 +27,6 @@ public class ResearchBuilding: Workable
         jobManager.AddJob(job);
     }
 
-    //public override void DoTask(Pawn pawn, string taskName)
-    //{
-    //    if (taskName == "Gotobuilding" && !pawn.ReachWorkPos)
-    //    {
-    //        WorkPosition wP = GetAvailableWorkPos();
-    //        if (wP == null)
-    //        {
-    //            pawn.ReturnJob();
-    //            return;
-    //        }
-
-    //        if (!world.IsPositionPathValid(wP.workPos))
-    //        {
-    //            if (wP.workPos != pawn.CurrentGridPosition)
-    //            {
-    //                pawn.ReturnJob();
-    //                return;
-    //            }
-    //        }
-    //        Debug.Log("Do Job");
-
-    //        pawn.MakePath(wP.workPos);
-    //        wP.occupied = true;
-    //    }
-    //}
-
-    //static readonly WaitForSeconds workDelay =
-    //new WaitForSeconds(1f);
     protected override IEnumerator WorkRoutine(Pawn pawn, WorkPosition wP)
     {
         yield return pawn.MoveTo(wP.workPos);

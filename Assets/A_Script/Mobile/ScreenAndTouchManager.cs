@@ -237,7 +237,7 @@ public class ScreenAndTouchManager : MonoBehaviour
 
         if (selectedPawn)
         {
-            if (selectedPawn.isControlled)
+            if (selectedPawn.PawnState == PawnState.Controlled)
             {
                 selectedPawn.MakePathContinuous(ScreenToGridPosition(screenPos));
             }
@@ -289,14 +289,15 @@ public class ScreenAndTouchManager : MonoBehaviour
     }
     public void DeselectObject()
     {
-        deselectIcon.SetActive(false);
-        selectedObject.SetSelected(false);
+        if (deselectIcon != null) deselectIcon.SetActive(false);
+        if (selectedObject != null) selectedObject.SetSelected(false);
         selectedPawn = null;
         selectedObject = null;
         RemoveGridAbilities();
     }
     public void RemoveGridAbilities()
     {
+        if (abilityGrid == null) return;
         foreach (Transform child in abilityGrid)
         {
             Destroy(child.gameObject);

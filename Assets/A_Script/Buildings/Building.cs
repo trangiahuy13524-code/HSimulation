@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Building : WorldObject
 {
+    [SerializeField] protected Transform midPoint;
     [SerializeField] protected BuildingSpriteRender render;
     public Direction direction;
     [SerializeField] protected Vector2Int buildingGridSize = Vector2Int.one;
@@ -70,5 +71,14 @@ public class Building : WorldObject
             default:
                 return true;
         }
+    }
+
+    public override Vector2 GetWorldPos()
+    {
+        return midPoint.position;
+    }
+    public Vector2Int GetMidGrid()
+    {
+        return WorldUtility.WorldPosToGridPos(midPoint.position);
     }
 }

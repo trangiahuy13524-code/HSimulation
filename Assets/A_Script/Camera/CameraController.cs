@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
         Instance = this;
     }
 
-    public void MoveTo(Vector3 worldPos)
+    public void MoveTo(Vector2 worldPos)
     {
         transform.position =
             new Vector3(worldPos.x, worldPos.y, transform.position.z);

@@ -6,7 +6,6 @@ public partial class Pawn : WorldObject
 {
     Dictionary<Skill, byte> pawnSkills = new();
     [SerializeField] ProgressBar progressBarPrefab;
-    [SerializeField] Transform progressBarCanvas;
     ProgressBar progressBarInstance;
 
     public bool QualifyForSkills(IEnumerable<SkillRequirement> requiredSkills)
@@ -55,6 +54,8 @@ public partial class Pawn : WorldObject
 
     public void RemoveJob()
     {
+        currentState = PawnState.Idle;
+        jobManager.RemoveJob(currentJob);
         currentJob = null;
         ClearWorkPosition();
     }
@@ -62,6 +63,7 @@ public partial class Pawn : WorldObject
     {
         if (currentJob == null)
             return;
+        currentState = PawnState.Idle;
         jobManager.ReturnJob(currentJob);
 
         currentJob = null;
@@ -80,7 +82,7 @@ public partial class Pawn : WorldObject
     {
         if (currentJob != null)
         {
-            if (currentJob.workBuilding == null || currentJob.removed)
+            if (currentJob.workBuilding == null)
             {
                 RemoveJob();
                 return false;
@@ -105,7 +107,7 @@ public partial class Pawn : WorldObject
 
         while (!reachDestination)
         {
-            if (currentJob == null)
+            if (currentJob == null || currentJob.workBuilding == null)
             {
                 lastWorkResult = WorkResult.Cancelled;
                 yield break;
@@ -127,25 +129,26 @@ public partial class Pawn : WorldObject
         lastWorkResult = WorkResult.Failed;
         ChangeDirection(workDirection);
 
-        //progressBarInstance = Instantiate(progressBarPrefab, progressBarCanvas);
-        //progressBarInstance.Setup(transform);
+        progressBarInstance = Instantiate(progressBarPrefab, WorldCanvasUI.Instance.transform);
+        progressBarInstance.Setup(transform, 0.5f);
 
         while (currentJob != null &&
-               !currentJob.removed &&
+               currentJob.workBuilding != null &&
                currentJob.currentProgress < currentJob.totalProgress)
         {
-            currentJob.currentProgress += 1f;
-            //progressBarInstance.SetProgress(currentJob.currentProgress / currentJob.totalProgress);
+            currentJob.currentProgress += Time.deltaTime * 20;
+            progressBarInstance.SetProgress(currentJob.currentProgress / currentJob.totalProgress);
             yield return null;
         }
 
-        //if (progressBarInstance != null)
-        //    Destroy(progressBarInstance.gameObject);
-
-        if (currentJob == null || currentJob.removed)
+        Destroy(progressBarInstance.gameObject);
+        if (currentJob == null || currentJob.workBuilding == null)
+        {
             lastWorkResult = WorkResult.Cancelled;
-        else
-            lastWorkResult = WorkResult.Success;
+            yield break;
+        }
+
+        lastWorkResult = WorkResult.Success;
     }
     public IEnumerator FinishWork()
     {

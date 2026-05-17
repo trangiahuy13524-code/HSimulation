@@ -60,7 +60,7 @@ public class GenomeRT
         speed = RandomizeStat(geneticData.baseSpeed);
     }
 
-    public GenomeRT(GenomeRT mother)
+    public GenomeRT(GenomeRT mother, GenomeRT father)
     {
         source = mother.source;
         generation = mother.generation + 1;

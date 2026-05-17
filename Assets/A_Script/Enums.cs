@@ -85,3 +85,12 @@ public enum WorkResult
     Failed,
     Cancelled
 }
+
+public enum PawnState
+{
+    Idle,
+    Controlled,
+    Working,
+    Resting,
+    Dead
+}

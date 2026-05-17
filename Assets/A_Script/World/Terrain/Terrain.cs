@@ -6,6 +6,7 @@ public class Terrain : MonoBehaviour
     public static Terrain Instance { get; private set; }
     public float[,] noiseMap;
     public bool IsIsland = false;
+    [Header("Noise Settings")]
     [SerializeField] float noiseFrequency = 1f;
     [SerializeField] byte octaves = 4;
     [SerializeField] Vector2 noiseOffset;

@@ -70,7 +70,7 @@ public class WorldObject : MonoBehaviour
         }
     }
 
-    public virtual Vector3 GetWorldPos()
+    public virtual Vector2 GetWorldPos()
     {
         return WorldUtility.GridToWorld(currentGridPos);
     }
