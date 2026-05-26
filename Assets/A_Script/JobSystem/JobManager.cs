@@ -1,4 +1,6 @@
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class JobManager : MonoBehaviour
@@ -11,55 +13,94 @@ public class JobManager : MonoBehaviour
         availableJobs.Clear();
     }
 
-    [SerializeField] List<Job> availableJobs = new();
+    List<Job> availableJobs = new();
 
     public void AddJob(Job job)
     {
         availableJobs.Add(job);
     }
 
-    private HashSet<Workable> usedWorkables = new();
+    private HashSet<WorldObject> usedJobObjects = new();
 
-    public Job GetJob(Pawn pawn)
+    public async UniTask<Job> GetJob(
+    Pawn pawn,
+    CancellationToken token)
     {
         Job bestJob = null;
-        float bestScore = float.MinValue;
+        WorkPosition bestWorkPos = null;
 
-        usedWorkables.Clear();
+        //float bestScore = float.MinValue;
 
-        // CLEANUP + SEARCH in ONE PASS
+        usedJobObjects.Clear();
+
         for (int i = availableJobs.Count - 1; i >= 0; i--)
         {
+            if ((i & 7) == 0)
+                await UniTask.Yield(token);
+
             Job job = availableJobs[i];
 
-            // remove invalid immediately
-            if (job == null ||
-                job.workBuilding == null)
+            if (job == null || job.removed)
             {
                 availableJobs.RemoveAt(i);
                 continue;
             }
 
-            if (job.reserved)
+            if (job.reserved || !job.available)
                 continue;
 
-            if (!usedWorkables.Add(job.workBuilding))
+            if (!usedJobObjects.Add(job.refObject))
                 continue;
 
             if (!pawn.QualifyForSkills(job.requiredSkills))
                 continue;
 
-            float score = EvaluateJob(pawn, job);
+            WorkPosition foundPos = null;
 
-            if (score > bestScore)
+            if (job is WorkableJob workableJob)
             {
-                bestScore = score;
-                bestJob = job;
+                WorkPosition[] positions =
+                    workableJob.workBuilding.GetAvailableWorkPos();
+
+                foundPos =
+                    AStarPathfinder.FindReachableWorkPosition(
+                        pawn.CurrentGridPosition,
+                        positions,
+                        50);
+
+                if (foundPos == null)
+                    continue;
+
+                bestWorkPos = foundPos;
             }
+
+            bestJob = job;
+            
+            break;
+
+            //float score = EvaluateJob(pawn, job);
+
+            //if (score > bestScore)
+            //{
+            //    bestScore = score;
+            //    bestJob = job;
+            //    bestWorkPos = foundPos;
+            //}
         }
 
+        // reserve ONLY AFTER selection
         if (bestJob != null)
+        {
             bestJob.reserved = true;
+
+            if (bestJob is WorkableJob workableJob)
+            {
+                workableJob.reservedWorkPos = bestWorkPos;
+
+                if (bestWorkPos != null)
+                    bestWorkPos.occupied = true;
+            }
+        }
 
         return bestJob;
     }
@@ -67,7 +108,7 @@ public class JobManager : MonoBehaviour
     {
         Vector2Int diff =
             pawn.CurrentGridPosition -
-            job.workBuilding.GetMidGrid();
+            job.refObject.GetMidGrid();
 
         return -diff.sqrMagnitude;
     }
@@ -81,25 +122,5 @@ public class JobManager : MonoBehaviour
     {
         availableJobs.Remove(job);
     }
-
-    //private void Update()
-    //{
-    //    if (unreachableJobs.Count > 0)
-    //    {
-    //        if (currentTime > refreshUnreachableJobDuration)
-    //        {
-    //            currentTime = 0;
-    //            AddUnreachableJobToAvailableJob();
-    //        }
-    //        else
-    //        {
-    //            currentTime += Time.deltaTime;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        currentTime = 0;
-    //    }
-    //}
 
 }

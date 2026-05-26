@@ -37,12 +37,25 @@ public partial class Pawn : WorldObject
     [SerializeField] Rigidbody2D rb;
     public Vector2 CurrentWorldPos => rb.position;
     [SerializeField] Vector2Int lastQueuePosCache;
-    
+
     Queue<Vector2Int> paths;
     [SerializeField] Vector2Int oldDestination;
+    [SerializeField] Vector2Int itemDestination;
     [SerializeField] byte maxSearch = 10;
     public Queue<Vector2Int> Paths => paths;
-    
+
+    public Vector2Int direction()
+    {
+        switch (oldDirection)
+        {
+            case Direction.North: return Vector2Int.up;
+            case Direction.South: return Vector2Int.down;
+            case Direction.East: return Vector2Int.right;
+            case Direction.West: return Vector2Int.left;
+            default: return Vector2Int.zero;
+        }
+    }
+
     public void ChangeDirection(Direction dir)
     {
         if (dir == oldDirection) return;
@@ -58,11 +71,6 @@ public partial class Pawn : WorldObject
         if (headData) headData.UpdateLayer();
         if (hairData) hairData.UpdateLayer();
     }
-
-    
-    
-    
-    
 
     bool isRecalculating = false;
     public bool Move(byte speed)
@@ -143,11 +151,23 @@ public partial class Pawn : WorldObject
                 UpdateLayer();
                 if (paths.Count == 0)
                 {
-                    if (currentGridPos != oldDestination)
+                    if (withoutLast)
                     {
-                        ReCalculatePath();
-                        return false;
+                        if (currentGridPos != itemDestination)
+                        {
+                            ReCalculatePath();
+                            return false;
+                        }
                     }
+                    else
+                    {
+                        if (currentGridPos != oldDestination)
+                        {
+                            ReCalculatePath();
+                            return false;
+                        }
+                    }
+                    
                     isRecalculating = false;
                     if (currentState == PawnState.Controlled)
                     {
@@ -189,19 +209,37 @@ public partial class Pawn : WorldObject
             lastQueuePosCache = path;
         }
     }
+    public void AddPathtoQueueWithoutLast(List<Vector2Int> pathList)
+    {
+        if (pathList.Count > 1)
+        {
+            for (int i = 0; i < pathList.Count; i++) // skip last
+            {
+                Vector2Int path = pathList[i];
 
-    //void AddPathToQueue(Vector2Int path)
-    //{
-    //    if (paths.Count > 0)
-    //    {
-    //        if (lastQueuePosCache == path)
-    //        {
-    //            return;
-    //        }
-    //    }
-    //    paths.Enqueue(path);
-    //    lastQueuePosCache = path;
-    //}
+                if (i == pathList.Count - 1)
+                {
+                    if (path == oldDestination)
+                    {
+                        itemDestination = pathList[i - 1];
+                        break;
+                    }
+                }
+
+                if (lastQueuePosCache == path && paths.Count > 0)
+                    continue;
+
+                paths.Enqueue(path);
+                lastQueuePosCache = path;
+            }
+        }
+        else
+        {
+            Vector2Int path = pathList[0];
+            itemDestination = path;
+            paths.Enqueue(path);
+        }
+    }
 
     Vector2Int GetRandomPosition()
     {
@@ -222,6 +260,24 @@ public partial class Pawn : WorldObject
             paths.Clear();
             oldDestination = target;
             AddPathtoQueue(path);
+            withoutLast = false;
+        }
+        else
+        {
+            Debug.Log("NoPath! nullxx");
+        }
+    }
+    bool withoutLast = false;
+    public void MakePathWithoutLast(Vector2Int target)
+    {
+        var path = AStarPathfinder.FindPath(currentGridPos, target, maxSearch);
+
+        if (path != null)
+        {
+            paths.Clear();
+            itemDestination = oldDestination = target;
+            AddPathtoQueueWithoutLast(path);
+            withoutLast = true;
         }
         else
         {
@@ -263,7 +319,14 @@ public partial class Pawn : WorldObject
         {
             isRecalculating = true;
             paths.Clear();
-            AddPathtoQueue(path);
+            if (withoutLast)
+            {
+                AddPathtoQueueWithoutLast(path);
+            }
+            else
+            {
+                AddPathtoQueue(path);
+            }
         }
         else
         {
@@ -279,22 +342,6 @@ public partial class Pawn : WorldObject
         destinationInvalid = true;
         reachDestination = true;
         isRecalculating = false;
+        withoutLast = false;
     }
-
-    //public void PathResetContinuous()
-    //{
-    //    if (paths.Count > 0)
-    //    {
-    //        Vector2Int next = paths.Peek();
-    //        paths.Clear();
-    //        paths.Enqueue(next);
-    //        oldDestination = next;
-    //        canReachWork = false;
-    //        isRecalculating = false;
-    //    }
-    //    else
-    //    {
-    //        PathReset();
-    //    }
-    //}
 }

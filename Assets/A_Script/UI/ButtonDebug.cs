@@ -16,7 +16,7 @@ public class ButtonDebug : MonoBehaviour
         if (pawn) pawn.onClick.AddListener(() => {
             Vector2Int spawnPos = screenAndTouchManager.SelectedGrid;
             int index = Random.Range(0, pawnGeneticsData.Count);
-            World.Instance.GeneratePawn(spawnPos, pawnGeneticsData[index]);
+            World.Instance.CreatePawn(spawnPos, pawnGeneticsData[index]);
         });
         if (wall) wall.onClick.AddListener(() => {
             Vector2Int spawnPos = screenAndTouchManager.SelectedGrid;

@@ -1,5 +1,6 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
@@ -14,15 +15,19 @@ public class World : MonoBehaviour
     [SerializeField] Tilemap terrainTilemap;
     [SerializeField] Tilemap wallTileMap;
     [SerializeField] Transform wallDummies;
-    [SerializeField] GameObject wallDummyPrefab;
-    [SerializeField] GameObject pawnPrefab;
+    [SerializeField] Wall wallDummyPrefab;
+    [SerializeField] Pawn pawnPrefab;
+    [SerializeField] Item itemPrefab;
     [SerializeField] Transform cam;
     [SerializeField] short worldSize = 50;
 
     [SerializeField] byte maxPawnCount = 2;
     WorldObject[,] objects;
+    Item[,] items;
 
     byte[,] pawnCountOnGrid;
+    //HashSet<Vector2Int> pathInvalidTiles;
+    //HashSet<Vector2Int> notPassableTiles;
 
     public short WorldSize => worldSize;
 
@@ -33,6 +38,8 @@ public class World : MonoBehaviour
         Application.targetFrameRate = gameFPS;
 
         objects = new WorldObject[worldSize, worldSize];
+        items = new Item[worldSize, worldSize];
+
         if (maxPawnCount == 0) maxPawnCount = 1;
         pawnCountOnGrid = new byte[worldSize, worldSize];
         for (int x = 0; x < worldSize; x++)
@@ -66,83 +73,61 @@ public class World : MonoBehaviour
     }
     public bool IsPositionPathValid(Vector2Int position)
     {
-        if (!IsInside(position)) return false;
-        int x = position.x;
-        int y = position.y;
-        if (pawnCountOnGrid[x, y] >= maxPawnCount) return false;
-        WorldObject @object = objects[x, y];
+        if (pawnCountOnGrid[position.x, position.y] >= maxPawnCount) return false;
+        WorldObject @object = objects[position.x, position.y];
         if (@object != null)
         {
-            if (!@object.IsPassable) return false;
+            if (!@object.isPassable) return false;
         }
         return true;
     }
 
     public bool IsNotPassable(Vector2Int position)
     {
-        if (!IsInside(position)) return true;
         WorldObject @object = objects[position.x, position.y];
         if (@object != null)
         {
-            if (!@object.IsPassable) return true;
+            if (!@object.isPassable) return true;
         }
         return false;
     }
 
     public bool RegisterObject(WorldObject obj, Vector2Int position)
     {
+        //if (obj == null) return false;
         if (!IsInside(position)) return false;
-        int x = position.x;
-        int y = position.y;
-        if (objects[x, y] != null) return false;
-        objects[x, y] = obj;
+        if (objects[position.x, position.y] != null) return false;
+        objects[position.x, position.y] = obj;
+        //if (!obj.isPassable)
+        //{
+        //    notPassableTiles.Add(position);
+        //}
         return true;
     }
-    public void UnregisterObject(Vector2Int position)
+    public void RemoveObject(Vector2Int position)
     {
         if (!IsInside(position)) return;
-        objects[position.x, position.y] = null;
+        WorldObject ob = objects[position.x, position.y];
+        if (ob == null) return;
+        ob.Despawn();
     }
-    public void UnregisterObject(Vector2Int position, WorldObject obj)
+    public void RegisterItem(Item item, Vector2Int position)
     {
         if (!IsInside(position)) return;
-        int x = position.x;
-        int y = position.y;
-        if (objects[x, y] == obj)
-        {
-            objects[x, y] = null;
-        }
+        items[position.x, position.y] = item;
     }
-
-    public void ChangeObjectLocation(WorldObject obj, Vector2Int oldPosition, Vector2Int newPosition)
+    public void RemoveItem(Vector2Int position)
     {
-        if (obj == null) return;
-        if (oldPosition == newPosition) return;
-        int oldX = oldPosition.x;
-        int oldY = oldPosition.y;
-        int newX = newPosition.x;
-        int newY = newPosition.y;
-        if (oldX < 0 || oldX >= worldSize || oldY < 0 || oldY >= worldSize) return;
-        if (newX < 0 || newX >= worldSize || newY < 0 || newY >= worldSize) return;
-        if (objects[newX, newY] != null) return;
-        objects[newX, newY] = obj;
-        objects[oldX, oldY] = null;
-    }
-
-    public WorldObject GetObjectAtPosition(Vector2Int position)
-    {
-        if (!IsInside(position)) return null;
-        return objects[position.x, position.y];
+        if (!IsInside(position)) return;
+        Item ob = items[position.x, position.y];
+        if (ob == null) return;
+        ob.Despawn();
     }
 
     public WorldObject GetFastObjectAtPosition(Vector2Int position)
     {
         return objects[position.x, position.y];
     }
-    //public WorldObject GetFastObjectAtPosition(int x, int y)
-    //{
-    //    return objects[x, y];
-    //}
 
     public void SetWallTile(Vector2Int position, Tile tile)
     {
@@ -174,24 +159,15 @@ public class World : MonoBehaviour
         int x = position.x;
         int y = position.y;
         if (pawnCountOnGrid[x, y] > 0) return;
+        if (items[x, y] != null) return;
         WorldObject existingObject = objects[x, y];
         if (objects[x, y] != null) return;
         wallTileMap.SetTile(new Vector3Int(x, y, 0), wallTile);
         RefreshNeighborWall(x, y);
-        Transform dummyTf = Instantiate(wallDummyPrefab).transform;
-        dummyTf.parent = wallDummies;
-        Wall dummy = dummyTf.GetComponent<Wall>();
+        Wall dummy = Instantiate(wallDummyPrefab, wallDummies);
         dummy.CurrentGridPosition = position;
         //dummy.wallTile = wallTile;
         mapRenderer.map.SetTile(position, wallDummyTile);
-    }
-
-    public void RemoveObject(Vector2Int position)
-    {
-        if (!IsInside(position)) return;
-        WorldObject ob = objects[position.x, position.y];
-        if (ob == null) return;
-        ob.Despawn();
     }
 
     private void RefreshNeighborWall(int x, int y)
@@ -229,9 +205,52 @@ public class World : MonoBehaviour
             if (obj == null)
                 return current;
 
-            // cannot walk through blocked tile
-            if (!obj.IsPassable)
+            // explore neighbours
+            foreach (var dir in directions)
+            {
+                Vector2Int next = current + dir;
+
+                if (!IsInside(next) || objects[next.x, next.y] != null)
+                    continue;
+
+                if (!fnaVisited.Add(next))
+                    continue;
+
+                fnaQueue.Enqueue(next);
+            }
+        }
+        return null; // no available position
+    }
+
+    public Item FindNearestItem(ItemData itemData, ItemClass itemClass, Vector2Int start)
+    {
+        if (!IsInside(start))
+            return null;
+
+        fnaQueue.Clear();
+        fnaVisited.Clear();
+
+        fnaQueue.Enqueue(start);
+        fnaVisited.Add(start);
+
+        WorldObject obj;
+        Item item;
+
+        while (fnaQueue.Count > 0)
+        {
+            Vector2Int current = fnaQueue.Dequeue();
+            
+            item = items[current.x, current.y];
+            if (item != null && item.itemData == itemData && item.itemClass == itemClass)
+            {
+                Debug.Log($"Found item {item.itemData.itemName} at {current}");
+                return item;
+            }
+
+            obj = objects[current.x, current.y];
+            if (obj != null && !obj.isPassable && obj.CurrentGridPosition != start)
                 continue;
+
 
             // explore neighbours
             foreach (var dir in directions)
@@ -247,10 +266,10 @@ public class World : MonoBehaviour
                 fnaQueue.Enqueue(next);
             }
         }
-
-        return null; // no available position
+        return null;
     }
-    public Pawn GeneratePawn(Vector2Int position, GeneticData geneticData)
+
+    public Pawn CreatePawn(Vector2Int position, GeneticData geneticData)
     {
         if (pawnPrefab == null || geneticData == null) return null;
         if (!IsInside(position)) return null;
@@ -260,9 +279,9 @@ public class World : MonoBehaviour
         WorldObject existingObject = objects[x, y];
         if (existingObject != null)
         {
-            if (!existingObject.IsPassable) return null;
+            if (!existingObject.isPassable) return null;
         }
-        Pawn pawn = Instantiate(pawnPrefab).GetComponent<Pawn>();
+        Pawn pawn = Instantiate(pawnPrefab);
         if (pawn == null) return null;
         pawn.CurrentGridPosition = position;
         pawn.transform.position = new Vector3Int(x, y, 0);
@@ -270,13 +289,103 @@ public class World : MonoBehaviour
         return pawn;
     }
 
-    public void GenerateBuilding(Vector2Int position, BuildingObject buildingObject, Direction direction)
+    public void CreateBuilding(Vector2Int position, BuildingObject buildingObject, Direction direction)
     {
         if (buildingObject == null) return;
-        if (!buildingObject.building.checkPlaceable(position, direction, this)) return;
         buildingObject.building.direction = direction;
         buildingObject.building.CurrentGridPosition = position;
-        Instantiate(buildingObject.prefab);
+        if (!buildingObject.building.checkPlaceable(position, this)) return;
+        Instantiate(buildingObject.building);
+    }
+
+    public List<Item> CreateItem( Vector2Int position, ItemData itemData, ItemClass itemClass, int quantity)
+    {
+        if (itemData == null)
+            return null;
+
+        if (quantity <= 0)
+            return null;
+
+        if (!IsInside(position))
+            return null;
+
+        fnaQueue.Clear();
+        fnaVisited.Clear();
+
+        fnaQueue.Enqueue(position);
+        fnaVisited.Add(position);
+
+        List<Item> returnedItems = new();
+        WorldObject obj;
+        Item item;
+
+        while (fnaQueue.Count > 0 && quantity > 0)
+        {
+            Vector2Int current = fnaQueue.Dequeue();
+
+            obj = objects[current.x, current.y];
+            item = items[current.x, current.y];
+
+            if (item == null)
+            {
+                if (obj != null && !obj.canHoldItems)
+                    continue;
+                int stackAmount =
+                    itemData.isStackable ? Mathf.Min(quantity, itemData.maxStack) : 1;
+
+                Item createdItem = GenerateItem(
+                        current,
+                        itemData,
+                        itemClass,
+                        stackAmount);
+
+                returnedItems.Add(createdItem);
+
+                quantity -= stackAmount;
+            }
+            else if (item != null &&
+                     item.itemData == itemData &&
+                     item.itemClass == itemClass &&
+                     itemData.isStackable)
+            {
+                int availableSpace = itemData.maxStack - item.StackCount;
+
+                if (availableSpace > 0)
+                {
+                    int amountToAdd = Mathf.Min(availableSpace, quantity);
+
+                    item.StackCount += amountToAdd;
+
+                    quantity -= amountToAdd;
+
+                    returnedItems.Add(item);
+                }
+            }
+
+            foreach (var dir in directions)
+            {
+                Vector2Int next = current + dir;
+
+                if (!IsInside(next))
+                    continue;
+
+                if (!fnaVisited.Add(next))
+                    continue;
+
+                fnaQueue.Enqueue(next);
+            }
+        }
+
+        return returnedItems;
+    }
+    Item GenerateItem(Vector2Int position, ItemData itemData, ItemClass itemClass, int quantity)
+    {
+        Item item = Instantiate(itemPrefab);
+        item.CurrentGridPosition = position;
+        item.transform.position = new Vector3Int(position.x, position.y, 0);
+        item.InitializeItem(itemData, itemClass);
+        item.StackCount = quantity;
+        return item;
     }
 }
 

@@ -79,7 +79,7 @@ public enum State
     Anti
 }
 
-public enum WorkResult
+public enum ActionResult
 {
     Success,
     Failed,

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(menuName = "Game/AbilityUI", fileName = "removeObject")]
+[CreateAssetMenu(menuName = "Game/AbilityUI/RemoveObject")]
 public class AbilityDebugRemove : Ability
 {
     public override void Execute(WorldObject caster, Image image = null)
@@ -9,7 +9,6 @@ public class AbilityDebugRemove : Ability
         if (caster != null)
         {
             caster.Despawn();
-            ScreenAndTouchManager.Instance.RemoveGridAbilities();
         }
     }
 }

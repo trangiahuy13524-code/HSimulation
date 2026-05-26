@@ -1,0 +1,1053 @@
+fileFormatVersion: 2
+guid: dc3227c063c9c5e4687647fd5c231e9a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5800943089043631874
+    second: advResources_0
+  - first:
+      213: 7702662307057094682
+    second: advResources_1
+  - first:
+      213: 2732054388920105772
+    second: advResources_2
+  - first:
+      213: -8250438692868067857
+    second: advResources_3
+  - first:
+      213: -3412211633177298691
+    second: advResources_4
+  - first:
+      213: 1542517213567032624
+    second: advResources_5
+  - first:
+      213: -2178026442862099717
+    second: advResources_6
+  - first:
+      213: 8573214652551255944
+    second: advResources_7
+  - first:
+      213: -5918487064962636044
+    second: advResources_8
+  - first:
+      213: -6806342699055592156
+    second: advResources_9
+  - first:
+      213: 2022318706929788893
+    second: advResources_10
+  - first:
+      213: 1637386792866455591
+    second: advResources_11
+  - first:
+      213: 6007884319925812376
+    second: advResources_12
+  - first:
+      213: 2557492142281720090
+    second: advResources_13
+  - first:
+      213: 2616526638492334140
+    second: advResources_14
+  - first:
+      213: -2951268333663891605
+    second: advResources_15
+  - first:
+      213: -5541902503911985437
+    second: advResources_16
+  - first:
+      213: -1406070699702293088
+    second: advResources_17
+  - first:
+      213: -5878870270323688329
+    second: advResources_18
+  - first:
+      213: -394774370165357695
+    second: advResources_19
+  - first:
+      213: 2597451080140739537
+    second: advResources_20
+  - first:
+      213: -6125353891292191486
+    second: advResources_21
+  - first:
+      213: 3940659641175620238
+    second: advResources_22
+  - first:
+      213: -6316949607189242381
+    second: advResources_23
+  - first:
+      213: 8665516507661863767
+    second: advResources_24
+  - first:
+      213: -1908071704614064772
+    second: advResources_25
+  - first:
+      213: 7193501859201353138
+    second: advResources_26
+  - first:
+      213: -1672410675486986079
+    second: advResources_27
+  - first:
+      213: 1527620844511741829
+    second: advResources_28
+  - first:
+      213: 7649040200111024132
+    second: advResources_29
+  - first:
+      213: -7436117573473077915
+    second: advResources_30
+  - first:
+      213: 3171124491263019718
+    second: advResources_31
+  - first:
+      213: -1004285536548257900
+    second: advResources_32
+  - first:
+      213: 7626402982615655744
+    second: advResources_33
+  - first:
+      213: 3745308095329781180
+    second: advResources_34
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: advResources_0
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 787
+        width: 170
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20fe3b83107118050800000000000000
+      internalID: 5800943089043631874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_1
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 787
+        width: 169
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a10ddecce8a55ea60800000000000000
+      internalID: 7702662307057094682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_2
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 786
+        width: 169
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2b31aeddf43ae520800000000000000
+      internalID: 2732054388920105772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_3
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 786
+        width: 169
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fede576b8bd808d80800000000000000
+      internalID: -8250438692868067857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_4
+      rect:
+        serializedVersion: 2
+        x: 834
+        y: 781
+        width: 180
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df8f20a299365a0d0800000000000000
+      internalID: -3412211633177298691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_5
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 781
+        width: 176
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03d969eab3f186510800000000000000
+      internalID: 1542517213567032624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_6
+      rect:
+        serializedVersion: 2
+        x: 1213
+        y: 784
+        width: 176
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf20cc96d7816c1e0800000000000000
+      internalID: -2178026442862099717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_7
+      rect:
+        serializedVersion: 2
+        x: 1384
+        y: 775
+        width: 98
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 887dd7cbd4d2af670800000000000000
+      internalID: 8573214652551255944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_8
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 542
+        width: 184
+        height: 158
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f668253f5f4ddda0800000000000000
+      internalID: -5918487064962636044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_9
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 543
+        width: 177
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42dc73370630b81a0800000000000000
+      internalID: -6806342699055592156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_10
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 548
+        width: 159
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd76d253628b01c10800000000000000
+      internalID: 2022318706929788893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_11
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 545
+        width: 169
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 720a8b4ec9a29b610800000000000000
+      internalID: 1637386792866455591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_12
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 544
+        width: 132
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89c31d435fa406350800000000000000
+      internalID: 6007884319925812376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_13
+      rect:
+        serializedVersion: 2
+        x: 986
+        y: 542
+        width: 119
+        height: 161
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a110e80ad890e7320800000000000000
+      internalID: 2557492142281720090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_14
+      rect:
+        serializedVersion: 2
+        x: 1134
+        y: 539
+        width: 119
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c38bea06d15cf4420800000000000000
+      internalID: 2616526638492334140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_15
+      rect:
+        serializedVersion: 2
+        x: 1270
+        y: 546
+        width: 100
+        height: 127
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6fca17461dfa07d0800000000000000
+      internalID: -2951268333663891605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_16
+      rect:
+        serializedVersion: 2
+        x: 1379
+        y: 546
+        width: 116
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ee6a72f8053713b0800000000000000
+      internalID: -5541902503911985437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_17
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 320
+        width: 109
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ade827f522ac7ce0800000000000000
+      internalID: -1406070699702293088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_18
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 328
+        width: 203
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77c70c003ae0a6ea0800000000000000
+      internalID: -5878870270323688329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_19
+      rect:
+        serializedVersion: 2
+        x: 413
+        y: 323
+        width: 161
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1838ddb4dca758af0800000000000000
+      internalID: -394774370165357695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_20
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 326
+        width: 169
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d35e39defffb0420800000000000000
+      internalID: 2597451080140739537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_21
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 328
+        width: 134
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 205e8f1e61f5efaa0800000000000000
+      internalID: -6125353891292191486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_22
+      rect:
+        serializedVersion: 2
+        x: 968
+        y: 331
+        width: 145
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8abdfca01900b630800000000000000
+      internalID: 3940659641175620238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_23
+      rect:
+        serializedVersion: 2
+        x: 1148
+        y: 328
+        width: 161
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fd11770dcfa558a0800000000000000
+      internalID: -6316949607189242381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_24
+      rect:
+        serializedVersion: 2
+        x: 1339
+        y: 326
+        width: 159
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75b08721a59124870800000000000000
+      internalID: 8665516507661863767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_25
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 118
+        width: 124
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7d2180e4ea2585e0800000000000000
+      internalID: -1908071704614064772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_26
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 118
+        width: 117
+        height: 116
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b50fc004d374d360800000000000000
+      internalID: 7193501859201353138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_27
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 117
+        width: 121
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a0f609f9576ac8e0800000000000000
+      internalID: -1672410675486986079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_28
+      rect:
+        serializedVersion: 2
+        x: 519
+        y: 118
+        width: 124
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 587ca9c7013333510800000000000000
+      internalID: 1527620844511741829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_29
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 117
+        width: 119
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 408ec402989d62a60800000000000000
+      internalID: 7649040200111024132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_30
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 118
+        width: 110
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 565f815177a9dc890800000000000000
+      internalID: -7436117573473077915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_31
+      rect:
+        serializedVersion: 2
+        x: 943
+        y: 116
+        width: 121
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ca06486ce8120c20800000000000000
+      internalID: 3171124491263019718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_32
+      rect:
+        serializedVersion: 2
+        x: 1091
+        y: 117
+        width: 103
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49f7afc10af0012f0800000000000000
+      internalID: -1004285536548257900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_33
+      rect:
+        serializedVersion: 2
+        x: 1223
+        y: 117
+        width: 142
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04529c43b1d66d960800000000000000
+      internalID: 7626402982615655744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: advResources_34
+      rect:
+        serializedVersion: 2
+        x: 1383
+        y: 116
+        width: 110
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb5c6848ed10af330800000000000000
+      internalID: 3745308095329781180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      advResources_0: 5800943089043631874
+      advResources_1: 7702662307057094682
+      advResources_10: 2022318706929788893
+      advResources_11: 1637386792866455591
+      advResources_12: 6007884319925812376
+      advResources_13: 2557492142281720090
+      advResources_14: 2616526638492334140
+      advResources_15: -2951268333663891605
+      advResources_16: -5541902503911985437
+      advResources_17: -1406070699702293088
+      advResources_18: -5878870270323688329
+      advResources_19: -394774370165357695
+      advResources_2: 2732054388920105772
+      advResources_20: 2597451080140739537
+      advResources_21: -6125353891292191486
+      advResources_22: 3940659641175620238
+      advResources_23: -6316949607189242381
+      advResources_24: 8665516507661863767
+      advResources_25: -1908071704614064772
+      advResources_26: 7193501859201353138
+      advResources_27: -1672410675486986079
+      advResources_28: 1527620844511741829
+      advResources_29: 7649040200111024132
+      advResources_3: -8250438692868067857
+      advResources_30: -7436117573473077915
+      advResources_31: 3171124491263019718
+      advResources_32: -1004285536548257900
+      advResources_33: 7626402982615655744
+      advResources_34: 3745308095329781180
+      advResources_4: -3412211633177298691
+      advResources_5: 1542517213567032624
+      advResources_6: -2178026442862099717
+      advResources_7: 8573214652551255944
+      advResources_8: -5918487064962636044
+      advResources_9: -6806342699055592156
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

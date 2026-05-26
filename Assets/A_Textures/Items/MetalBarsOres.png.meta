@@ -1,0 +1,611 @@
+fileFormatVersion: 2
+guid: 9b5d40c702366f54b9fbbee87c926b02
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8165142833219694158
+    second: MetalBarsOres_0
+  - first:
+      213: -2264978975808496034
+    second: MetalBarsOres_1
+  - first:
+      213: 4725962106406505164
+    second: MetalBarsOres_2
+  - first:
+      213: 11963003497163103
+    second: MetalBarsOres_3
+  - first:
+      213: -4864928202586130549
+    second: MetalBarsOres_4
+  - first:
+      213: 8498910692495744811
+    second: MetalBarsOres_5
+  - first:
+      213: -2698102887205764688
+    second: MetalBarsOres_6
+  - first:
+      213: -5896546476980936233
+    second: MetalBarsOres_7
+  - first:
+      213: -8140755328814467579
+    second: MetalBarsOres_8
+  - first:
+      213: 5825074741811434423
+    second: MetalBarsOres_9
+  - first:
+      213: -159173072676817101
+    second: MetalBarsOres_10
+  - first:
+      213: -2229443378368494404
+    second: MetalBarsOres_11
+  - first:
+      213: -8226489734516139882
+    second: MetalBarsOres_12
+  - first:
+      213: 5768077175313702822
+    second: MetalBarsOres_13
+  - first:
+      213: -8657195396788475433
+    second: MetalBarsOres_14
+  - first:
+      213: 4137161292088242855
+    second: MetalBarsOres_15
+  - first:
+      213: 7478246704356434848
+    second: MetalBarsOres_16
+  - first:
+      213: -4121728979549244124
+    second: MetalBarsOres_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: MetalBarsOres_0
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 704
+        width: 190
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4ee262652a605170800000000000000
+      internalID: 8165142833219694158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_1
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 705
+        width: 186
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5ed4333f9d2190e0800000000000000
+      internalID: -2264978975808496034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_2
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 704
+        width: 197
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cca015e1f7df59140800000000000000
+      internalID: 4725962106406505164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_3
+      rect:
+        serializedVersion: 2
+        x: 737
+        y: 703
+        width: 193
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5925edc9408a2000800000000000000
+      internalID: 11963003497163103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_4
+      rect:
+        serializedVersion: 2
+        x: 971
+        y: 707
+        width: 188
+        height: 153
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b87f213439d4c7cb0800000000000000
+      internalID: -4864928202586130549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_5
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 708
+        width: 187
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2f5af3ee3232f570800000000000000
+      internalID: 8498910692495744811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_6
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 439
+        width: 211
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b105a028b96e8ad0800000000000000
+      internalID: -2698102887205764688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_7
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 441
+        width: 184
+        height: 158
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d168fd68324b2ea0800000000000000
+      internalID: -5896546476980936233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_8
+      rect:
+        serializedVersion: 2
+        x: 533
+        y: 442
+        width: 200
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50635a6f82a360f80800000000000000
+      internalID: -8140755328814467579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_9
+      rect:
+        serializedVersion: 2
+        x: 766
+        y: 442
+        width: 188
+        height: 161
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b355c77d92d6d050800000000000000
+      internalID: 5825074741811434423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_10
+      rect:
+        serializedVersion: 2
+        x: 990
+        y: 441
+        width: 184
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3377a490fe08acdf0800000000000000
+      internalID: -159173072676817101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_11
+      rect:
+        serializedVersion: 2
+        x: 1215
+        y: 441
+        width: 215
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb4cf793f0d6f01e0800000000000000
+      internalID: -2229443378368494404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_12
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 165
+        width: 210
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69894c91c23a5dd80800000000000000
+      internalID: -8226489734516139882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_13
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 167
+        width: 200
+        height: 143
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6af9c9f51a35c0050800000000000000
+      internalID: 5768077175313702822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_14
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 167
+        width: 199
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d9a64787a67bd780800000000000000
+      internalID: -8657195396788475433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_15
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 169
+        width: 200
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a27a6986462a6930800000000000000
+      internalID: 4137161292088242855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_16
+      rect:
+        serializedVersion: 2
+        x: 998
+        y: 166
+        width: 193
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a3a6e391c118c760800000000000000
+      internalID: 7478246704356434848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MetalBarsOres_17
+      rect:
+        serializedVersion: 2
+        x: 1230
+        y: 169
+        width: 214
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 425b889b45dacc6c0800000000000000
+      internalID: -4121728979549244124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MetalBarsOres_0: 8165142833219694158
+      MetalBarsOres_1: -2264978975808496034
+      MetalBarsOres_10: -159173072676817101
+      MetalBarsOres_11: -2229443378368494404
+      MetalBarsOres_12: -8226489734516139882
+      MetalBarsOres_13: 5768077175313702822
+      MetalBarsOres_14: -8657195396788475433
+      MetalBarsOres_15: 4137161292088242855
+      MetalBarsOres_16: 7478246704356434848
+      MetalBarsOres_17: -4121728979549244124
+      MetalBarsOres_2: 4725962106406505164
+      MetalBarsOres_3: 11963003497163103
+      MetalBarsOres_4: -4864928202586130549
+      MetalBarsOres_5: 8498910692495744811
+      MetalBarsOres_6: -2698102887205764688
+      MetalBarsOres_7: -5896546476980936233
+      MetalBarsOres_8: -8140755328814467579
+      MetalBarsOres_9: 5825074741811434423
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

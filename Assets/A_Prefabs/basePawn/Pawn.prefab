@@ -170,8 +170,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 43d79c886c13e684c84fa05a0ad8de82, type: 2}
   - {fileID: 11400000, guid: 2707dee392177d942b3a4b55e1a09d5d, type: 2}
   - {fileID: 11400000, guid: 3768dd38a274260439457c5503037291, type: 2}
-  progressBarPrefab: {fileID: 1262231344434887996, guid: 0c8d88bd4f62a4d4bae442c0f0e58227, type: 3}
-  lastWorkResult: 0
   hightlight: {fileID: 4880795307573488387}
   bodyData: {fileID: 7392281695847784443}
   headData: {fileID: 419506864584641546}
@@ -181,11 +179,8 @@ MonoBehaviour:
   rb: {fileID: -6656611525869205240}
   lastQueuePosCache: {x: 0, y: 0}
   oldDestination: {x: 0, y: 0}
-  maxSearch: 7
-  idleTime: 2
-  currentIdleTime: 0
-  selectThreshHold: 0
-  taskID: 
+  itemDestination: {x: 0, y: 0}
+  maxSearch: 10
   initialized: 0
   genome:
     source: {fileID: 0}
@@ -200,6 +195,12 @@ MonoBehaviour:
     currentHead: {fileID: 0}
     currentHair: {fileID: 0}
     generation: 0
+  idleTime: 2
+  currentIdleTime: 0
+  currentState: 0
+  taskID: 
+  selectThreshHold: 0
+  progressBarPrefab: {fileID: 1262231344434887996, guid: 0c8d88bd4f62a4d4bae442c0f0e58227, type: 3}
 --- !u!50 &-6656611525869205240
 Rigidbody2D:
   serializedVersion: 5

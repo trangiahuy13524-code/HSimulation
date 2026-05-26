@@ -1,8 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Game/Building/BuildingObject")]
 public class BuildingObject : ScriptableObject
 {
-    public GameObject prefab;
     public Building building;
 }

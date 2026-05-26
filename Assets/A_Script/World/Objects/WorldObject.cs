@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 
 public class WorldObject : MonoBehaviour
@@ -14,8 +15,8 @@ public class WorldObject : MonoBehaviour
 
     public List<Ability> abilities = new();
 
-    protected virtual bool isPassable => true;
-    public bool IsPassable => isPassable;
+    public virtual bool isPassable => true;
+    public virtual bool canHoldItems => false;
 
     public virtual string ObjectName
     {
@@ -73,5 +74,15 @@ public class WorldObject : MonoBehaviour
     public virtual Vector2 GetWorldPos()
     {
         return WorldUtility.GridToWorld(currentGridPos);
+    }
+
+    public virtual Vector2Int GetMidGrid()
+    {
+        return currentGridPos;
+    }
+
+    public virtual Vector2Int GetInteractionCell()
+    {
+        return currentGridPos;
     }
 }

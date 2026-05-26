@@ -43,6 +43,8 @@ public static class AStarPathfinder
     static int cachedSize = -1;
     static int currentSearchId = 0;
 
+    const int MAX_ITERATIONS = 5000;
+
     // =====================================================
     // MAIN ENTRY
     // =====================================================
@@ -75,7 +77,6 @@ public static class AStarPathfinder
         Node bestNode = startNode; // ⭐ fallback result
 
         int iterations = 0;
-        const int MAX_ITERATIONS = 5000;
 
         while (openQueue.Count > 0)
         {
@@ -193,7 +194,7 @@ public static class AStarPathfinder
         Node bestNode = startNode;
 
         int iterations = 0;
-        const int MAX_ITERATIONS = 5000;
+        
 
         while (openQueue.Count > 0)
         {
@@ -286,6 +287,183 @@ public static class AStarPathfinder
         }
 
         return BuildPath(bestNode);
+    }
+
+    public static WorkPosition FindReachableWorkPosition(
+    Vector2Int start,
+    IReadOnlyList<WorkPosition> workPositions,
+    byte maxRange)
+    {
+        if (workPositions == null || workPositions.Count == 0)
+            return null;
+
+        World world = World.Instance;
+        int size = world.WorldSize;
+
+        if (!IsInside(start, size))
+            return null;
+
+        EnsureBuffers(size);
+
+        currentSearchId++;
+        openQueue.Clear();
+
+        Node startNode = GetNode(start.x, start.y);
+        InitNode(startNode);
+
+        startNode.gCost = 0;
+
+        // heuristic = closest work position
+        int bestH = int.MaxValue;
+
+        for (int i = 0; i < workPositions.Count; i++)
+        {
+            WorkPosition wp = workPositions[i];
+
+            if (wp == null || wp.occupied)
+                continue;
+
+            int h = GetDistance(
+                start.x,
+                start.y,
+                wp.workPos.x,
+                wp.workPos.y);
+
+            if (h < bestH)
+                bestH = h;
+        }
+
+        startNode.hCost = bestH;
+
+        openQueue.Enqueue(startNode, startNode.fCost);
+
+        int iterations = 0;
+        const int MAX_ITERATIONS = 5000;
+
+        while (openQueue.Count > 0)
+        {
+            if (++iterations > MAX_ITERATIONS)
+                break;
+
+            Node current;
+
+            do
+            {
+                if (openQueue.Count == 0)
+                    return null;
+
+                current = openQueue.Dequeue();
+
+            } while (current.closedId == currentSearchId);
+
+            current.closedId = currentSearchId;
+
+            // SUCCESS CHECK
+            for (int i = 0; i < workPositions.Count; i++)
+            {
+                WorkPosition wp = workPositions[i];
+
+                if (wp == null || wp.occupied)
+                    continue;
+
+                if (current.x == wp.workPos.x &&
+                    current.y == wp.workPos.y)
+                {
+                    return wp;
+                }
+            }
+
+            foreach (var dir in directions)
+            {
+                int nx = current.x + dir.x;
+                int ny = current.y + dir.y;
+
+                if (!IsInside(nx, ny, size))
+                    continue;
+
+                int manhattan =
+                    Mathf.Abs(nx - start.x) +
+                    Mathf.Abs(ny - start.y);
+
+                if (manhattan > maxRange)
+                    continue;
+
+                Vector2Int neighborPos = new(nx, ny);
+
+                if (!world.IsPositionPathValid(neighborPos))
+                    continue;
+
+                // diagonal corner cutting
+                if (dir.x != 0 && dir.y != 0)
+                {
+                    if (world.IsNotPassable(
+                        new Vector2Int(current.x + dir.x, current.y)) ||
+                        world.IsNotPassable(
+                        new Vector2Int(current.x, current.y + dir.y)))
+                        continue;
+                }
+
+                Node neighbor = GetNode(nx, ny);
+                InitNode(neighbor);
+
+                if (neighbor.closedId == currentSearchId)
+                    continue;
+
+                int newCost =
+                    current.gCost +
+                    GetDistance(current.x, current.y, nx, ny);
+
+                if (newCost < neighbor.gCost)
+                {
+                    neighbor.gCost = newCost;
+
+                    // closest target heuristic
+                    int closestH = int.MaxValue;
+
+                    for (int i = 0; i < workPositions.Count; i++)
+                    {
+                        WorkPosition wp = workPositions[i];
+
+                        if (wp == null || wp.occupied)
+                            continue;
+
+                        int h = GetDistance(
+                            nx,
+                            ny,
+                            wp.workPos.x,
+                            wp.workPos.y);
+
+                        if (h < closestH)
+                            closestH = h;
+                    }
+
+                    neighbor.hCost = closestH;
+
+                    neighbor.parent = current;
+
+                    openQueue.Enqueue(neighbor, neighbor.fCost);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static List<Vector2Int> FindPathWithoutLast(
+    Vector2Int start,
+    Vector2Int target,
+    byte maxRange)
+    {
+        List<Vector2Int> path =
+            FindPath(start, target, maxRange);
+
+        if (path == null || path.Count <= 1)
+            return path;
+
+        // remove final destination tile
+        path.RemoveAt(path.Count - 1);
+
+        return path;
     }
 
     // =====================================================

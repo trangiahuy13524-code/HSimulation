@@ -4,7 +4,7 @@ using UnityEngine;
 public class Wall : WorldObject
 {
     [SerializeField] protected MapRenderer mapRenderer;
-    protected override bool isPassable => false;
+    public override bool isPassable => false;
     protected override void Start()
     {
         base.Start();

@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class Building : WorldObject
 {
+
     [SerializeField] protected Transform midPoint;
     [SerializeField] protected BuildingSpriteRender render;
     public Direction direction;
-    [SerializeField] protected Vector2Int buildingGridSize = Vector2Int.one;
-    protected BuildingSprite sprite;
-    protected override bool isPassable => false;
+    [SerializeField] public Vector2Int buildingGridSize = Vector2Int.one;
+    public BuildingSprite sprite;
+    public override bool isPassable => false;
+    public override bool canHoldItems => true;
 
     Vector2Int xRange;
     Vector2Int yRange;
@@ -33,17 +35,17 @@ public class Building : WorldObject
         render.UpdateLayer(world.WorldSize);
     }
 
-    protected override void OnDestroy()
-    {
-        for (int i = xRange.x; i < xRange.y; i++)
-            for (int j = yRange.x; j < yRange.y; j++)
-                world.RemoveObject(new Vector2Int(i, j));
-        base.OnDestroy();
-    }
+    //protected override void OnDestroy()
+    //{
+    //    for (int i = xRange.x; i < xRange.y; i++)
+    //        for (int j = yRange.x; j < yRange.y; j++)
+    //            world.FastRemoveObjectData(new Vector2Int(i, j));
+    //    base.OnDestroy();
+    //}
 
-    public virtual bool checkPlaceable(Vector2Int position, Direction direction, World world)
+    public virtual bool checkPlaceable(Vector2Int position, World world)
     {
-        bool isVert = checkVert(direction);
+        bool isVert = checkVert();
         int sizeX = isVert?buildingGridSize.y:buildingGridSize.x;
         int sizeY = isVert ? buildingGridSize.x : buildingGridSize.y;
         Vector2Int tempPos;
@@ -58,7 +60,7 @@ public class Building : WorldObject
         return true;
     }
 
-    bool checkVert(Direction direction)
+    public bool checkVert()
     {
         switch (direction)
         {
@@ -77,7 +79,7 @@ public class Building : WorldObject
     {
         return midPoint.position;
     }
-    public Vector2Int GetMidGrid()
+    public override Vector2Int GetMidGrid()
     {
         return WorldUtility.WorldPosToGridPos(midPoint.position);
     }

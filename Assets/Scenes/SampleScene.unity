@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &118410442
+--- !u!1 &7543944
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,22 +127,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 118410443}
-  - component: {fileID: 118410444}
+  - component: {fileID: 7543945}
+  - component: {fileID: 7543946}
   m_Layer: 0
-  m_Name: Item
+  m_Name: LastFrameUpdate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &118410443
+--- !u!4 &7543945
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 118410442}
+  m_GameObject: {fileID: 7543944}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -151,28 +151,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &118410444
+--- !u!114 &7543946
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 118410442}
+  m_GameObject: {fileID: 7543944}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07241424591969c469404a2e13e28f0f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ec3e86fa1a539f40952a440c0e74f26, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Item
-  objectName: 
-  iconSprite: {fileID: 0}
-  currentGridPos: {x: 0, y: 0}
-  oldGridPos: {x: 0, y: 0}
-  world: {fileID: 0}
-  jobManager: {fileID: 0}
-  abilities: []
-  itemData: {fileID: 0}
-  initialized: 0
-  itemClass: 0
+  m_EditorClassIdentifier: Assembly-CSharp::LastFrameUpdate
 --- !u!1 &158177104
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,7 +405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1cf4446d2a9ac64ea6fe1133d10247d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JobManager
-  availableJobs: []
 --- !u!4 &445384739
 Transform:
   m_ObjectHideFlags: 0
@@ -2549,8 +2538,9 @@ MonoBehaviour:
   terrainTilemap: {fileID: 1831696277}
   wallTileMap: {fileID: 1621294686}
   wallDummies: {fileID: 1869311886}
-  wallDummyPrefab: {fileID: 3711314298697693449, guid: a0a0e1285072c174ea8210dd8afdd997, type: 3}
-  pawnPrefab: {fileID: 3841082101150572428, guid: 98aeb43687677c84dac3183fd6135da7, type: 3}
+  wallDummyPrefab: {fileID: -7234175155863296057, guid: a0a0e1285072c174ea8210dd8afdd997, type: 3}
+  pawnPrefab: {fileID: 3944923890744551288, guid: 98aeb43687677c84dac3183fd6135da7, type: 3}
+  itemPrefab: {fileID: 1036136611791510917, guid: 2b484b790d9884a4ba7d2fbe44e2da9e, type: 3}
   cam: {fileID: 519420032}
   worldSize: 80
   maxPawnCount: 1
@@ -2574,8 +2564,11 @@ MonoBehaviour:
   wallTile: {fileID: 11400000, guid: c0c35e3181e41a2448e75ff377666282, type: 2}
   tileToPlace: {fileID: 11400000, guid: 27cfe5d6c1924e54da66ec58d0b0e28f, type: 2}
   spawnPos: {x: 0, y: 0}
+  debugItem: {fileID: 11400000, guid: c94cc682a04459d46a67e121ba5dc913, type: 2}
+  debugItemClass: 0
+  debugItemAmount: 31
   spawnCount: 1
-  building: {fileID: 11400000, guid: fe95614252d5ef448bfeb3809599d0bd, type: 2}
+  building: {fileID: 11400000, guid: f9f3561038d1c8d4d997c928bda94bfb, type: 2}
   buildingDirection: 1
 --- !u!1 &1831696274
 GameObject:
@@ -3156,4 +3149,4 @@ SceneRoots:
   - {fileID: 445384739}
   - {fileID: 1343441356}
   - {fileID: 1904520070}
-  - {fileID: 118410443}
+  - {fileID: 7543945}

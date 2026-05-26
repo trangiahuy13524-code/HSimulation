@@ -23,7 +23,7 @@ MonoBehaviour:
   magicPotential: 0.2
   baseSpeed: 1
   reproductionType: 1
-  femaleBirthChance: 0.6
+  femaleBirthChance: 0.45
   birthType: 1
   bodyData:
   - {fileID: 11400000, guid: d4f53e22bae8bed4a981aeeea78f8b3b, type: 2}
@@ -46,3 +46,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4cb854df1641fbe4db134c3534c61831, type: 2}
   pawnSkills:
   - {fileID: 11400000, guid: d4034aa131887ca4aa4c4eb53c0a4195, type: 2}
+  - {fileID: 11400000, guid: 0fcb770092584054abe9d1baf744b7c3, type: 2}

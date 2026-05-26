@@ -1,23 +1,28 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
-using UnityEngine.Tilemaps;
 
 public class WorldDebug : MonoBehaviour
 {
-    [SerializeField] World world;
-    [SerializeField] MapRenderer mapRenderer;
-    [SerializeField] ScreenAndTouchManager screenAndTouchManager;
-    [SerializeField] List<GeneticData> pawnGeneticsData = new();
-    [SerializeField] AutoTillingTile wallTile;
-    [SerializeField] PlaceableTile tileToPlace;
-    [SerializeField] Vector2Int spawnPos = Vector2Int.zero;
-    [SerializeField] byte spawnCount = 1;
-    [SerializeField] BuildingObject building;
-    [SerializeField] Direction buildingDirection = Direction.South;
+    public static WorldDebug Instance { get; private set; }
+
+    public World world;
+    public MapRenderer mapRenderer;
+    public ScreenAndTouchManager screenAndTouchManager;
+    public List<GeneticData> pawnGeneticsData = new();
+    public AutoTillingTile wallTile;
+    public PlaceableTile tileToPlace;
+    public Vector2Int spawnPos = Vector2Int.zero;
+    public ItemData debugItem;
+    public ItemClass debugItemClass;
+    public int debugItemAmount= 1;
+    public byte spawnCount = 1;
+    public BuildingObject building;
+    public Direction buildingDirection = Direction.South;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Instance = this;
         screenAndTouchManager = ScreenAndTouchManager.Instance;
         for (int i = 0; i < spawnCount; i++)
         {
@@ -27,7 +32,7 @@ public class WorldDebug : MonoBehaviour
             int size = world.WorldSize;
             Vector2Int spawnPosition = new Vector2Int((size + 1)/2 - spawnCount + i*2, (size - 1) / 2);
             int index = Random.Range(0, count);
-            world.GeneratePawn(spawnPosition, pawnGeneticsData[index]);
+            world.CreatePawn(spawnPosition, pawnGeneticsData[index]);
         }
 
         if (wallTile)
@@ -63,7 +68,11 @@ public class WorldDebug : MonoBehaviour
         }
         if (Keyboard.current.bKey.wasPressedThisFrame)
         {
-            world.GenerateBuilding(screenAndTouchManager.SelectedGrid, building, buildingDirection);
+            world.CreateBuilding(screenAndTouchManager.SelectedGrid, building, buildingDirection);
+        }
+        if (Keyboard.current.nKey.wasPressedThisFrame)
+        {
+            world.CreateItem(screenAndTouchManager.SelectedGrid, debugItem, debugItemClass, debugItemAmount);
         }
     }
 }

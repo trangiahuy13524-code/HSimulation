@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Game/Building/BuildingSprite")]
 public class BuildingSprite : ScriptableObject
 {
     public Vector2 size = Vector2Int.one;

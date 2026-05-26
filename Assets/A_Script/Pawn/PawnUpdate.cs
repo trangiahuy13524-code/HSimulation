@@ -1,5 +1,9 @@
+using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public partial class Pawn : WorldObject
 {
@@ -10,10 +14,9 @@ public partial class Pawn : WorldObject
     [SerializeField] PawnState currentState = PawnState.Idle;
     public PawnState PawnState => currentState;
     public bool onDuty => currentState == PawnState.Working || currentState == PawnState.Controlled;
-    public string taskID;
     protected override void Start()
     {
-        displayTextName.sortingOrder = 1000;
+        displayTextName.sortingOrder = 2000;
         transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
         paths = new Queue<Vector2Int>();
         oldGridPos = currentGridPos;
@@ -34,44 +37,76 @@ public partial class Pawn : WorldObject
         bool donePathing = Move(speed);
 
         if (currentState == PawnState.Controlled)
+            return;
+
+        if (!donePathing)
+            return;
+
+        // reached movement destination
+        if (currentState == PawnState.Working)
         {
+            reachDestination = true;
             return;
         }
 
-        if (donePathing)
+        // idle timer
+        if (currentIdleTime < idleTime)
         {
-            if (currentState == PawnState.Working)
-            {
-                reachDestination = true;
-                return;
-            }
-
-            if (currentIdleTime < idleTime)
-            {
-                currentIdleTime += Time.deltaTime * speed;
-            }
-            else
-            {
-                currentIdleTime = 0f;
-                bool jobExisted = TryFindJob();
-
-                if (jobExisted)
-                {
-                    reachDestination = false;
-                    destinationInvalid = false;
-                    currentState = PawnState.Working;
-                    StartCoroutine(currentJob.workBuilding.WorkToDo(this));
-                    return;
-                }
-                MakePath(GetRandomPosition());
-            }
+            currentIdleTime += Time.deltaTime * speed;
+            return;
         }
+
+        // async think
+        if (thinkCTS == null)
+        {
+            thinkCTS = new CancellationTokenSource();
+
+            ThinkAsync(thinkCTS.Token).Forget();
+        }
+    }
+
+    public static bool aPawnThoughtThisFrame = false;
+    CancellationTokenSource thinkCTS;
+    async UniTaskVoid ThinkAsync(CancellationToken token)
+    {
+        if (aPawnThoughtThisFrame)
+        {
+            thinkCTS = null;
+            return;
+        }
+
+        aPawnThoughtThisFrame = true;
+
+        bool jobExisted = await TryFindJob(token);
+
+        currentIdleTime = 0f;
+
+        if (jobExisted)
+        {
+            Debug.Log($"Pawn found job");
+            currentState = PawnState.Working;
+
+            jobCTS = new CancellationTokenSource();
+
+            // IMPORTANT:
+            // await job
+            currentJob.DoJob(this, jobCTS.Token).Forget();
+        }
+        else
+        {
+            MakePath(GetRandomPosition());
+        }
+        thinkCTS.Dispose();
+        thinkCTS = null;
     }
 
     protected override void OnDestroy()
     {
         if (world != null) world.ModifyPawnCountGrid(currentGridPos, false);
         ReturnJob();
+        jobCTS?.Cancel();
+        jobCTS = null;
+        thinkCTS?.Cancel();
         if (progressBarInstance != null) Destroy(progressBarInstance.gameObject);
         base.OnDestroy();
     }
