@@ -1,6 +1,4 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 
 public class WorldObject : MonoBehaviour
@@ -50,7 +48,6 @@ public class WorldObject : MonoBehaviour
     protected virtual void Start()
     {
         transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
-        world.RegisterObject(this, currentGridPos);
     }
 
     public virtual void SetSelected(bool value)
@@ -77,11 +74,6 @@ public class WorldObject : MonoBehaviour
     }
 
     public virtual Vector2Int GetMidGrid()
-    {
-        return currentGridPos;
-    }
-
-    public virtual Vector2Int GetInteractionCell()
     {
         return currentGridPos;
     }

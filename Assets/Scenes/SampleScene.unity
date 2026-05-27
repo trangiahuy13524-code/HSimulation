@@ -405,6 +405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1cf4446d2a9ac64ea6fe1133d10247d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JobManager
+  world: {fileID: 1819015517}
 --- !u!4 &445384739
 Transform:
   m_ObjectHideFlags: 0
@@ -1350,9 +1351,6 @@ MonoBehaviour:
   screenAndTouchManager: {fileID: 1403548826}
   pawnGeneticsData:
   - {fileID: 11400000, guid: 929f73aa2e71865409282e24d3565be9, type: 2}
-  - {fileID: 11400000, guid: dff27e693eb813e47b02babd77f4739e, type: 2}
-  - {fileID: 11400000, guid: 284f3e51e592a5b44b4e50072ee01556, type: 2}
-  - {fileID: 11400000, guid: 7bddb8394beeaab498899d9c32d8ac0a, type: 2}
   wallTile: {fileID: 11400000, guid: c0c35e3181e41a2448e75ff377666282, type: 2}
 --- !u!1 &960279664
 GameObject:

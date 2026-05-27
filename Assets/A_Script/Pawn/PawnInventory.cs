@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public partial class Pawn : WorldObject
+public partial class Pawn
 {
     Dictionary<InventoryKey, int> inventory = new Dictionary<InventoryKey, int>();
 

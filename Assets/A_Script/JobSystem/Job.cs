@@ -10,9 +10,9 @@ public abstract class Job
     public IEnumerable<SkillRequirement> requiredSkills;
     public float currentProgress = 0;
     public float totalProgress = 0;
-    public virtual bool removed => false;
+    public virtual bool removed => externalRemoved;
+    public bool externalRemoved = false;
     public bool reserved;
-    public bool available = true;
     //public Pawn worker;
     public Action<Pawn> result;
 
@@ -20,9 +20,9 @@ public abstract class Job
     Pawn worker,
     CancellationToken token);
 
-    public virtual void CheckCondition()
+    public virtual bool ProgressCondition()
     {
-        available = true;
+        return true;
     }
 }
 
@@ -31,7 +31,7 @@ public class WorkableJob : Job
     public override WorldObject refObject => workBuilding;
     public BuildingWorkable workBuilding;
     public WorkPosition reservedWorkPos;
-    public override bool removed => workBuilding == null;
+    public override bool removed => workBuilding == null || externalRemoved;
     public override UniTask DoJob(
     Pawn worker,
     CancellationToken token)
@@ -62,10 +62,6 @@ public class WorkableJob : Job
                 await FinishWork(pawn, token);
                 pawn.RemoveJob();
                 break;
-
-            case ActionResult.Failed:
-                OnJobFailed(pawn);
-                break;
             case ActionResult.Cancelled:
                 OnJobCancelled(pawn);
                 break;
@@ -93,11 +89,6 @@ public class WorkableJob : Job
             token);
     }
 
-    public virtual void OnJobFailed(Pawn pawn)
-    {
-        pawn.ReturnJob();
-    }
-
     public virtual void OnJobCancelled(Pawn pawn)
     {
         pawn.ReturnJob();
@@ -109,7 +100,8 @@ public class CraftJob : WorkableJob
     public List<RequireItemData> requiredItemDatas;
     public List<Item> reservedItems = new();
     public ItemOutputData outputItemData;
-    private BuildingCraft craftBuilding => (BuildingCraft)workBuilding;
+    public RequireItem itemFound;
+    public BuildingCraft craftBuilding => (BuildingCraft)workBuilding;
 
     public void OnBuildingCraftDestroyed()
     {
@@ -142,6 +134,7 @@ public class CraftJob : WorkableJob
         reservedItems.Clear();
     }
 
+    
     protected override async UniTask<ActionResult> WorkRoutine(
     Pawn pawn,
     WorkPosition wP,
@@ -151,6 +144,7 @@ public class CraftJob : WorkableJob
         // =========================================
         // COLLECT ALL REQUIRED ITEMS
         // =========================================
+        bool first = true;
         for (int i = 0; i < requiredItemDatas.Count; i++)
         {
             RequireItemData required = requiredItemDatas[i];
@@ -171,28 +165,31 @@ public class CraftJob : WorkableJob
             {
                 token.ThrowIfCancellationRequested();
 
-                RequireItem item = craftBuilding.FindItem(pawn, wP.workPos, requiredItemDatas);
+                if (!first)
+                {
+                    itemFound = await craftBuilding.FindItem(pawn, wP.workPos, requiredItemDatas);
+                    if (itemFound.item == null)
+                    {
+                        return ActionResult.Cancelled;
+                    }
+                }
+                else
+                {
+                    first = false;
+                    if (itemFound.item == null)
+                    {
+                        continue;
+                    }
+                }
+                
 
-                // no more item found in world
-                if (item.item == null)
-                    return ActionResult.Failed;
-                Debug.Log("Found item: " + item.item.name + " at " + item.item.CurrentGridPosition);
-
-                item.item.reserved = true;
-
-                int pickupAmount =
-                    Mathf.Min(
-                        remainingNeeded,
-                        item.item.StackCount);
+                int pickupAmount = remainingNeeded;
 
 
-                result = await pawn.MoveToAndPickUp(
-                        item.item,
+                (result, pickupAmount) = await pawn.MoveToAndPickUp(
+                        itemFound.item,
                         pickupAmount,
                         token);
-
-                if (item.item != null)
-                    item.item.reserved = false;
 
                 if (result != ActionResult.Success)
                 {

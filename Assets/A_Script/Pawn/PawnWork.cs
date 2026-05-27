@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public partial class Pawn : WorldObject
+public partial class Pawn
 {
     Dictionary<Skill, byte> pawnSkills = new();
     [SerializeField] ProgressBar progressBarPrefab;
@@ -108,7 +108,7 @@ public partial class Pawn : WorldObject
     {
         reachDestination = false;
         destinationInvalid = false;
-        MakePath(targetPos);
+        await MakePath(targetPos);
 
         while (!reachDestination)
         {
@@ -121,44 +121,46 @@ public partial class Pawn : WorldObject
         }
 
         if (destinationInvalid)
-            return ActionResult.Failed;
+            return ActionResult.Cancelled;
 
         return ActionResult.Success;
     }
-    public async UniTask<ActionResult> MoveToAndPickUp(Item item, int amount, CancellationToken token)
+    public async UniTask<(ActionResult, int)> MoveToAndPickUp(Item item, int amount, CancellationToken token)
     {
-        if (item == null)
-            return ActionResult.Failed;
+        
         reachDestination = false;
         destinationInvalid = false;
 
-        MakePathWithoutLast(item.CurrentGridPosition);
+        await MakePathWithoutLast(item.CurrentGridPosition);
         while (!reachDestination)
         {
             token.ThrowIfCancellationRequested();
 
             if (currentJob == null || currentJob.removed)
-                return ActionResult.Cancelled;
+                return (ActionResult.Cancelled, 0);
+
+            if (item == null)
+                return (ActionResult.Success, 0);
 
             await UniTask.Yield(token);
         }
 
         if (destinationInvalid)
-            return ActionResult.Failed;
+            return (ActionResult.Cancelled, 0);
 
         if (item == null || item.CurrentGridPosition != oldDestination)
-            return ActionResult.Failed;
+            return (ActionResult.Success, 0);
 
         if (amount < 1) amount = 1;
 
         int takenAmount = Mathf.Min(amount, item.StackCount);
 
         if (takenAmount <= 0)
-            return ActionResult.Failed;
+            return (ActionResult.Cancelled, 0);
 
         TakeItem(item, takenAmount);
 
-        return ActionResult.Success;
+        return (ActionResult.Success, takenAmount);
     }
 
     public async UniTask<(ActionResult, List<Item>)> TryDrop(
@@ -191,7 +193,7 @@ public partial class Pawn : WorldObject
 
             // nothing dropped this loop
             if (remaining == amount)
-                return (ActionResult.Failed, droppedItems);
+                return (ActionResult.Cancelled, droppedItems);
 
             // update original amount for next loop check
             amount = remaining;

@@ -82,7 +82,6 @@ public enum State
 public enum ActionResult
 {
     Success,
-    Failed,
     Cancelled
 }
 

@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2953962644178758109}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 39, y: 41, z: 0}
+  m_LocalPosition: {x: 41, y: 38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingCraft
   objectName: Craft Table
   iconSprite: {fileID: 21300000, guid: d9bafdab28604ec4596d79d689c1ae0c, type: 3}
-  currentGridPos: {x: 39, y: 41}
+  currentGridPos: {x: 41, y: 38}
   oldGridPos: {x: 0, y: 0}
   world: {fileID: 0}
   jobManager: {fileID: 0}
@@ -59,7 +59,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2707dee392177d942b3a4b55e1a09d5d, type: 2}
   midPoint: {fileID: 90009266151979148}
   render: {fileID: 7981898458633342981}
-  direction: 1
+  direction: 3
   buildingGridSize: {x: 3, y: 1}
   sprite: {fileID: 11400000, guid: 1219d611caf503143a8f78f4cdee19dd, type: 2}
   baseWorkPosTf: {fileID: 9001148570707205809}

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public partial class Pawn : WorldObject
+public partial class Pawn
 {
     static readonly List<BodySpritePart> spriteBuffer = new();
     [SerializeField] bool initialized = false;

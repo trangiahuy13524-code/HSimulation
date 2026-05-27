@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-public partial class Pawn : WorldObject
+public partial class Pawn : DynamicWorldObject
 {
     [SerializeField] GameObject hightlight;
 
@@ -75,6 +78,8 @@ public partial class Pawn : WorldObject
     bool isRecalculating = false;
     public bool Move(byte speed)
     {
+        if (recalculateTaskRunning || calculatingPath) return false;
+
         if (paths.Count > 0)
         {
             Vector2Int nextPos = paths.Peek();
@@ -95,7 +100,7 @@ public partial class Pawn : WorldObject
             {
                 if (onDuty)
                 {
-                    ReCalculatePath();
+                    ReCalculatePath().Forget();
                 }
                 else
                 {
@@ -112,7 +117,7 @@ public partial class Pawn : WorldObject
                 {
                     if (onDuty)
                     {
-                        ReCalculatePath();
+                        ReCalculatePath().Forget();
                     }
                     else
                     {
@@ -155,7 +160,7 @@ public partial class Pawn : WorldObject
                     {
                         if (currentGridPos != itemDestination)
                         {
-                            ReCalculatePath();
+                            ReCalculatePath().Forget();
                             return false;
                         }
                     }
@@ -163,7 +168,7 @@ public partial class Pawn : WorldObject
                     {
                         if (currentGridPos != oldDestination)
                         {
-                            ReCalculatePath();
+                            ReCalculatePath().Forget();
                             return false;
                         }
                     }
@@ -251,9 +256,31 @@ public partial class Pawn : WorldObject
         return new Vector2Int(x, y);
     }
 
-    public void MakePath(Vector2Int target)
+    WorldThreadSafe worldTS;
+    CancellationTokenSource cts = new CancellationTokenSource();
+    bool calculatingPath = false;
+    public void CancelPathfinding()
     {
-        var path = AStarPathfinder.FindPath(currentGridPos, target, maxSearch);
+        cts?.Cancel();
+        cts = new CancellationTokenSource();
+        calculatingPath = false;
+        recalculateTaskRunning = false;
+    }
+
+    public async UniTask MakePath(Vector2Int target)
+    {
+        calculatingPath = true;
+        worldTS = GetWTS();
+        List<Vector2Int> path =
+            await UniTask.RunOnThreadPool(() =>
+            {
+                return AStarPathfinder.FindPath(
+                    currentGridPos,
+                    target,
+                    maxSearch,
+                    worldTS);
+            },
+            cancellationToken: cts.Token);
 
         if (path != null)
         {
@@ -264,13 +291,20 @@ public partial class Pawn : WorldObject
         }
         else
         {
-            Debug.Log("NoPath! nullxx");
+            Debug.Log("No path");
         }
+        calculatingPath = false;
+        return;
     }
     bool withoutLast = false;
-    public void MakePathWithoutLast(Vector2Int target)
+    public async UniTask MakePathWithoutLast(Vector2Int target)
     {
-        var path = AStarPathfinder.FindPath(currentGridPos, target, maxSearch);
+        calculatingPath = true;
+        worldTS = GetWTS();
+        var path = await UniTask.RunOnThreadPool(() =>
+        {
+            return AStarPathfinder.FindPath(currentGridPos, target, maxSearch, worldTS);
+        });
 
         if (path != null)
         {
@@ -283,19 +317,31 @@ public partial class Pawn : WorldObject
         {
             Debug.Log("NoPath! nullxx");
         }
+        calculatingPath = false;
+        return;
     }
 
-    public void MakePathContinuous(Vector2Int target)
+    public async UniTask MakePathContinuous(Vector2Int target)
     {
+        calculatingPath = true;
         List<Vector2Int> path;
+        
         if (paths.Count > 0)
         {
             Vector2Int next = paths.Peek();
-            path = AStarPathfinder.FindPath(next, target, maxSearch, currentGridPos);
+            worldTS = GetWTS();
+            path = await UniTask.RunOnThreadPool(() =>
+            {
+                return AStarPathfinder.FindPath(next, target, maxSearch, currentGridPos, worldTS);
+            });
         }
         else
         {
-            path = AStarPathfinder.FindPath(currentGridPos, target, maxSearch);
+            worldTS = GetWTS();
+            path = await UniTask.RunOnThreadPool(() =>
+            {
+                return AStarPathfinder.FindPath(currentGridPos, target, maxSearch, worldTS);
+            });
         }
 
         
@@ -310,11 +356,20 @@ public partial class Pawn : WorldObject
         {
             Debug.Log("NoPath! nullxx");
         }
+        calculatingPath = false;
+        return;
     }
 
-    void ReCalculatePath()
+    bool recalculateTaskRunning = false;
+    async UniTask ReCalculatePath()
     {
-        var path = AStarPathfinder.FindPath(currentGridPos, oldDestination, maxSearch);
+        recalculateTaskRunning = true;
+        worldTS = GetWTS();
+        var path = await Task.Run(() =>
+        {
+            return AStarPathfinder.FindPath(currentGridPos, oldDestination, maxSearch, worldTS);
+        });
+
         if (path != null)
         {
             isRecalculating = true;
@@ -332,6 +387,7 @@ public partial class Pawn : WorldObject
         {
             PathReset();
         }
+        recalculateTaskRunning = false;
     }
 
     public void PathReset()
@@ -343,5 +399,10 @@ public partial class Pawn : WorldObject
         reachDestination = true;
         isRecalculating = false;
         withoutLast = false;
+    }
+
+    WorldThreadSafe GetWTS()
+    {
+        return new WorldThreadSafe(world.WorldSize, (byte[,])world.PawnCountOnGrid.Clone(), world.MaxPawnCount, (bool[,])world.NotPassableTiles.Clone());
     }
 }

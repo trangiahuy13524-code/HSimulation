@@ -180,7 +180,7 @@ MonoBehaviour:
   lastQueuePosCache: {x: 0, y: 0}
   oldDestination: {x: 0, y: 0}
   itemDestination: {x: 0, y: 0}
-  maxSearch: 10
+  maxSearch: 15
   initialized: 0
   genome:
     source: {fileID: 0}
@@ -198,7 +198,6 @@ MonoBehaviour:
   idleTime: 2
   currentIdleTime: 0
   currentState: 0
-  taskID: 
   selectThreshHold: 0
   progressBarPrefab: {fileID: 1262231344434887996, guid: 0c8d88bd4f62a4d4bae442c0f0e58227, type: 3}
 --- !u!50 &-6656611525869205240

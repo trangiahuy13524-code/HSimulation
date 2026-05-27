@@ -5,6 +5,7 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 public class ScreenAndTouchManager : MonoBehaviour
 {
@@ -239,7 +240,7 @@ public class ScreenAndTouchManager : MonoBehaviour
         {
             if (selectedPawn.PawnState == PawnState.Controlled)
             {
-                selectedPawn.MakePathContinuous(ScreenToGridPosition(screenPos));
+                selectedPawn.MakePathContinuous(ScreenToGridPosition(screenPos)).Forget();
             }
             else
             {

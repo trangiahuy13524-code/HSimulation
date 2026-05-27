@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Building : WorldObject
+public class Building : StaticWorldObject
 {
 
     [SerializeField] protected Transform midPoint;
@@ -35,13 +35,13 @@ public class Building : WorldObject
         render.UpdateLayer(world.WorldSize);
     }
 
-    //protected override void OnDestroy()
-    //{
-    //    for (int i = xRange.x; i < xRange.y; i++)
-    //        for (int j = yRange.x; j < yRange.y; j++)
-    //            world.FastRemoveObjectData(new Vector2Int(i, j));
-    //    base.OnDestroy();
-    //}
+    protected override void OnDestroy()
+    {
+        for (int i = xRange.x; i < xRange.y; i++)
+            for (int j = yRange.x; j < yRange.y; j++)
+                world.ResetNotPassableGrid(new Vector2Int(i, j));
+        base.OnDestroy();
+    }
 
     public virtual bool checkPlaceable(Vector2Int position, World world)
     {

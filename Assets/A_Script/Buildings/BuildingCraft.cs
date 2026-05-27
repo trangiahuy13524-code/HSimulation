@@ -1,4 +1,6 @@
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,9 +13,15 @@ public class BuildingCraft : BuildingWorkable
     // FIND NEAREST REQUIRED ITEM
     // =====================================================
 
-    public RequireItem FindItem(Pawn pawn, Vector2Int workPos, List<RequireItemData> require)
+    static SemaphoreSlim findItemLock = new SemaphoreSlim(1, 1);
+    public async UniTask<RequireItem> FindItem(Pawn pawn, Vector2Int workPos, List<RequireItemData> require)
     {
-        if (require == null) return default;
+        await findItemLock.WaitAsync();
+        if (require == null)
+        {
+            findItemLock.Release();
+            return default;
+        }
         for (int i = 0; i < require.Count; i++)
         {
             RequireItemData r = require[i];
@@ -27,11 +35,13 @@ public class BuildingCraft : BuildingWorkable
                     r.itemClass,
                     workPos);
 
-            if (item != null && !item.reserved)
+            if (item != null)
             {
+                findItemLock.Release();
                 return new RequireItem { item = item, amount = r.amount };
             }
         }
+        findItemLock.Release();
         return default;
     }
 
@@ -56,8 +66,6 @@ public class BuildingCraft : BuildingWorkable
         };
 
         onDestroy += job.OnBuildingCraftDestroyed;
-
-        Debug.Log("Created Craft Job");
         jobManager.AddJob(job);
     }
 

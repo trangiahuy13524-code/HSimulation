@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class World : MonoBehaviour
 {
@@ -26,8 +23,10 @@ public class World : MonoBehaviour
     Item[,] items;
 
     byte[,] pawnCountOnGrid;
-    //HashSet<Vector2Int> pathInvalidTiles;
-    //HashSet<Vector2Int> notPassableTiles;
+    bool[,] notPassableTiles;
+    public byte MaxPawnCount => maxPawnCount;
+    public bool[,] NotPassableTiles => notPassableTiles;
+    public byte[,] PawnCountOnGrid => pawnCountOnGrid;
 
     public short WorldSize => worldSize;
 
@@ -39,6 +38,7 @@ public class World : MonoBehaviour
 
         objects = new WorldObject[worldSize, worldSize];
         items = new Item[worldSize, worldSize];
+        notPassableTiles = new bool[worldSize, worldSize];
 
         if (maxPawnCount == 0) maxPawnCount = 1;
         pawnCountOnGrid = new byte[worldSize, worldSize];
@@ -94,14 +94,11 @@ public class World : MonoBehaviour
 
     public bool RegisterObject(WorldObject obj, Vector2Int position)
     {
-        //if (obj == null) return false;
+        if (obj == null) return false;
         if (!IsInside(position)) return false;
         if (objects[position.x, position.y] != null) return false;
         objects[position.x, position.y] = obj;
-        //if (!obj.isPassable)
-        //{
-        //    notPassableTiles.Add(position);
-        //}
+        notPassableTiles[position.x, position.y] = !obj.isPassable;
         return true;
     }
     public void RemoveObject(Vector2Int position)
@@ -111,6 +108,8 @@ public class World : MonoBehaviour
         if (ob == null) return;
         ob.Despawn();
     }
+
+
     public void RegisterItem(Item item, Vector2Int position)
     {
         if (!IsInside(position)) return;
@@ -122,6 +121,14 @@ public class World : MonoBehaviour
         Item ob = items[position.x, position.y];
         if (ob == null) return;
         ob.Despawn();
+    }
+    public void ModifyNotPassableGrid(Vector2Int position, WorldObject @object)
+    {
+        notPassableTiles[position.x, position.y] = !@object.isPassable;
+    }
+    public void ResetNotPassableGrid(Vector2Int position)
+    {
+        notPassableTiles[position.x, position.y] = false;
     }
 
     public WorldObject GetFastObjectAtPosition(Vector2Int position)
@@ -241,9 +248,8 @@ public class World : MonoBehaviour
             Vector2Int current = fnaQueue.Dequeue();
             
             item = items[current.x, current.y];
-            if (item != null && item.itemData == itemData && item.itemClass == itemClass)
+            if (item != null && !item.reserved && item.itemData == itemData && item.itemClass == itemClass)
             {
-                Debug.Log($"Found item {item.itemData.itemName} at {current}");
                 return item;
             }
 
@@ -399,5 +405,42 @@ public static class WorldUtility
     public static Vector3 GridToWorld(Vector2Int grid)
     {
         return new Vector3(grid.x, grid.y - 0.5f, 0);
+    }
+}
+
+public class WorldThreadSafe
+{
+    public short WorldSize;
+
+    public byte[,] pawnCountOnGrid;
+    public bool[,] notPassableTiles;
+    public byte maxPawnCount;
+
+    public WorldThreadSafe(short worldSize, byte[,] pawnCountOnGrid, byte maxPawnCount, bool[,] notPassableTiles)
+    {
+        WorldSize = worldSize;
+
+        this.pawnCountOnGrid = pawnCountOnGrid;
+        this.notPassableTiles = notPassableTiles;
+        this.maxPawnCount = maxPawnCount;
+    }
+
+    public bool IsInside(Vector2Int position)
+    {
+        return position.x >= 0 &&
+               position.y >= 0 &&
+               position.x < WorldSize &&
+               position.y < WorldSize;
+    }
+
+    public bool IsPositionPathValid(Vector2Int position)
+    {
+        bool isMaxPawn = pawnCountOnGrid[position.x, position.y] >= maxPawnCount;
+        return !isMaxPawn && !notPassableTiles[position.x, position.y];
+    }
+
+    public bool IsNotPassable(Vector2Int position)
+    {
+        return notPassableTiles[position.x, position.y];
     }
 }

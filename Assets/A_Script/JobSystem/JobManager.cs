@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
+
+
 public class JobManager : MonoBehaviour
 {
+    [SerializeField] World world;
     public static JobManager Instance { get; private set; }
 
     void Start()
@@ -20,23 +23,22 @@ public class JobManager : MonoBehaviour
         availableJobs.Add(job);
     }
 
-    private HashSet<WorldObject> usedJobObjects = new();
-
+    static SemaphoreSlim jobLock = new SemaphoreSlim(1, 1);
     public async UniTask<Job> GetJob(
     Pawn pawn,
     CancellationToken token)
     {
+        await jobLock.WaitAsync(token);
         Job bestJob = null;
         WorkPosition bestWorkPos = null;
 
         //float bestScore = float.MinValue;
 
-        usedJobObjects.Clear();
+        HashSet<WorldObject> usedJobObjects = new();
 
         for (int i = availableJobs.Count - 1; i >= 0; i--)
         {
-            if ((i & 7) == 0)
-                await UniTask.Yield(token);
+            await UniTask.Yield(token);
 
             Job job = availableJobs[i];
 
@@ -46,7 +48,7 @@ public class JobManager : MonoBehaviour
                 continue;
             }
 
-            if (job.reserved || !job.available)
+            if (job.reserved)
                 continue;
 
             if (!usedJobObjects.Add(job.refObject))
@@ -62,16 +64,26 @@ public class JobManager : MonoBehaviour
                 WorkPosition[] positions =
                     workableJob.workBuilding.GetAvailableWorkPos();
 
-                foundPos =
-                    AStarPathfinder.FindReachableWorkPosition(
+                WorldThreadSafe worldTS = GetWTS();
+
+                foundPos = await UniTask.RunOnThreadPool(() => AStarPathfinder.FindReachableWorkPosition(
                         pawn.CurrentGridPosition,
                         positions,
-                        50);
+                        50,
+                        worldTS));
 
                 if (foundPos == null)
                     continue;
 
                 bestWorkPos = foundPos;
+
+                if (workableJob is CraftJob craftJob)
+                {
+                    craftJob.itemFound = await craftJob.craftBuilding.FindItem(pawn, bestWorkPos.workPos, craftJob.requiredItemDatas);
+                    if (craftJob.itemFound.item == null)
+                        continue;
+                    await UniTask.Yield(token);
+                }
             }
 
             bestJob = job;
@@ -102,7 +114,13 @@ public class JobManager : MonoBehaviour
             }
         }
 
+        jobLock.Release();
         return bestJob;
+    }
+
+    WorldThreadSafe GetWTS()
+    {
+        return new WorldThreadSafe(world.WorldSize, (byte[,])world.PawnCountOnGrid.Clone(), world.MaxPawnCount, (bool[,])world.NotPassableTiles.Clone());
     }
     float EvaluateJob(Pawn pawn, Job job)
     {
@@ -120,7 +138,7 @@ public class JobManager : MonoBehaviour
     }
     public void RemoveJob(Job job)
     {
-        availableJobs.Remove(job);
+        job.externalRemoved = true;
     }
 
 }

@@ -1,11 +1,9 @@
 using Cysharp.Threading.Tasks;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public partial class Pawn : WorldObject
+public partial class Pawn
 {
     [SerializeField] float idleTime = 2f;
     [SerializeField] float currentIdleTime = 0f;
@@ -34,6 +32,9 @@ public partial class Pawn : WorldObject
 
     void TickUpdate(byte speed = 1)
     {
+        if (thinking)
+            return;
+
         bool donePathing = Move(speed);
 
         if (currentState == PawnState.Controlled)
@@ -67,6 +68,13 @@ public partial class Pawn : WorldObject
 
     public static bool aPawnThoughtThisFrame = false;
     CancellationTokenSource thinkCTS;
+    bool thinking = false;
+    public void CancelThink()
+    {
+        thinkCTS?.Cancel();
+        thinkCTS = null;
+        thinking = false;
+    }
     async UniTaskVoid ThinkAsync(CancellationToken token)
     {
         if (aPawnThoughtThisFrame)
@@ -74,7 +82,7 @@ public partial class Pawn : WorldObject
             thinkCTS = null;
             return;
         }
-
+        thinking = true;
         aPawnThoughtThisFrame = true;
 
         bool jobExisted = await TryFindJob(token);
@@ -83,7 +91,6 @@ public partial class Pawn : WorldObject
 
         if (jobExisted)
         {
-            Debug.Log($"Pawn found job");
             currentState = PawnState.Working;
 
             jobCTS = new CancellationTokenSource();
@@ -94,10 +101,11 @@ public partial class Pawn : WorldObject
         }
         else
         {
-            MakePath(GetRandomPosition());
+            await MakePath(GetRandomPosition());
         }
         thinkCTS.Dispose();
         thinkCTS = null;
+        thinking = false;
     }
 
     protected override void OnDestroy()

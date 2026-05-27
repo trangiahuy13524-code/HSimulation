@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Wall : WorldObject
+public class Wall : StaticWorldObject
 {
     [SerializeField] protected MapRenderer mapRenderer;
     public override bool isPassable => false;
@@ -14,5 +14,6 @@ public class Wall : WorldObject
     {
         if (world != null) world.SetWallTile(currentGridPos, null);
         if (mapRenderer != null) mapRenderer.map.RevertToTerrainTile(currentGridPos);
+        if (world != null) world.ResetNotPassableGrid(currentGridPos);
     }
 }
