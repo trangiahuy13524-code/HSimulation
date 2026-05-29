@@ -351,7 +351,7 @@ public static class AStarPathfinder
 
                 Vector2Int next = new(nx, ny);
 
-                if (!world.IsPositionPathValid(next))
+                if (!world.IsPositionPathValid(next) && next != start)
                     continue;
 
                 // diagonal cutting

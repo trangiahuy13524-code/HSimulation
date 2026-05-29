@@ -241,6 +241,7 @@ public class CraftJob : WorkableJob
             foreach (var item in droppedItems)
             {
                 AddReservedItem(item);
+                Debug.Log(item + " " + item.StackCount);
             }
 
             if (result != ActionResult.Success)
@@ -268,6 +269,11 @@ public class CraftJob : WorkableJob
             outputItemData.itemClass,
             outputItemData.amount);
         await base.FinishWork(pawn, token);
+    }
+
+    public override bool ProgressCondition()
+    {
+        return true;
     }
 }
 

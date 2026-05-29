@@ -221,6 +221,7 @@ public partial class Pawn
         {
             while (currentJob != null &&
                    !currentJob.removed &&
+                   currentJob.ProgressCondition() &&
                    currentJob.currentProgress < currentJob.totalProgress)
             {
                 token.ThrowIfCancellationRequested();
@@ -240,7 +241,7 @@ public partial class Pawn
                 Destroy(progressBarInstance.gameObject);
         }
 
-        if (currentJob == null || currentJob.removed)
+        if (currentJob == null || currentJob.removed || !currentJob.ProgressCondition())
             return ActionResult.Cancelled;
 
         return ActionResult.Success;

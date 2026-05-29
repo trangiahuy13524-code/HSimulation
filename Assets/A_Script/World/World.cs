@@ -74,22 +74,13 @@ public class World : MonoBehaviour
     public bool IsPositionPathValid(Vector2Int position)
     {
         if (pawnCountOnGrid[position.x, position.y] >= maxPawnCount) return false;
-        WorldObject @object = objects[position.x, position.y];
-        if (@object != null)
-        {
-            if (!@object.isPassable) return false;
-        }
+        if (notPassableTiles[position.x, position.y]) return false;
         return true;
     }
 
     public bool IsNotPassable(Vector2Int position)
     {
-        WorldObject @object = objects[position.x, position.y];
-        if (@object != null)
-        {
-            if (!@object.isPassable) return true;
-        }
-        return false;
+        return notPassableTiles[position.x, position.y];
     }
 
     public bool RegisterObject(WorldObject obj, Vector2Int position)
