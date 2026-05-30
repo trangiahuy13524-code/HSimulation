@@ -54,11 +54,11 @@ public enum FacialState
 public enum ItemClass
 {
     Poor,
+    Normal,
     Advanced,
     Epic,
     Legendary,
     Ultimate,
-    Artifact,
     World,
     Universal
 }
