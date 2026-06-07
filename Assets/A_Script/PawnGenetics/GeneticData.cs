@@ -8,13 +8,7 @@ public class GeneticData : ScriptableObject
     public string raceDescription;
     public Sprite raceIcon;
 
-    [Header("Base Stats")]
-    public int baseHealth;
-    public int baseMana;
-    public int baseDefense;
-    public int baseAttack;
-    public float magicPotential;
-    public float baseSpeed;
+    
 
     [Header("Reproduction")]
     public ReproductionType reproductionType;
@@ -24,8 +18,8 @@ public class GeneticData : ScriptableObject
 
     [Header("Body")]
     public List<BodySpritePart> bodyData;
-    public List<BodySpritePart> headData;
-    public List<BodySpritePart> hairData;
+    public List<SpritePart> headData;
+    public List<SpritePart> hairData;
 
     [Header("Skill")]
     public List<Skill> pawnSkills;

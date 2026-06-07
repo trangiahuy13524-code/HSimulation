@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c9b70721c1bf7243b2cb92856c5b8fc, type: 3}
+  m_Name: RedSpore
+  m_EditorClassIdentifier: Assembly-CSharp::BodySpritePart
+  offset: {x: 0, y: -0.25}
+  childOffset: {x: 0, y: 0}
+  horizontalOffset: 0
+  scale: {x: 0.5, y: 0.5}
+  bodyPartShape: {fileID: 0}
+  eastSprite: {fileID: 21300000, guid: 5fb44908003c7ef45adfde523e6e2c02, type: 3}
+  northSprite: {fileID: 21300000, guid: f168b3840b4141b4b92557043a39ecb6, type: 3}
+  southSprite: {fileID: 21300000, guid: c5dbe0e49413bf44a8f5d4092fb99b41, type: 3}
+  bodySex: 2
+  hybridable: 0
+  baseHealth: 4
+  baseMana: 22
+  baseDefense: 1
+  baseAttack: 1
+  magicPotential: 3
+  baseSpeed: 1.2

@@ -4,8 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
-public partial class Pawn : DynamicWorldObject
+public partial class Pawn : WorldObjectDynamic
 {
     [SerializeField] GameObject hightlight;
 
@@ -90,11 +91,23 @@ public partial class Pawn : DynamicWorldObject
             }
             if (isRecalculating)
             {
-                if (paths.Count == 1 && nextPos == currentGridPos)
+                if (withoutLast)
                 {
-                    PathReset();
-                    return false;
+                    if (lastQueuePosCache == currentGridPos && currentGridPos != itemDestination)
+                    {
+                        PathReset();
+                        return false;
+                    }
                 }
+                else
+                {
+                    if (lastQueuePosCache == currentGridPos)
+                    {
+                        PathReset();
+                        return false;
+                    }
+                }
+                
             }
             if (nextPos != currentGridPos && !world.IsPositionPathValid(nextPos))
             {
@@ -154,11 +167,11 @@ public partial class Pawn : DynamicWorldObject
                 world.ModifyPawnCountGrid(oldGridPos, false);
                 oldGridPos = currentGridPos;
                 UpdateLayer();
-                if (paths.Count == 0)
+                if (!recalculateTriggered && paths.Count <= 2)
                 {
                     if (withoutLast)
                     {
-                        if (currentGridPos != itemDestination)
+                        if (lastQueuePosCache != itemDestination)
                         {
                             ReCalculatePath().Forget();
                             return false;
@@ -166,13 +179,33 @@ public partial class Pawn : DynamicWorldObject
                     }
                     else
                     {
-                        if (currentGridPos != oldDestination)
+                        if (lastQueuePosCache != oldDestination)
                         {
                             ReCalculatePath().Forget();
                             return false;
                         }
                     }
-                    
+                }
+
+                if (paths.Count == 0)
+                {
+                    //if (withoutLast)
+                    //{
+                    //    if (currentGridPos != itemDestination)
+                    //    {
+                    //        ReCalculatePath().Forget();
+                    //        return false;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (currentGridPos != oldDestination)
+                    //    {
+                    //        ReCalculatePath().Forget();
+                    //        return false;
+                    //    }
+                    //}
+
                     isRecalculating = false;
                     if (currentState == PawnState.Controlled)
                     {
@@ -180,6 +213,7 @@ public partial class Pawn : DynamicWorldObject
                     }
                     return true;
                 }
+
             }
             float moveSpeed = Time.deltaTime * genome.speed * speed;
             if (onDuty) moveSpeed *= 2;
@@ -242,6 +276,7 @@ public partial class Pawn : DynamicWorldObject
         {
             Vector2Int path = pathList[0];
             itemDestination = path;
+            lastQueuePosCache = path;
             paths.Enqueue(path);
         }
     }
@@ -285,9 +320,9 @@ public partial class Pawn : DynamicWorldObject
         if (path != null)
         {
             paths.Clear();
+            withoutLast = false;
             oldDestination = target;
             AddPathtoQueue(path);
-            withoutLast = false;
         }
         else
         {
@@ -296,7 +331,7 @@ public partial class Pawn : DynamicWorldObject
         calculatingPath = false;
         return;
     }
-    bool withoutLast = false;
+    public bool withoutLast = false;
     public async UniTask MakePathWithoutLast(Vector2Int target)
     {
         calculatingPath = true;
@@ -304,14 +339,14 @@ public partial class Pawn : DynamicWorldObject
         var path = await UniTask.RunOnThreadPool(() =>
         {
             return AStarPathfinder.FindPath(currentGridPos, target, maxSearch, worldTS);
-        });
+        }, cancellationToken: cts.Token);
 
         if (path != null)
         {
             paths.Clear();
-            itemDestination = oldDestination = target;
-            AddPathtoQueueWithoutLast(path);
             withoutLast = true;
+            oldDestination = target;
+            AddPathtoQueueWithoutLast(path);
         }
         else
         {
@@ -325,7 +360,7 @@ public partial class Pawn : DynamicWorldObject
     {
         calculatingPath = true;
         List<Vector2Int> path;
-        
+
         if (paths.Count > 0)
         {
             Vector2Int next = paths.Peek();
@@ -333,7 +368,7 @@ public partial class Pawn : DynamicWorldObject
             path = await UniTask.RunOnThreadPool(() =>
             {
                 return AStarPathfinder.FindPath(next, target, maxSearch, currentGridPos, worldTS);
-            });
+            }, cancellationToken: cts.Token);
         }
         else
         {
@@ -341,14 +376,15 @@ public partial class Pawn : DynamicWorldObject
             path = await UniTask.RunOnThreadPool(() =>
             {
                 return AStarPathfinder.FindPath(currentGridPos, target, maxSearch, worldTS);
-            });
+            }, cancellationToken: cts.Token);
         }
 
-        
+
 
         if (path != null)
         {
             paths.Clear();
+            withoutLast = false;
             oldDestination = target;
             AddPathtoQueue(path);
         }
@@ -360,15 +396,31 @@ public partial class Pawn : DynamicWorldObject
         return;
     }
 
+    bool recalculateTriggered = false;
     bool recalculateTaskRunning = false;
     async UniTask ReCalculatePath()
     {
+        recalculateTriggered = true;
         recalculateTaskRunning = true;
-        worldTS = GetWTS();
-        var path = await Task.Run(() =>
+        List<Vector2Int> path;
+
+        if (paths.Count > 0)
         {
-            return AStarPathfinder.FindPath(currentGridPos, oldDestination, maxSearch, worldTS);
-        });
+            Vector2Int next = paths.Peek();
+            worldTS = GetWTS();
+            path = await UniTask.RunOnThreadPool(() =>
+            {
+                return AStarPathfinder.FindPath(next, oldDestination, maxSearch, currentGridPos, worldTS);
+            }, cancellationToken: cts.Token);
+        }
+        else
+        {
+            worldTS = GetWTS();
+            path = await UniTask.RunOnThreadPool(() =>
+            {
+                return AStarPathfinder.FindPath(currentGridPos, oldDestination, maxSearch, worldTS);
+            }, cancellationToken: cts.Token);
+        }
 
         if (path != null)
         {
@@ -388,6 +440,7 @@ public partial class Pawn : DynamicWorldObject
             PathReset();
         }
         recalculateTaskRunning = false;
+        recalculateTriggered = false;
     }
 
     public void PathReset()

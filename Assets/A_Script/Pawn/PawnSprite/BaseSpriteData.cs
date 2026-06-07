@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class BaseSpriteData : BaseOffset
 {
-    [SerializeField] protected BodySpritePart spriteDirectionData;
+    [SerializeField] protected SpritePart spriteDirectionData;
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected Pawn pM;
     [SerializeField] protected List<BaseOffset> children = new List<BaseOffset>();
     protected int layerOffset = 0;
 
-    public BodySpritePart SpriteData => spriteDirectionData;
+    public SpritePart SpriteData => spriteDirectionData;
     public SpriteRenderer SpriteRenderer => spriteRenderer;
     
 
@@ -75,7 +75,7 @@ public class BaseSpriteData : BaseOffset
         return true;
     }
 
-    public virtual void SetDirectionSpriteData(BodySpritePart spriteData)
+    public virtual void SetDirectionSpriteData(SpritePart spriteData)
     {
         spriteDirectionData = spriteData;
         if (initialized)

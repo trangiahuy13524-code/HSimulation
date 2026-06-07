@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a0bd15b7cfc6ea4ebaa094c720d154d, type: 3}
   m_Name: Crafting
   m_EditorClassIdentifier: Assembly-CSharp::Skill
-  skillName: 
+  skillName: Crafting

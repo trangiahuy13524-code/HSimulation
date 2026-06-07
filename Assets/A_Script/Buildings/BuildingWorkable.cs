@@ -33,24 +33,6 @@ public abstract class BuildingWorkable : Building
         return availablePos.ToArray();
     }
 
-    public WorkPosition GetAvailableWorkPos(Pawn pawn)
-    {
-        if (workPos.Count > 0)
-        {
-            foreach(WorkPosition pos in workPos)
-            {
-                if (!pos.occupied)
-                {
-                    if (!world.IsPositionPathValid(pos.workPos) && pos.workPos != pawn.CurrentGridPosition)
-                        continue;
-                    return pos;
-                }
-            }
-        }
-        //Debug.LogWarning("No available work position for " + pawn.ObjectName + " at " + objectName);
-        return null;
-    }
-
     public void InitiateWorkPos(Direction direction)
     {
         
@@ -82,12 +64,12 @@ public abstract class BuildingWorkable : Building
     }
 
 
-    public Action onDestroy;
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        onDestroy?.Invoke();
-    }
+    //public Action onDestroy;
+    //protected override void OnDestroy()
+    //{
+    //    base.OnDestroy();
+    //    onDestroy?.Invoke();
+    //}
 }
 
 public class WorkPosition

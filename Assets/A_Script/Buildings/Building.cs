@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Building : StaticWorldObject
+public class Building : WorldObjectStatic
 {
 
     [SerializeField] protected Transform midPoint;

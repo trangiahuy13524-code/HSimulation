@@ -341,6 +341,7 @@ public class World : MonoBehaviour
                 quantity -= stackAmount;
             }
             else if (item != null &&
+                     item.reserved == false &&
                      item.itemData == itemData &&
                      item.itemClass == itemClass &&
                      itemData.isStackable)
@@ -380,7 +381,7 @@ public class World : MonoBehaviour
         Item item = Instantiate(itemPrefab);
         item.CurrentGridPosition = position;
         item.transform.position = new Vector3Int(position.x, position.y, 0);
-        item.InitializeItem(itemData, itemClass);
+        item.SetItemData(itemData, itemClass);
         item.StackCount = quantity;
         return item;
     }

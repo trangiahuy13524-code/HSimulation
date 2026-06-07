@@ -20,9 +20,9 @@ public abstract class Job
     Pawn worker,
     CancellationToken token);
 
-    public virtual bool ProgressCondition()
+    public virtual void ReturnJob()
     {
-        return true;
+        
     }
 }
 
@@ -50,11 +50,9 @@ public class WorkableJob : Job
             return;
         }
 
-        reservedWorkPos.occupied = true;
-        pawn.SetWorkPosition(reservedWorkPos);
-
 
         ActionResult result = await WorkRoutine(pawn, reservedWorkPos, token);
+        Debug.Log($"Work Routine Result: {result}");
 
         switch (result)
         {
@@ -91,48 +89,28 @@ public class WorkableJob : Job
 
     public virtual void OnJobCancelled(Pawn pawn)
     {
+        Debug.Log("Job Cancelled");
         pawn.ReturnJob();
+    }
+
+    public override void ReturnJob()
+    {
+        if (reservedWorkPos != null)
+        {
+            reservedWorkPos.occupied = false;
+            reservedWorkPos = null;
+        }
     }
 }
 
 public class CraftJob : WorkableJob
 {
     public List<RequireItemData> requiredItemDatas;
-    public List<Item> reservedItems = new();
+    public ItemData onCraftItemData;
+    private Item onCraftItem;
     public ItemOutputData outputItemData;
     public RequireItem itemFound;
     public BuildingCraft craftBuilding => (BuildingCraft)workBuilding;
-
-    public void OnBuildingCraftDestroyed()
-    {
-        ClearReservedItems();
-    }
-    void AddReservedItem(Item item)
-    {
-        if (item != null)
-        {
-            item.reserved = true;
-            reservedItems.Add(item);
-        }
-    }
-    void ClearReservedItems()
-    {
-        foreach (var item in reservedItems)
-        {
-            if (item != null)
-                item.reserved = false;
-        }
-        reservedItems.Clear();
-    }
-    void DestroyReservedItems()
-    {
-        foreach (var item in reservedItems)
-        {
-            if (item != null)
-                item.Despawn();
-        }
-        reservedItems.Clear();
-    }
 
     
     protected override async UniTask<ActionResult> WorkRoutine(
@@ -144,62 +122,84 @@ public class CraftJob : WorkableJob
         // =========================================
         // COLLECT ALL REQUIRED ITEMS
         // =========================================
-        bool first = true;
-        for (int i = 0; i < requiredItemDatas.Count; i++)
+        bool hasOnCraftItem = false;
+        int remainingNeeded = 0;
+        if (onCraftItem == null)
         {
-            RequireItemData required = requiredItemDatas[i];
-
-            // how many still needed
-            int remainingNeeded =
-                required.amount -
-                pawn.GetItemCount(
-                    required.itemData,
-                    required.itemClass);
-
-            // already enough
-            if (remainingNeeded <= 0)
-                continue;
-
-            // keep collecting until enough
-            while (remainingNeeded > 0)
+            currentProgress = 0;
+            bool first = true;
+            for (int i = 0; i < requiredItemDatas.Count; i++)
             {
-                token.ThrowIfCancellationRequested();
+                RequireItemData required = requiredItemDatas[i];
 
-                if (!first)
+                // how many still needed
+                remainingNeeded =
+                    required.amount -
+                    pawn.GetItemCount(
+                        required.itemData,
+                        required.itemClass);
+
+                // already enough
+                if (remainingNeeded <= 0)
+                    continue;
+
+                // keep collecting until enough
+                while (remainingNeeded > 0)
                 {
-                    itemFound = await craftBuilding.FindItem(pawn, wP.workPos, requiredItemDatas);
-                    if (itemFound.item == null)
+                    token.ThrowIfCancellationRequested();
+
+                    if (!first)
                     {
-                        return ActionResult.Cancelled;
+                        itemFound = await craftBuilding.FindItem(pawn, wP.workPos, requiredItemDatas);
+                        if (itemFound.item == null)
+                        {
+                            Debug.Log("Item not found, cancelling job");
+                            return ActionResult.Cancelled;
+                        }
                     }
-                }
-                else
-                {
-                    first = false;
-                    if (itemFound.item == null)
+                    else
                     {
-                        continue;
+                        first = false;
+                        if (itemFound.item == null)
+                        {
+                            continue;
+                        }
                     }
+
+
+                    int pickupAmount = remainingNeeded;
+
+
+                    (result, pickupAmount) = await pawn.MoveToAndPickUp(
+                            itemFound.item,
+                            pickupAmount,
+                            token);
+
+                    if (result != ActionResult.Success)
+                    {
+
+                        return result;
+                    }
+
+                    remainingNeeded -= pickupAmount;
+
+                    await UniTask.Delay(100, cancellationToken: token);
+
                 }
-                
+            }
+        }
+        else
+        {
+            onCraftItem.reserved = true;
+            hasOnCraftItem = true;
+            (result, remainingNeeded) = await pawn.MoveToAndPickUp(
+                            onCraftItem,
+                            1,
+                            token);
 
-                int pickupAmount = remainingNeeded;
-
-
-                (result, pickupAmount) = await pawn.MoveToAndPickUp(
-                        itemFound.item,
-                        pickupAmount,
-                        token);
-
-                if (result != ActionResult.Success)
-                {
-                    return result;
-                }
-
-                remainingNeeded -= pickupAmount;
-
-                await UniTask.Delay(100, cancellationToken: token);
-
+            if (result != ActionResult.Success)
+            {
+                return result;
             }
         }
 
@@ -207,48 +207,69 @@ public class CraftJob : WorkableJob
         // DROP ALL REQUIRED ITEMS
         // =========================================
 
-        ClearReservedItems();
+        //ClearReservedItems();
 
         result = await pawn.MoveTo(wP.workPos, token);
 
         if (result != ActionResult.Success)
+        {
+            Debug.Log("Failed to move to work position, cancelling job");
             return result;
+        }
+            
 
         pawn.ChangeDirection(workBuilding.workDirection);
         await UniTask.Yield(token);
 
-        for (int i = 0; i < requiredItemDatas.Count; i++)
+        if (!hasOnCraftItem)
         {
-            RequireItemData required =
-                requiredItemDatas[i];
-
-            int amountInInventory =
-                pawn.GetItemCount(
-                    required.itemData,
-                    required.itemClass);
-
-            if (amountInInventory <= 0)
-                continue;
-
-            List<Item> droppedItems;
-            (result, droppedItems) =
-                await pawn.TryDrop(
-                    required.itemData,
-                    required.itemClass,
-                    Mathf.Min(required.amount, amountInInventory),
-                    token);
-
-            foreach (var item in droppedItems)
-            {
-                AddReservedItem(item);
-                Debug.Log(item + " " + item.StackCount);
-            }
-
-            if (result != ActionResult.Success)
-                return result;
-
-            await UniTask.Delay(100, cancellationToken: token);
+            pawn.RemoveItems(requiredItemDatas);
+            onCraftItem = World.Instance.CreateItem(
+                pawn.CurrentGridPosition + pawn.direction(),
+                onCraftItemData,
+                outputItemData.itemClass,
+                1)[0];
+            onCraftItem.reserved = true;
         }
+        else
+        {
+            
+        }
+
+        //for (int i = 0; i < requiredItemDatas.Count; i++)
+        //{
+        //    RequireItemData required =
+        //        requiredItemDatas[i];
+
+        //    int amountInInventory =
+        //        pawn.GetItemCount(
+        //            required.itemData,
+        //            required.itemClass);
+
+        //    if (amountInInventory <= 0)
+        //        continue;
+
+        //    List<Item> droppedItems;
+        //    (result, droppedItems) =
+        //        await pawn.TryDrop(
+        //            required.itemData,
+        //            required.itemClass,
+        //            Mathf.Min(required.amount, amountInInventory),
+        //            token);
+
+        //    foreach (var item in droppedItems)
+        //    {
+        //        AddReservedItem(item);
+        //    }
+
+        //    if (result != ActionResult.Success)
+        //    {
+        //        Debug.Log("Failed to drop item, cancelling job");
+        //        return result;
+        //    }
+
+        //    await UniTask.Delay(100, cancellationToken: token);
+        //}
 
         // =========================================
         // DO WORK
@@ -259,9 +280,15 @@ public class CraftJob : WorkableJob
             token);
     }
 
+    public override void OnJobCancelled(Pawn pawn)
+    {
+        onCraftItem.reserved = false;
+        base.OnJobCancelled(pawn);
+    }
+
     protected override async UniTask FinishWork(Pawn pawn, CancellationToken token)
     {
-        DestroyReservedItems();
+        
         await UniTask.Yield(token);
         World.Instance.CreateItem(
             pawn.CurrentGridPosition + pawn.direction(),
@@ -269,11 +296,6 @@ public class CraftJob : WorkableJob
             outputItemData.itemClass,
             outputItemData.amount);
         await base.FinishWork(pawn, token);
-    }
-
-    public override bool ProgressCondition()
-    {
-        return true;
     }
 }
 

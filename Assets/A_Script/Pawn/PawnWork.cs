@@ -28,11 +28,6 @@ public partial class Pawn
     bool reachDestination = false;
     bool destinationInvalid = false;
     Job currentJob;
-    WorkPosition workPos;
-    public void SetWorkPosition(WorkPosition wP)
-    {
-        workPos = wP;
-    }
 
     public async UniTask<bool> TryFindJob(CancellationToken token)
     {
@@ -60,7 +55,6 @@ public partial class Pawn
         currentState = PawnState.Idle;
         jobManager.RemoveJob(currentJob);
         currentJob = null;
-        ClearWorkPosition();
     }
     public void ReturnJob()
     {
@@ -70,15 +64,6 @@ public partial class Pawn
         jobManager.ReturnJob(currentJob);
 
         currentJob = null;
-        ClearWorkPosition();
-    }
-    void ClearWorkPosition()
-    {
-        if (workPos != null)
-        {
-            workPos.occupied = false;
-            workPos = null;
-        }
     }
 
     bool IsCurrentJobStillValid()
@@ -137,7 +122,10 @@ public partial class Pawn
             token.ThrowIfCancellationRequested();
 
             if (currentJob == null || currentJob.removed)
+            {
+                Debug.Log("Job removed during MoveToAndPickUp");
                 return (ActionResult.Cancelled, 0);
+            }
 
             if (item == null)
                 return (ActionResult.Success, 0);
@@ -146,7 +134,10 @@ public partial class Pawn
         }
 
         if (destinationInvalid)
+        {
+            Debug.Log("Destination invalid during MoveToAndPickUp");
             return (ActionResult.Cancelled, 0);
+        }
 
         if (item == null || item.CurrentGridPosition != oldDestination)
             return (ActionResult.Success, 0);
@@ -156,7 +147,10 @@ public partial class Pawn
         int takenAmount = Mathf.Min(amount, item.StackCount);
 
         if (takenAmount <= 0)
+        {
+            Debug.Log("Nothing to take during MoveToAndPickUp");
             return (ActionResult.Cancelled, 0);
+        }
 
         TakeItem(item, takenAmount);
 
@@ -221,7 +215,6 @@ public partial class Pawn
         {
             while (currentJob != null &&
                    !currentJob.removed &&
-                   currentJob.ProgressCondition() &&
                    currentJob.currentProgress < currentJob.totalProgress)
             {
                 token.ThrowIfCancellationRequested();
@@ -241,7 +234,7 @@ public partial class Pawn
                 Destroy(progressBarInstance.gameObject);
         }
 
-        if (currentJob == null || currentJob.removed || !currentJob.ProgressCondition())
+        if (currentJob == null || currentJob.removed)
             return ActionResult.Cancelled;
 
         return ActionResult.Success;

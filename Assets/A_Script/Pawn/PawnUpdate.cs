@@ -113,8 +113,8 @@ public partial class Pawn
         if (world != null) world.ModifyPawnCountGrid(currentGridPos, false);
         ReturnJob();
         jobCTS?.Cancel();
-        jobCTS = null;
         thinkCTS?.Cancel();
+        DropAllItems(currentGridPos);
         if (progressBarInstance != null) Destroy(progressBarInstance.gameObject);
         base.OnDestroy();
     }

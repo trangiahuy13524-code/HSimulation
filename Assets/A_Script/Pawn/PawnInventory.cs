@@ -64,42 +64,32 @@ public partial class Pawn
         return (amount - droppedAmount, items);
     }
 
-    //public (int, List<Item>) DropItem(ItemData itemData, int amount)
-    //{
-    //    int remaining = amount;
+    public void RemoveItems(List<RequireItemData> requireItemDatas)
+    {
+        foreach (var req in requireItemDatas)
+        {
+            InventoryKey key = new(req.itemData, req.itemClass);
+            if (inventory.ContainsKey(key))
+            {
+                inventory[key] -= req.amount;
+                if (inventory[key] <= 0)
+                {
+                    inventory.Remove(key);
+                }
+            }
+        }
+    }
 
-    //    // copy keys to avoid modifying dictionary while iterating
-    //    List<InventoryKey> keys = new(inventory.Keys);
-
-    //    List<Item> items = null;
-
-    //    foreach (InventoryKey key in keys)
-    //    {
-    //        if (key.itemData != itemData)
-    //            continue;
-
-    //        int available = inventory[key];
-
-    //        int droppedAmount =
-    //            Mathf.Min(available, remaining);
-
-    //        inventory[key] -= droppedAmount;
-
-    //        if (inventory[key] <= 0)
-    //        {
-    //            inventory.Remove(key);
-    //        }
-
-    //        items = world.CreateItem(currentGridPos, itemData, key.itemClass, droppedAmount);
-
-    //        remaining -= droppedAmount;
-
-    //        if (remaining <= 0)
-    //            break;
-    //    }
-
-    //    return (remaining, items);
-    //}
+    public void DropAllItems(Vector2Int? dropPos)
+    {
+        foreach (var kvp in inventory)
+        {
+            InventoryKey key = kvp.Key;
+            int amount = kvp.Value;
+            world.CreateItem(dropPos ?? currentGridPos, key.itemData, key.itemClass, amount);
+        }
+        inventory.Clear();
+    }
 }
 
 [Serializable]

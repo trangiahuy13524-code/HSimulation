@@ -40,6 +40,8 @@ public class BuildingCraft : BuildingWorkable
                 findItemLock.Release();
                 return new RequireItem { item = item, amount = r.amount };
             }
+
+            await UniTask.Yield();
         }
         findItemLock.Release();
         return default;
@@ -65,7 +67,7 @@ public class BuildingCraft : BuildingWorkable
             Debug.Log("Craft Finished");
         };
 
-        onDestroy += job.OnBuildingCraftDestroyed;
+        //onDestroy += job.OnBuildingCraftDestroyed;
         jobManager.AddJob(job);
     }
 

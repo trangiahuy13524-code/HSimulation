@@ -29,11 +29,9 @@ public class Item : WorldObject
     }
     [SerializeField] SpriteRenderer objectSpriteRenderder;
     [SerializeField] TextMeshPro displayAmount;
-    [SerializeField] bool initialized = false;
     public ItemClass itemClass;
-    public void InitializeItem(ItemData data, ItemClass itemClass)
+    public void SetItemData(ItemData data, ItemClass itemClass, int amount = 1)
     {
-        if (initialized) return;
         itemData = data;
         this.itemClass = itemClass;
         iconSprite = data.icon;
@@ -42,7 +40,7 @@ public class Item : WorldObject
         objectSpriteRenderder.size = data.itemSprite.size;
         transform.localPosition += (Vector3)data.itemSprite.offset;
         displayAmount.sortingOrder = 2000;
-        initialized = true;
+        StackCount = amount;
     }
 
     public int PickedUp(int amount)

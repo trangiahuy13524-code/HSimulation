@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Wall : StaticWorldObject
+public class Wall : WorldObjectStatic
 {
     [SerializeField] protected MapRenderer mapRenderer;
     public override bool isPassable => false;

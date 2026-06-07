@@ -23,7 +23,8 @@ public class JobManager : MonoBehaviour
         availableJobs.Add(job);
     }
 
-    static SemaphoreSlim jobLock = new SemaphoreSlim(1, 1);
+    SemaphoreSlim jobLock = new SemaphoreSlim(1, 1);
+    HashSet<WorldObject> usedJobObjects = new();
     public async UniTask<Job> GetJob(
     Pawn pawn,
     CancellationToken token)
@@ -33,9 +34,7 @@ public class JobManager : MonoBehaviour
         WorkPosition bestWorkPos = null;
 
         //float bestScore = float.MinValue;
-
-        HashSet<WorldObject> usedJobObjects = new();
-
+        usedJobObjects.Clear();
         for (int i = availableJobs.Count - 1; i >= 0; i--)
         {
             await UniTask.Yield(token);
@@ -82,7 +81,6 @@ public class JobManager : MonoBehaviour
                     craftJob.itemFound = await craftJob.craftBuilding.FindItem(pawn, bestWorkPos.workPos, craftJob.requiredItemDatas);
                     if (craftJob.itemFound.item == null)
                         continue;
-                    await UniTask.Yield(token);
                 }
             }
 
@@ -122,19 +120,19 @@ public class JobManager : MonoBehaviour
     {
         return new WorldThreadSafe(world.WorldSize, (byte[,])world.PawnCountOnGrid.Clone(), world.MaxPawnCount, (bool[,])world.NotPassableTiles.Clone());
     }
-    float EvaluateJob(Pawn pawn, Job job)
-    {
-        Vector2Int diff =
-            pawn.CurrentGridPosition -
-            job.refObject.GetMidGrid();
+    //float EvaluateJob(Pawn pawn, Job job)
+    //{
+    //    Vector2Int diff =
+    //        pawn.CurrentGridPosition -
+    //        job.refObject.GetMidGrid();
 
-        return -diff.sqrMagnitude;
-    }
+    //    return -diff.sqrMagnitude;
+    //}
 
     public void ReturnJob(Job job)
     {
         job.reserved = false;
-        //job.worker = null;
+        job.ReturnJob();
     }
     public void RemoveJob(Job job)
     {

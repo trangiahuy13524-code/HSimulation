@@ -15,16 +15,12 @@ MonoBehaviour:
   raceName: Black Empress
   raceDescription: 
   raceIcon: {fileID: 21300000, guid: cd51246c00e11514f8a3432d3039167e, type: 3}
-  baseHealth: 50
-  baseMana: 40
-  baseDefense: 15
-  baseAttack: 20
-  magicPotential: 5
-  baseSpeed: 0.5
-  reproductionType: 2
+  reproductionType: 1
   femaleBirthChance: 0.5
   birthType: 0
   bodyData:
   - {fileID: 11400000, guid: 3206099246228ec44a459880c5f66c61, type: 2}
+  - {fileID: 11400000, guid: 74e8d13ddb9fdf44283c38747e1209ea, type: 2}
   headData: []
   hairData: []
+  pawnSkills: []

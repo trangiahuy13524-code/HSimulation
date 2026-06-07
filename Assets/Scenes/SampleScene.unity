@@ -1351,6 +1351,9 @@ MonoBehaviour:
   screenAndTouchManager: {fileID: 1403548826}
   pawnGeneticsData:
   - {fileID: 11400000, guid: 929f73aa2e71865409282e24d3565be9, type: 2}
+  - {fileID: 11400000, guid: 7bddb8394beeaab498899d9c32d8ac0a, type: 2}
+  - {fileID: 11400000, guid: dff27e693eb813e47b02babd77f4739e, type: 2}
+  - {fileID: 11400000, guid: 284f3e51e592a5b44b4e50072ee01556, type: 2}
   wallTile: {fileID: 11400000, guid: c0c35e3181e41a2448e75ff377666282, type: 2}
 --- !u!1 &960279664
 GameObject:
@@ -2540,7 +2543,7 @@ MonoBehaviour:
   pawnPrefab: {fileID: 3944923890744551288, guid: 98aeb43687677c84dac3183fd6135da7, type: 3}
   itemPrefab: {fileID: 1036136611791510917, guid: 2b484b790d9884a4ba7d2fbe44e2da9e, type: 3}
   cam: {fileID: 519420032}
-  worldSize: 80
+  worldSize: 320
   maxPawnCount: 1
 --- !u!114 &1819015518
 MonoBehaviour:
