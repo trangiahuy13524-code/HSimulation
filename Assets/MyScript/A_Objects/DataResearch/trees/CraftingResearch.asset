@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f98f40708e3c845a427bd2f24ef7cc, type: 3}
+  m_Name: CraftingResearch
+  m_EditorClassIdentifier: Assembly-CSharp::ResearchTree
+  mainNodes:
+  - {fileID: 11400000, guid: 7574962b2bf673d43af4b0757044d9df, type: 2}
+  - {fileID: 11400000, guid: 298837788dbedd64bb53ff6bdf1caae4, type: 2}

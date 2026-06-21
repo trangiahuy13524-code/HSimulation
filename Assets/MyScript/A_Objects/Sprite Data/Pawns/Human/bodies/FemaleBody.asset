@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c9b70721c1bf7243b2cb92856c5b8fc, type: 3}
+  m_Name: FemaleBody
+  m_EditorClassIdentifier: Assembly-CSharp::DirectionSpriteData
+  offset: {x: 0, y: -0.3}
+  childOffset: {x: 0, y: 1.2}
+  horizontalOffset: 0
+  scale: {x: 0.3, y: 0.3}
+  bodyPartShape: {fileID: 0}
+  eastSprite: {fileID: 21300000, guid: 54e8223467796a6479fcb65b51878bf1, type: 3}
+  northSprite: {fileID: 21300000, guid: a7fbb7c18a7e49940a9dfb6324bbe284, type: 3}
+  southSprite: {fileID: 21300000, guid: 8dba691fc049458499a70e8bfbd25ba5, type: 3}
+  bodySex: 1
+  hybridable: 0
+  baseHealth: 7
+  baseMana: 10
+  baseDefense: 2
+  baseAttack: 2
+  magicPotential: 0.7
+  baseSpeed: 0.9
