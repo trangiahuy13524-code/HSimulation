@@ -4,7 +4,7 @@ using UnityEngine;
 
 public partial class Pawn
 {
-    
+    [Header("Pawn Genetics")]
     [SerializeField] bool initialized = false;
     [SerializeField] GenomeRT genome;
     public GenomeRT Genome => genome;

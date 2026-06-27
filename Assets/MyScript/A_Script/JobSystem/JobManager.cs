@@ -62,24 +62,22 @@ public class JobManager : MonoBehaviour
             if (job is JobBuilding workableJob)
             {
                 JobCraft craftJob = workableJob as JobCraft;
-                if (craftJob != null)
-                {
-                    if (!craftJob.recipeData.IsUnlocked())
-                    {
-                        continue;
-                    }
-                }
+                //if (craftJob != null)
+                //{
+                //    if (!craftJob.recipeData.IsUnlocked())
+                //    {
+                //        continue;
+                //    }
+                //}
 
                 WorkPosition[] positions =
                 workableJob.workBuilding.GetAvailableWorkPos();
-
-                WorldThreadSafe worldTS = GetWTS();
 
                 foundPos = await UniTask.RunOnThreadPool(() => AStarPathfinder.FindReachableWorkPosition(
                         pawn.CurrentGridPosition,
                         positions,
                         50,
-                        worldTS));
+                        PawnManager.Instance.GetWTS()));
 
                 if (foundPos == null)
                     continue;
@@ -88,8 +86,8 @@ public class JobManager : MonoBehaviour
 
                 if (craftJob != null)
                 {
-                    craftJob.itemFound = await craftJob.FindItem(pawn, bestWorkPos.workPos, craftJob.recipeData.requiredItems);
-                    if (craftJob.itemFound.item == null)
+                    ItemContainer itemCon = craftJob.FindItem(bestWorkPos.workPos, craftJob.recipeData.requiredItems[0]);
+                    if (itemCon.item == null)
                         continue;
                 }
             }
@@ -126,10 +124,6 @@ public class JobManager : MonoBehaviour
         return bestJob;
     }
 
-    WorldThreadSafe GetWTS()
-    {
-        return new WorldThreadSafe(world.WorldSize, (byte[,])world.pawnCountOnGrid.Clone(), world.MaxPawnCount, (bool[,])world.notPassableTiles.Clone());
-    }
     //float EvaluateJob(Pawn pawn, Job job)
     //{
     //    Vector2Int diff =
@@ -139,10 +133,10 @@ public class JobManager : MonoBehaviour
     //    return -diff.sqrMagnitude;
     //}
 
-    public void ReturnJob(JobBase job)
+    public void ReturnJob(JobBase job, Pawn worker)
     {
         job.reserved = false;
-        job.ReturnJob();
+        job.ReturnJob(worker);
     }
     public void RemoveJob(JobBase job)
     {

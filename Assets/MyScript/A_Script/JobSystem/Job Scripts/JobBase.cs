@@ -20,11 +20,11 @@ public abstract class JobBase
     Pawn worker,
     CancellationToken token);
 
-    public abstract void ReturnJob();
+    public abstract void ReturnJob(Pawn worker);
 
-    protected virtual async UniTask FinishWork(Pawn pawn, CancellationToken token)
+    protected virtual async UniTask FinishWork(Pawn worker, CancellationToken token)
     {
         await UniTask.Yield(token);
-        result?.Invoke(pawn);
+        result?.Invoke(worker);
     }
 }

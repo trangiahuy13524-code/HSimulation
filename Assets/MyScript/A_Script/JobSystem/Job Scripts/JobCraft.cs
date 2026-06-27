@@ -7,242 +7,304 @@ using UnityEngine;
 public class JobCraft : JobBuilding
 {
     public RecipeData recipeData;
-    private Item onCraftItem;
-    public ItemContainer itemFound;
-    public BuildingCraft craftBuilding => (BuildingCraft)workBuilding;
 
-    private List<ItemDataContainer> pickedUpItems = new List<ItemDataContainer>();
+    private Item unfinishedItem;
+    private readonly HashSet<Item> usedItems = new();
+
+    public BuildingCraft CraftBuilding => (BuildingCraft)workBuilding;
+
     protected override async UniTask<ActionResult> WorkRoutine(
-    Pawn pawn,
-    WorkPosition wP,
-    CancellationToken token)
+        Pawn worker,
+        WorkPosition workPos,
+        CancellationToken token)
     {
-        ActionResult result = ActionResult.Success;
-        // =========================================
-        // COLLECT ALL REQUIRED ITEMS
-        // =========================================
-        bool hasOnCraftItem = false;
-        int remainingNeeded = 0;
-
-        if (onCraftItem == null)
+        if (unfinishedItem == null)
         {
-            currentProgress = 0;
-            bool first = true;
-            for (int i = 0; i < recipeData.requiredItems.Count; i++)
-            {
-                ItemDataContainer required = recipeData.requiredItems[i];
+            var collectResult =
+                await CollectIngredients(worker, workPos, token);
 
-                // how many still needed
-                remainingNeeded =
-                    required.amount -
-                    pawn.GetItemCount(
-                        required.itemData,
-                        required.itemClass);
+            if (collectResult != ActionResult.Success)
+                return collectResult;
 
-                // already enough
-                if (remainingNeeded <= 0)
-                    continue;
+            if (!ValidateIngredients())
+                return ActionResult.Cancelled;
 
-                // keep collecting until enough
-                while (remainingNeeded > 0)
-                {
-                    token.ThrowIfCancellationRequested();
+            ConsumeIngredients();
 
-                    if (!first)
-                    {
-                        itemFound = await FindItem(pawn, wP.workPos, recipeData.requiredItems);
-                        if (itemFound.item == null)
-                        {
-                            Debug.Log("Item not found, cancelling job");
-                            return ActionResult.Cancelled;
-                        }
-                    }
-                    else
-                    {
-                        first = false;
-                        if (itemFound.item == null)
-                        {
-                            continue;
-                        }
-                    }
-
-
-                    int pickupAmount = remainingNeeded;
-
-
-                    (result, pickupAmount) = await pawn.MoveToAndPickUp(
-                            itemFound.item,
-                            pickupAmount,
-                            token);
-
-                    if (result != ActionResult.Success)
-                    {
-
-                        return result;
-                    }
-
-                    remainingNeeded -= pickupAmount;
-
-                    await UniTask.Delay(100, cancellationToken: token);
-
-                }
-            }
+            unfinishedItem = SpawnUnfinishedItem(worker);
         }
         else
         {
-            onCraftItem.reserved = true;
-            (result, remainingNeeded) = await pawn.MoveToAndPickUp(
-                            onCraftItem,
-                            1,
-                            token);
+            var carryResult =
+                await CarryUnfinishedItem(worker, workPos, token);
 
-            Debug.Log(onCraftItem);
-
-            if (result != ActionResult.Success)
-            {
-                return result;
-            }
-
-            hasOnCraftItem = true;
+            if (carryResult != ActionResult.Success)
+                return carryResult;
         }
 
-        // =========================================
-        // DROP ALL REQUIRED ITEMS
-        // =========================================
-
-        //ClearReservedItems();
-
-        result = await pawn.MoveTo(wP.workPos, token);
-
-        if (result != ActionResult.Success)
-        {
-            Debug.Log("Failed to move to work position, cancelling job");
-            return result;
-        }
-
-
-        pawn.ChangeDirection(workBuilding.workDirection);
-        await UniTask.Yield(token);
-
-        if (!hasOnCraftItem)
-        {
-            pawn.RemoveItems(recipeData.requiredItems);
-            onCraftItem = World.Instance.CreateItem(
-                pawn.CurrentGridPosition + pawn.direction(),
-                recipeData.unfinishedCraftItemData,
-                ItemClass.None,
-                1)[0];
-        }
-        else
-        {
-            List<Item> droppedItems;
-            (result, droppedItems) = await pawn.TryDrop(recipeData.unfinishedCraftItemData, ItemClass.None, 1, token);
-
-            if (result != ActionResult.Success)
-            {
-                return result;
-            }
-            onCraftItem = droppedItems[0];
-        }
-        onCraftItem.reserved = true;
-        //for (int i = 0; i < requiredItemDatas.Count; i++)
-        //{
-        //    RequireItemData required =
-        //        requiredItemDatas[i];
-
-        //    int amountInInventory =
-        //        pawn.GetItemCount(
-        //            required.itemData,
-        //            required.itemClass);
-
-        //    if (amountInInventory <= 0)
-        //        continue;
-
-        //    List<Item> droppedItems;
-        //    (result, droppedItems) =
-        //        await pawn.TryDrop(
-        //            required.itemData,
-        //            required.itemClass,
-        //            Mathf.Min(required.amount, amountInInventory),
-        //            token);
-
-        //    foreach (var item in droppedItems)
-        //    {
-        //        AddReservedItem(item);
-        //    }
-
-        //    if (result != ActionResult.Success)
-        //    {
-        //        Debug.Log("Failed to drop item, cancelling job");
-        //        return result;
-        //    }
-
-        //    await UniTask.Delay(100, cancellationToken: token);
-        //}
-
-        // =========================================
-        // DO WORK
-        // =========================================
-
-        return await pawn.DoProgressWork(
+        return await worker.DoProgressWork(
             workBuilding.workDirection,
             token);
     }
 
-    public override void ReturnJob()
+    // =====================================================
+    // COLLECT INGREDIENTS
+    // =====================================================
+
+    private async UniTask<ActionResult> CollectIngredients(
+        Pawn worker,
+        WorkPosition workPos,
+        CancellationToken token)
     {
-        if (onCraftItem != null)
+        currentProgress = 0;
+
+        foreach (var required in recipeData.requiredItems)
         {
-            onCraftItem.reserved = false;
+            int remaining = required.amount;
+
+            while (remaining > 0)
+            {
+                var result =
+                    await PickRequiredItem(worker, workPos, required, remaining, token);
+
+                if (result.result != ActionResult.Success)
+                    return result.result;
+
+                remaining -= result.amount;
+
+                while (remaining > 0 &&
+                       worker.HoldedItem != null &&
+                       worker.HoldedItem.StackCount <
+                       worker.HoldedItem.itemData.maxStack)
+                {
+                    result =
+                        await PickRequiredItem(worker, workPos, required, remaining, token);
+
+                    if (result.result != ActionResult.Success)
+                        return result.result;
+
+                    remaining -= result.amount;
+                }
+
+                var dropResult =
+                    await DropHeldItems(worker, workPos, token);
+
+                if (dropResult != ActionResult.Success)
+                    return dropResult;
+            }
         }
-        base.ReturnJob();
+
+        return ActionResult.Success;
     }
 
-    protected override async UniTask FinishWork(Pawn pawn, CancellationToken token)
+    private async UniTask<(ActionResult result, int amount)> PickRequiredItem(
+        Pawn worker,
+        WorkPosition workPos,
+        ItemDataContainer required,
+        int remaining,
+        CancellationToken token)
     {
-        if (onCraftItem != null)
-        {
-            onCraftItem.Despawn();
-        }
+        ItemContainer found =
+            FindItem(workPos.workPos, required);
+
+        if (found.item == null)
+            return (ActionResult.Cancelled, 0);
+
+        return await worker.MoveToAndPickUp(
+            found.item,
+            remaining,
+            token);
+    }
+
+    private async UniTask<ActionResult> DropHeldItems(
+        Pawn worker,
+        WorkPosition workPos,
+        CancellationToken token)
+    {
+        var result =
+            await worker.MoveTo(workPos.workPos, token);
+
+        if (result != ActionResult.Success)
+            return result;
+
+        worker.ChangeDirection(workBuilding.workDirection);
+
         await UniTask.Yield(token);
-        foreach (var outputItemData in recipeData.outputItems)
-        {
-            World.Instance.CreateItem(
-            pawn.CurrentGridPosition + pawn.direction(),
-            outputItemData.itemData,
-            outputItemData.itemClass,
-            outputItemData.amount);
-            await UniTask.Yield(token);
-        }
-        await base.FinishWork(pawn, token);
+
+        usedItems.UnionWith(worker.DropHoldedItem(worker));
+
+        return ActionResult.Success;
     }
 
-    public async UniTask<ItemContainer> FindItem(Pawn pawn, Vector2Int workPos, List<ItemDataContainer> require)
+    // =====================================================
+    // VALIDATE + CONSUME
+    // =====================================================
+
+    private bool ValidateIngredients()
     {
-        if (require == null)
+        Dictionary<ItemKey, int> requiredMap =
+            BuildRequiredMap();
+
+        foreach (var item in usedItems)
         {
-            return default;
-        }
-        for (int i = 0; i < require.Count; i++)
-        {
-            ItemDataContainer r = require[i];
-            // skip if pawn already has enough
-            if (pawn.GetItemCount(r.itemData, r.itemClass) >= r.amount)
+            ItemKey key =
+                new(item.itemData, item.itemClass);
+
+            if (!requiredMap.ContainsKey(key))
                 continue;
 
-            Item item = World.Instance.FindNearestItem(
-                    r.itemData,
-                    r.itemClass,
-                    workPos);
+            requiredMap[key] -= item.StackCount;
 
-            if (item != null)
-            {
-                return new ItemContainer { item = item, amount = r.amount };
-            }
-
-            await UniTask.Yield();
+            if (requiredMap[key] <= 0)
+                requiredMap.Remove(key);
         }
-        return default;
+
+        return requiredMap.Count == 0;
+    }
+
+    private void ConsumeIngredients()
+    {
+        Dictionary<ItemKey, int> consumeMap =
+            BuildRequiredMap();
+
+        foreach (var item in usedItems)
+        {
+            ItemKey key =
+                new(item.itemData, item.itemClass);
+
+            if (!consumeMap.ContainsKey(key))
+                continue;
+
+            int need = consumeMap[key];
+
+            if (item.StackCount > need)
+            {
+                item.ReduceStack(need);
+                consumeMap.Remove(key);
+            }
+            else
+            {
+                consumeMap[key] -= item.StackCount;
+                item.Despawn();
+
+                if (consumeMap[key] <= 0)
+                    consumeMap.Remove(key);
+            }
+        }
+    }
+
+    private Dictionary<ItemKey, int> BuildRequiredMap()
+    {
+        Dictionary<ItemKey, int> map = new();
+
+        foreach (var item in recipeData.requiredItems)
+        {
+            ItemKey key =
+                new(item.itemData, item.itemClass);
+
+            if (!map.ContainsKey(key))
+                map[key] = 0;
+
+            map[key] += item.amount;
+        }
+
+        return map;
+    }
+
+    // =====================================================
+    // UNFINISHED ITEM
+    // =====================================================
+
+    private Item SpawnUnfinishedItem(Pawn worker)
+    {
+        return World.Instance.CreateItem(
+            worker.CurrentGridPosition + worker.direction(),
+            recipeData.unfinishedCraftItemData,
+            ItemClass.None,
+            1,
+            worker)[0];
+    }
+
+    private async UniTask<ActionResult> CarryUnfinishedItem(
+        Pawn worker,
+        WorkPosition workPos,
+        CancellationToken token)
+    {
+        var result =
+            await worker.MoveToAndPickUp(
+                unfinishedItem,
+                1,
+                token);
+
+        if (result.Item1 != ActionResult.Success)
+            return result.Item1;
+
+        return await DropHeldItems(worker, workPos, token);
+    }
+
+    // =====================================================
+    // FINISH / RETURN
+    // =====================================================
+
+    public override void ReturnJob(Pawn worker)
+    {
+        if (unfinishedItem != null)
+            unfinishedItem.reservingObject = null;
+
+        foreach (var item in usedItems)
+        {
+            if (item != null)
+                item.reservingObject = null;
+        }
+
+        worker.DropHoldedItem(null);
+
+        base.ReturnJob(worker);
+    }
+
+    protected override async UniTask FinishWork(
+        Pawn worker,
+        CancellationToken token)
+    {
+        if (unfinishedItem != null)
+            unfinishedItem.Despawn();
+
+        foreach (var output in recipeData.outputItems)
+        {
+            World.Instance.CreateItem(
+                worker.CurrentGridPosition + worker.direction(),
+                output.itemData,
+                output.itemClass,
+                output.amount,
+                null);
+
+            await UniTask.Yield(token);
+        }
+
+        await base.FinishWork(worker, token);
+    }
+
+    // =====================================================
+    // FIND ITEM
+    // =====================================================
+
+    public ItemContainer FindItem(
+        Vector2Int workPos,
+        ItemDataContainer required)
+    {
+        Item item = World.Instance.FindNearestItem(
+            required.itemData,
+            required.itemClass,
+            workPos);
+
+        if (item == null)
+            return default;
+
+        return new ItemContainer
+        {
+            item = item,
+            amount = required.amount
+        };
     }
 }
 

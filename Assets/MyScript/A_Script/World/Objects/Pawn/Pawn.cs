@@ -6,6 +6,7 @@ using UnityEngine;
 
 public partial class Pawn : WorldObjectDynamic
 {
+    [Header("Pawn Movement")]
     [SerializeField] GameObject hightlight;
 
     [SerializeField] BodyData bodyData;
@@ -67,7 +68,7 @@ public partial class Pawn : WorldObjectDynamic
         if (hairData) hairData.SetDirection(dir);
         //if (facial) facial.SetDirection(dir);
     }
-    void UpdateLayer()
+    public override void UpdateLayer()
     {
         if (bodyData) bodyData.UpdateLayer();
         if (headData) headData.UpdateLayer();
@@ -109,8 +110,24 @@ public partial class Pawn : WorldObjectDynamic
             }
             if (nextPos != currentGridPos && !world.IsPositionPathValid(nextPos))
             {
+                
                 if (onDuty)
                 {
+                    if (withoutLast)
+                    {
+                        if (nextPos == itemDestination)
+                        {
+                            PathReset();
+                        }
+                    }
+                    else
+                    {
+                        if (nextPos == oldDestination)
+                        {
+                            PathReset();
+                        }
+                    }
+                    if (debug) Debug.Log("wow!");
                     ReCalculatePath(worldTS).Forget();
                 }
                 else
@@ -128,6 +145,20 @@ public partial class Pawn : WorldObjectDynamic
                 {
                     if (onDuty)
                     {
+                        if (withoutLast)
+                        {
+                            if (nextPos == itemDestination)
+                            {
+                                PathReset();
+                            }
+                        }
+                        else
+                        {
+                            if (nextPos == oldDestination)
+                            {
+                                PathReset();
+                            }
+                        }
                         ReCalculatePath(worldTS).Forget();
                     }
                     else
@@ -437,6 +468,7 @@ public partial class Pawn : WorldObjectDynamic
 
     public void PathReset()
     {
+        CancelPathfinding();
         paths.Clear();
         paths.Enqueue(currentGridPos);
         oldDestination = currentGridPos;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +7,11 @@ public class PawnManager : MonoBehaviour
     [SerializeField] World world;
     public static PawnManager Instance { get; private set; }
 
-    // Use a list for fast sequential cache-friendly access
-    private readonly List<IManagedUpdate> _managedObjects = new List<IManagedUpdate>();
+    private readonly List<IManagedUpdate> _managedObjects = new();
+
+    // Double-buffer snapshots
+    private WorldThreadSafe readBuffer;
+    private WorldThreadSafe writeBuffer;
 
     private void Awake()
     {
@@ -18,7 +22,21 @@ public class PawnManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
+
+        readBuffer = CreateBuffer();
+        writeBuffer = CreateBuffer();
+    }
+
+    private WorldThreadSafe CreateBuffer()
+    {
+        return new WorldThreadSafe(
+            world.WorldSize,
+            new byte[world.WorldSize, world.WorldSize],
+            world.MaxPawnCount,
+            new bool[world.WorldSize, world.WorldSize]
+        );
     }
 
     public static void Register(IManagedUpdate obj)
@@ -37,23 +55,40 @@ public class PawnManager : MonoBehaviour
         }
     }
 
-    // The ONLY native Unity Update loop running in your entire game
     private void Update()
     {
-        // Cache count to avoid looking up size every loop iteration
+        // Fill write buffer
+        FillBuffer(writeBuffer);
+
+        // Swap buffers
+        (readBuffer, writeBuffer) = (writeBuffer, readBuffer);
+
+        // Update all pawns using frozen snapshot
         int count = _managedObjects.Count;
-        
-        worldTS = GetWTS();
-        // Use a standard for-loop (faster than foreach, generates zero garbage collection)
         for (int i = 0; i < count; i++)
         {
-            _managedObjects[i].ManagedUpdate(worldTS);
+            _managedObjects[i].ManagedUpdate(readBuffer);
         }
     }
 
-    public static WorldThreadSafe worldTS;
     public WorldThreadSafe GetWTS()
     {
-        return new WorldThreadSafe(world.WorldSize, (byte[,])world.pawnCountOnGrid.Clone(), world.MaxPawnCount, (bool[,])world.notPassableTiles.Clone());
+        // Return frozen snapshot (safe for threads)
+        return readBuffer;
+    }
+
+    private void FillBuffer(WorldThreadSafe buffer)
+    {
+        Array.Copy(
+            world.pawnCountOnGrid,
+            buffer.pawnCountOnGrid,
+            world.pawnCountOnGrid.Length
+        );
+
+        Array.Copy(
+            world.notPassableTiles,
+            buffer.notPassableTiles,
+            world.notPassableTiles.Length
+        );
     }
 }

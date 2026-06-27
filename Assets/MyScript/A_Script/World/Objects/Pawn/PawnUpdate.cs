@@ -6,6 +6,7 @@ using UnityEngine;
 
 public partial class Pawn : IManagedUpdate
 {
+    [Header("Pawn Update")]
     [SerializeField] float idleTime = 2f;
     [SerializeField] float currentIdleTime = 0f;
     [SerializeField] PawnState currentState = PawnState.Idle;
@@ -30,6 +31,7 @@ public partial class Pawn : IManagedUpdate
         TickUpdate(worldTS);
     }
 
+    public bool debug = false;
     void TickUpdate(WorldThreadSafe worldTS, byte speed = 1)
     {
         if (thinking)
@@ -42,6 +44,8 @@ public partial class Pawn : IManagedUpdate
 
         if (!donePathing)
             return;
+
+        
 
         // reached movement destination
         if (currentState == PawnState.Working)
@@ -108,19 +112,22 @@ public partial class Pawn : IManagedUpdate
         thinking = false;
     }
 
-    public override void Despawn()
-    {
-        PawnManager.Unregister(this);
-        DropAllItems(currentGridPos);
-        base.Despawn();
-    }
+    //public override void Despawn()
+    //{
+        
+    //    base.Despawn();
+    //}
 
     protected override void OnDestroy()
     {
+        PawnManager.Unregister(this);
+        DropAllItemsInventory(currentGridPos, null);
         if (world != null) world.ModifyPawnCountGrid(currentGridPos, false);
         ReturnJob();
         jobCTS?.Cancel();
+        jobCTS?.Dispose();
         thinkCTS?.Cancel();
+        thinkCTS?.Dispose();
         if (progressBarInstance != null) Destroy(progressBarInstance.gameObject);
         base.OnDestroy();
     }

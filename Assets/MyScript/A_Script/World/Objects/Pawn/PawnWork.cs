@@ -6,6 +6,7 @@ using UnityEngine;
 
 public partial class Pawn
 {
+    [Header("Pawn Work")]
     Dictionary<Skill, byte> pawnSkills = new();
     [SerializeField] ProgressBar progressBarPrefab;
     ProgressBar progressBarInstance;
@@ -61,7 +62,7 @@ public partial class Pawn
         if (currentJob == null)
             return;
         currentState = PawnState.Idle;
-        jobManager.ReturnJob(currentJob);
+        jobManager.ReturnJob(currentJob, this);
 
         currentJob = null;
     }
@@ -91,13 +92,13 @@ public partial class Pawn
     Vector2Int targetPos,
     CancellationToken token)
     {
+        ActionResult result = ActionResult.Success;
         reachDestination = false;
         destinationInvalid = false;
         await MakePath(targetPos, PawnManager.Instance.GetWTS());
 
         while (!reachDestination)
         {
-            token.ThrowIfCancellationRequested();
 
             if (currentJob == null || currentJob.removed)
                 return ActionResult.Cancelled;
@@ -108,7 +109,7 @@ public partial class Pawn
         if (destinationInvalid)
             return ActionResult.Cancelled;
 
-        return ActionResult.Success;
+        return result;
     }
     public async UniTask<(ActionResult, int)> MoveToAndPickUp(Item item, int amount, CancellationToken token)
     {
@@ -116,26 +117,32 @@ public partial class Pawn
         reachDestination = false;
         destinationInvalid = false;
 
+        item.reservingObject = this;
+
         await MakePathWithoutLast(item.CurrentGridPosition, PawnManager.Instance.GetWTS());
+
+        await UniTask.Yield(token);
         while (!reachDestination)
         {
-            token.ThrowIfCancellationRequested();
 
             if (currentJob == null || currentJob.removed)
             {
-                Debug.Log("Job removed during MoveToAndPickUp");
+                item.reservingObject = null;
                 return (ActionResult.Cancelled, 0);
             }
 
             if (item == null)
+            {
                 return (ActionResult.Success, 0);
+            }
+
 
             await UniTask.Yield(token);
         }
 
         if (destinationInvalid)
         {
-            Debug.Log("Destination invalid during MoveToAndPickUp");
+            item.reservingObject = null;
             return (ActionResult.Cancelled, 0);
         }
 
@@ -148,56 +155,58 @@ public partial class Pawn
 
         if (takenAmount <= 0)
         {
-            Debug.Log("Nothing to take during MoveToAndPickUp");
+            item.reservingObject = null;
             return (ActionResult.Cancelled, 0);
         }
 
-        TakeItem(item, takenAmount);
+        takenAmount = HoldItem(item, takenAmount);
+        await UniTask.Yield(token);
+
 
         return (ActionResult.Success, takenAmount);
     }
 
-    public async UniTask<(ActionResult, List<Item>)> TryDrop(
-    ItemData item,
-    ItemClass itemClass,
-    int amount,
-    CancellationToken token
-    )
-    {
-        int remaining = amount;
-        List<Item> droppedItems = null;
+    // public async UniTask<(ActionResult, List<Item>)> TryDrop(
+    // ItemData item,
+    // ItemClass itemClass,
+    // int amount,
+    // CancellationToken token
+    // )
+    // {
+    //     int remaining = amount;
+    //     List<Item> droppedItems = null;
 
-        while (remaining > 0)
-        {
-            token.ThrowIfCancellationRequested();
+    //     while (remaining > 0)
+    //     {
+    //         token.ThrowIfCancellationRequested();
 
-            // move to drop location
-            //ActionResult moveResult =
-            //    await MoveTo(targetPos, token);
+    //         // move to drop location
+    //         //ActionResult moveResult =
+    //         //    await MoveTo(targetPos, token);
 
-            //if (moveResult != ActionResult.Success)
-            //    return (moveResult, null);
+    //         //if (moveResult != ActionResult.Success)
+    //         //    return (moveResult, null);
 
-            // try dropping
-            (remaining, droppedItems) = DropItem(
-                item,
-                itemClass,
-                remaining,
-                currentGridPos + direction());
+    //         // try dropping
+    //         (remaining, droppedItems) = DropItemInventory(
+    //             item,
+    //             itemClass,
+    //             remaining,
+    //             currentGridPos + direction());
 
-            // nothing dropped this loop
-            if (remaining == amount)
-                return (ActionResult.Cancelled, droppedItems);
+    //         // nothing dropped this loop
+    //         if (remaining == amount)
+    //             return (ActionResult.Cancelled, droppedItems);
 
-            // update original amount for next loop check
-            amount = remaining;
+    //         // update original amount for next loop check
+    //         amount = remaining;
 
-            // optional small delay
-            await UniTask.Yield(token);
-        }
+    //         // optional small delay
+    //         await UniTask.Yield(token);
+    //     }
 
-        return (ActionResult.Success, droppedItems);
-    }
+    //     return (ActionResult.Success, droppedItems);
+    // }
 
     public async UniTask<ActionResult> DoProgressWork(
     Direction workDirection,

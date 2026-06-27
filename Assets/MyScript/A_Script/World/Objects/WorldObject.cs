@@ -28,7 +28,7 @@ public class WorldObject : MonoBehaviour
             objectName = value;
         }
     }
-    public Vector2Int CurrentGridPosition
+    public virtual Vector2Int CurrentGridPosition
     {
         get => currentGridPos;
         set

@@ -146,6 +146,7 @@ Transform:
   - {fileID: 5739998390535231999}
   - {fileID: 4449204958241903541}
   - {fileID: 1227444783597397962}
+  - {fileID: 8688140948882402407}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3944923890744551288
@@ -192,9 +193,12 @@ MonoBehaviour:
     currentHead: {fileID: 0}
     currentHair: {fileID: 0}
     generation: 0
+  holdedItem: {fileID: 0}
+  handTransform: {fileID: 8688140948882402407}
   idleTime: 2
   currentIdleTime: 0
   currentState: 0
+  debug: 0
   selectThreshHold: 0
   progressBarPrefab: {fileID: 1262231344434887996, guid: 0c8d88bd4f62a4d4bae442c0f0e58227, type: 3}
 --- !u!50 &-6656611525869205240
@@ -361,6 +365,37 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &5090138575290778272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8688140948882402407}
+  m_Layer: 0
+  m_Name: Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8688140948882402407
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5090138575290778272}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 3075056145432365867}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5404997582980211953
 GameObject:
   m_ObjectHideFlags: 0

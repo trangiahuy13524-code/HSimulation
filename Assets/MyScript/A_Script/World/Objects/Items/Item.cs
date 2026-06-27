@@ -6,7 +6,8 @@ public class Item : WorldObjectDynamic
 {
     public override bool isPassable => true;
     public ItemData itemData { get; private set; }
-    public bool reserved = false;
+    public bool reserved => reservingObject != null;
+    public WorldObject reservingObject;
     [SerializeField] int stackCount = 1;
     public int StackCount
     {
@@ -43,7 +44,7 @@ public class Item : WorldObjectDynamic
         StackCount = amount;
     }
 
-    public int PickedUp(int amount)
+    public int ReduceStack(int amount)
     {
         if (!itemData.isStackable && amount > 0)
         {
@@ -66,17 +67,17 @@ public class Item : WorldObjectDynamic
     {
         transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
         world.RegisterItem(this, currentGridPos);
-        UpdateLayer(world.WorldSize);
+        UpdateLayer();
     }
+    
+    // protected override void OnDestroy()
+    // {
+    //     if (dataRemove) world.RemoveItem(currentGridPos);
+    //     base.OnDestroy();
+    // }
 
-    protected override void OnDestroy()
+    public override void UpdateLayer()
     {
-        world.RemoveItem(currentGridPos);
-        base.OnDestroy();
-    }
-
-    public virtual void UpdateLayer(int worldSize)
-    {
-        objectSpriteRenderder.sortingOrder = (worldSize - 1) * 5 - currentGridPos.y * 5 + 11;
+        objectSpriteRenderder.sortingOrder = (world.WorldSize - 1) * 5 - currentGridPos.y * 5 + 11;
     }
 }

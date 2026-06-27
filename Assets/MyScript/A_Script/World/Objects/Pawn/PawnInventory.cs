@@ -4,13 +4,17 @@ using System;
 
 public partial class Pawn
 {
-    Dictionary<InventoryKey, int> inventory = new Dictionary<InventoryKey, int>();
+    [Header("Pawn Inventory")]
+    Dictionary<ItemKey, int> inventory = new Dictionary<ItemKey, int>();
+    [SerializeField] Item holdedItem;
+    [SerializeField] Transform handTransform;
 
-    public void TakeItem(
+    public Item HoldedItem => holdedItem;
+    public void TakeItemInventory(
     Item item,
     int amount)
     {
-        InventoryKey key = new(item.itemData, item.itemClass);
+        ItemKey key = new(item.itemData, item.itemClass);
 
         if (inventory.ContainsKey(key))
         {
@@ -21,14 +25,14 @@ public partial class Pawn
             inventory[key] = amount;
         }
 
-        item.PickedUp(amount);
+        item.ReduceStack(amount);
     }
 
-    public int GetItemCount(
+    public int GetItemCountInventory(
     ItemData item,
     ItemClass itemClass)
     {
-        InventoryKey key = new(item, itemClass);
+        ItemKey key = new(item, itemClass);
 
         if (inventory.TryGetValue(key, out int count))
         {
@@ -38,13 +42,13 @@ public partial class Pawn
         return 0;
     }
 
-    public (int, List<Item>) DropItem(
+    public (int, List<Item>) DropItemInventory(
     ItemData itemData,
     ItemClass itemClass,
     int amount,
-    Vector2Int? dropPos)
+    Vector2Int? dropPos, WorldObject reservingOb)
     {
-        InventoryKey key = new(itemData, itemClass);
+        ItemKey key = new(itemData, itemClass);
         if (!inventory.ContainsKey(key))
             return (amount, null);
 
@@ -58,17 +62,17 @@ public partial class Pawn
             inventory.Remove(key);
         }
 
-        var items = world.CreateItem(dropPos ?? currentGridPos, itemData, itemClass, droppedAmount);
+        var items = world.CreateItem(dropPos ?? currentGridPos, itemData, itemClass, droppedAmount, reservingOb);
 
         // return remaining amount not dropped
         return (amount - droppedAmount, items);
     }
 
-    public void RemoveItems(List<ItemDataContainer> requireItemDatas)
+    public void RemoveItemsInventory(List<ItemDataContainer> requireItemDatas)
     {
         foreach (var req in requireItemDatas)
         {
-            InventoryKey key = new(req.itemData, req.itemClass);
+            ItemKey key = new(req.itemData, req.itemClass);
             if (inventory.ContainsKey(key))
             {
                 inventory[key] -= req.amount;
@@ -80,41 +84,83 @@ public partial class Pawn
         }
     }
 
-    public void DropAllItems(Vector2Int? dropPos)
+    public void DropAllItemsInventory(Vector2Int? dropPos, WorldObject reservingOb)
     {
         foreach (var kvp in inventory)
         {
-            InventoryKey key = kvp.Key;
+            ItemKey key = kvp.Key;
             int amount = kvp.Value;
-            world.CreateItem(dropPos ?? currentGridPos, key.itemData, key.itemClass, amount);
+            world.CreateItem(dropPos ?? currentGridPos, key.itemData, key.itemClass, amount, reservingOb);
         }
         inventory.Clear();
     }
-}
 
-[Serializable]
-public struct InventoryKey
-{
-    public ItemData itemData;
-    public ItemClass itemClass;
-
-    public InventoryKey(ItemData data, ItemClass itemClass)
+    public int HoldItem(Item item, int amount)
     {
-        this.itemData = data;
-        this.itemClass = itemClass;
+        if (item == null) return 0;
+
+        if (holdedItem != null)
+        {
+            if (holdedItem.itemData == item.itemData && holdedItem.itemClass == item.itemClass)
+            {
+
+                int takenAmount = amount;
+                if (amount >= item.StackCount)
+                {
+                    takenAmount = item.StackCount;
+                    holdedItem.StackCount += takenAmount;
+                    item.Despawn();
+                    return takenAmount;
+                }
+                else
+                {
+                    holdedItem.StackCount += takenAmount;
+                    item.ReduceStack(takenAmount);
+                    item.reservingObject = null;
+                    return takenAmount;
+                }
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        holdedItem = item;
+        holdedItem.reservingObject = this;
+        holdedItem.transform.SetParent(handTransform);
+        holdedItem.transform.localPosition = Vector3.zero;
+        world.RegisterItem(null, holdedItem.CurrentGridPosition);
+
+        return holdedItem.StackCount;
     }
 
-    public override bool Equals(object obj)
+    public List<Item> DropHoldedItem(WorldObject reservingOb)
     {
-        if (obj is not InventoryKey other)
-            return false;
+        if (holdedItem == null)
+            return new List<Item>{};
 
-        return itemData == other.itemData &&
-               itemClass == other.itemClass;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(itemData, itemClass);
+        List<Item> items;  
+        if (holdedItem.itemData.isStackable)
+        {
+            items = world.CreateItem(currentGridPos, holdedItem.itemData, holdedItem.itemClass, holdedItem.StackCount, reservingOb);
+            holdedItem.Despawn();
+            holdedItem = null;
+        }
+        else
+        {
+            
+            holdedItem.transform.SetParent(null);
+            holdedItem.CurrentGridPosition = currentGridPos;
+            holdedItem.reservingObject = reservingOb;
+            world.RegisterItem(holdedItem, holdedItem.CurrentGridPosition);
+            items = new()
+            {
+                holdedItem
+            };
+            holdedItem = null;
+            
+        }
+        return items;
     }
 }

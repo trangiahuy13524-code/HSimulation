@@ -16,28 +16,29 @@ public abstract class JobBuilding : JobBase
     }
 
     async UniTask WorkToDo(
-    Pawn pawn,
+    Pawn worker,
     CancellationToken token)
     {
 
         if (reservedWorkPos == null)
         {
-            pawn.ReturnJob();
+            worker.ReturnJob();
             return;
         }
 
 
-        ActionResult result = await WorkRoutine(pawn, reservedWorkPos, token);
+        ActionResult result = await WorkRoutine(worker, reservedWorkPos, token);
         Debug.Log($"Work Routine Result: {result}");
 
         switch (result)
         {
+            
             case ActionResult.Success:
-                await FinishWork(pawn, token);
-                pawn.RemoveJob();
+                await FinishWork(worker, token);
+                worker.RemoveJob();
                 break;
             case ActionResult.Cancelled:
-                OnJobCancelled(pawn);
+                OnJobCancelled(worker);
                 break;
         }
     }
@@ -45,22 +46,32 @@ public abstract class JobBuilding : JobBase
 
 
     protected abstract UniTask<ActionResult> WorkRoutine(
-    Pawn pawn,
+    Pawn worker,
     WorkPosition wP,
     CancellationToken token);
 
-    public virtual void OnJobCancelled(Pawn pawn)
+    public virtual void OnJobCancelled(Pawn worker)
     {
         Debug.Log("Job Cancelled");
-        pawn.ReturnJob();
+        worker.ReturnJob();
     }
 
-    public override void ReturnJob()
+    public override void ReturnJob(Pawn worker)
     {
         if (reservedWorkPos != null)
         {
             reservedWorkPos.occupied = false;
             reservedWorkPos = null;
         }
+    }
+
+    protected override async UniTask FinishWork(Pawn worker, CancellationToken token)
+    {
+        if (reservedWorkPos != null)
+        {
+            reservedWorkPos.occupied = false;
+            reservedWorkPos = null;
+        }
+        await base.FinishWork(worker, token);
     }
 }

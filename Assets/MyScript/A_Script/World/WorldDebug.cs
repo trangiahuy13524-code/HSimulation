@@ -72,7 +72,7 @@ public class WorldDebug : MonoBehaviour
         }
         if (Keyboard.current.nKey.wasPressedThisFrame)
         {
-            world.CreateItem(screenAndTouchManager.SelectedGrid, debugItem, debugItemClass, debugItemAmount);
+            world.CreateItem(screenAndTouchManager.SelectedGrid, debugItem, debugItemClass, debugItemAmount, null);
         }
     }
 }

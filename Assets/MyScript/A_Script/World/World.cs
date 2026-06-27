@@ -81,14 +81,12 @@ public class World : MonoBehaviour
         return notPassableTiles[position.x, position.y];
     }
 
-    public bool RegisterObject(WorldObject obj, Vector2Int position)
+    public void RegisterObject(WorldObject obj, Vector2Int position)
     {
-        if (obj == null) return false;
-        if (!IsInside(position)) return false;
-        if (objects[position.x, position.y] != null) return false;
+        if (!IsInside(position)) return;
+        if (objects[position.x, position.y] != null) return;
         objects[position.x, position.y] = obj;
         notPassableTiles[position.x, position.y] = !obj.isPassable;
-        return true;
     }
     public void RemoveObject(Vector2Int position)
     {
@@ -98,7 +96,10 @@ public class World : MonoBehaviour
         ob.Despawn();
     }
 
-
+    public Item GetItem(Vector2Int pos)
+    {
+        return items[pos.x, pos.y];
+    }
     public void RegisterItem(Item item, Vector2Int position)
     {
         if (!IsInside(position)) return;
@@ -293,7 +294,7 @@ public class World : MonoBehaviour
         building.direction = direction;
     }
 
-    public List<Item> CreateItem( Vector2Int position, ItemData itemData, ItemClass itemClass, int quantity)
+    public List<Item> CreateItem( Vector2Int position, ItemData itemData, ItemClass itemClass, int quantity, WorldObject reservingOb)
     {
         if (itemData == null)
             return null;
@@ -334,27 +335,31 @@ public class World : MonoBehaviour
                         itemClass,
                         stackAmount);
 
+                createdItem.reservingObject = reservingOb;
                 returnedItems.Add(createdItem);
 
                 quantity -= stackAmount;
             }
             else if (item != null &&
-                     item.reserved == false &&
                      item.itemData == itemData &&
                      item.itemClass == itemClass &&
                      itemData.isStackable)
             {
-                int availableSpace = itemData.maxStack - item.StackCount;
-
-                if (availableSpace > 0)
+                if (item.reserved == false || item.reservingObject == reservingOb)
                 {
-                    int amountToAdd = Mathf.Min(availableSpace, quantity);
+                    int availableSpace = itemData.maxStack - item.StackCount;
 
-                    item.StackCount += amountToAdd;
+                    if (availableSpace > 0)
+                    {
+                        int amountToAdd = Mathf.Min(availableSpace, quantity);
 
-                    quantity -= amountToAdd;
+                        item.StackCount += amountToAdd;
 
-                    returnedItems.Add(item);
+                        quantity -= amountToAdd;
+
+                        item.reservingObject = reservingOb;
+                        returnedItems.Add(item);
+                    }
                 }
             }
 
