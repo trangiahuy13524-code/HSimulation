@@ -63,6 +63,8 @@ public abstract class BuildingWorkable : Building
         }
     }
 
+    public abstract JobBuilding CreateJob(JobDataWorkable data);
+
 
     //public Action onDestroy;
     //protected override void OnDestroy()

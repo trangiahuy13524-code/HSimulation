@@ -4,6 +4,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game/Research/ResearchNode")]
 public class ResearchNode : ScriptableObject
 {
-    public ResearchData researchData;
+    public JobDataResearch researchData;
     public List<ResearchNode> children;
 }

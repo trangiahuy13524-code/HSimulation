@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public partial class Pawn : IManagedUpdate
 {
@@ -30,8 +31,6 @@ public partial class Pawn : IManagedUpdate
     {
         TickUpdate(worldTS);
     }
-
-    public bool debug = false;
     void TickUpdate(WorldThreadSafe worldTS, byte speed = 1)
     {
         if (thinking)
@@ -132,30 +131,41 @@ public partial class Pawn : IManagedUpdate
         base.OnDestroy();
     }
 
-    public override void SetSelected(bool value)
+    public override void SetSelected(bool value, byte strength)
     {
-        base.SetSelected(value);
-        SetSelectThreshold(value);
+        base.SetSelected(value, strength);
+        SetSelectThreshold(value, strength);
     }
 
     public byte selectThreshHold = 0;
-    public void SetSelectThreshold(bool value)
+    public void SetSelectThreshold(bool value, byte strength)
     {
         if (value)
         {
-            selectThreshHold++;
+            selectThreshHold += strength;
         }
         else
         {
-            selectThreshHold--;
+            selectThreshHold -= strength;
         }
-        if (selectThreshHold > 0)
+        if (selectThreshHold == 0)
         {
-            hightlight.SetActive(true);
+            SetPawnMaterial(worldStatic.defaultMat);
+        }
+        else if (selectThreshHold == 1)
+        {
+            SetPawnMaterial(worldStatic.hoverMat);
         }
         else
         {
-            hightlight.SetActive(false);
+            SetPawnMaterial(worldStatic.selectedMat);
         }
+    }
+
+    public void SetPawnMaterial(Material mat)
+    {
+        bodyData.SetMaterial(mat);
+        if (headData) headData.SetMaterial(mat);
+        if (hairData) hairData.SetMaterial(mat);
     }
 }

@@ -16,9 +16,7 @@ public abstract class JobBase
     //public Pawn worker;
     public Action<Pawn> result;
 
-    public abstract UniTask DoJob(
-    Pawn worker,
-    CancellationToken token);
+    public abstract UniTask DoJob(Pawn worker, CancellationToken token);
 
     public abstract void ReturnJob(Pawn worker);
 

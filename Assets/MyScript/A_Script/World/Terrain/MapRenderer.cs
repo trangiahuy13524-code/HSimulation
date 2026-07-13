@@ -13,7 +13,7 @@ public class MapRenderer : MonoBehaviour
     void Start()
     {
         Instance = this;
-        Terrain terrain = Terrain.Instance;
+        P_Terrain terrain = P_Terrain.Instance;
 
         if (terrain == null)
         {
@@ -29,7 +29,7 @@ public class MapRenderer : MonoBehaviour
             return;
         }
 
-        int size = World.Instance.WorldSize;
+        int size = WorldMap.Instance.WorldSize;
 
         map = new Map(
             new Vector2Int(size, size),

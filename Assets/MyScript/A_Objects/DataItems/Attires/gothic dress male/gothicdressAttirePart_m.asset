@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c958e9868a3074a8efe158131d57ae, type: 3}
+  m_Name: gothicdressAttirePart_m
+  m_EditorClassIdentifier: Assembly-CSharp::PartAttire
+  offset: {x: 0, y: 0}
+  scale: {x: 1, y: 1}
+  bodyPartShape: {fileID: 11400000, guid: 32dc9d24897890b4f9c1e2832eb7aac6, type: 2}
+  eastSprite: {fileID: 21300000, guid: 459c3c4f020cb6a4ebaa7a7a41599db0, type: 3}
+  northSprite: {fileID: 21300000, guid: e28360afbbc6a8e42a07cfe2ae57a55d, type: 3}
+  southSprite: {fileID: 21300000, guid: b01984baecfa6a446be14ff819b990cd, type: 3}

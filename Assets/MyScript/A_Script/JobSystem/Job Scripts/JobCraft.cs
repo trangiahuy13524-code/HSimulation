@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class JobCraft : JobBuilding
 {
-    public RecipeData recipeData;
+    public DataRecipe recipeData;
 
     private Item unfinishedItem;
     private readonly HashSet<Item> usedItems = new();
@@ -169,6 +169,8 @@ public class JobCraft : JobBuilding
 
         foreach (var item in usedItems)
         {
+            if (item == null) continue;
+
             ItemKey key =
                 new(item.itemData, item.itemClass);
 
@@ -217,7 +219,7 @@ public class JobCraft : JobBuilding
 
     private Item SpawnUnfinishedItem(Pawn worker)
     {
-        return World.Instance.CreateItem(
+        return WorldMap.Instance.CreateItem(
             worker.CurrentGridPosition + worker.direction(),
             recipeData.unfinishedCraftItemData,
             ItemClass.None,
@@ -269,9 +271,10 @@ public class JobCraft : JobBuilding
         if (unfinishedItem != null)
             unfinishedItem.Despawn();
 
+        await UniTask.Yield(token);
         foreach (var output in recipeData.outputItems)
         {
-            World.Instance.CreateItem(
+            WorldMap.Instance.CreateItem(
                 worker.CurrentGridPosition + worker.direction(),
                 output.itemData,
                 output.itemClass,
@@ -292,7 +295,7 @@ public class JobCraft : JobBuilding
         Vector2Int workPos,
         ItemDataContainer required)
     {
-        Item item = World.Instance.FindNearestItem(
+        Item item = WorldMap.Instance.FindNearestItem(
             required.itemData,
             required.itemClass,
             workPos);
@@ -312,7 +315,7 @@ public class JobCraft : JobBuilding
 [Serializable]
 public struct ItemDataContainer
 {
-    public ItemData itemData;
+    public DataItem itemData;
     public ItemClass itemClass;
     public int amount;
 }

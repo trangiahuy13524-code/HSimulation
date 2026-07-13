@@ -250,7 +250,7 @@ public partial class Pawn
     }
 
     public async UniTask<ActionResult> DoResearch(
-    ResearchData researchData,
+    JobDataResearch researchData,
     Direction workDirection,
     CancellationToken token)
     {

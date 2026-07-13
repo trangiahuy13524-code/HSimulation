@@ -32,7 +32,7 @@ public class Building : WorldObjectStatic
             for (int j = yRange.x; j < yRange.y; j++)
                 world.RegisterObject(this, new Vector2Int(i, j));
 
-        render.UpdateLayer(world.WorldSize);
+        render.UpdateLayer();
     }
 
     protected override void OnDestroy()
@@ -43,7 +43,7 @@ public class Building : WorldObjectStatic
         base.OnDestroy();
     }
 
-    public virtual bool checkPlaceable(Vector2Int position, Direction direction, World world)
+    public virtual bool checkPlaceable(Vector2Int position, Direction direction, WorldMap world)
     {
         bool isVert = checkVert(direction);
         int sizeX = isVert?buildingGridSize.y:buildingGridSize.x;

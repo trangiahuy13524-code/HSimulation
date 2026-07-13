@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class BuildingCraft : BuildingWorkable
 {
-    public List<J_CraftJob> jobs;
+    public List<JobDataCraft> jobs;
 
     // =====================================================
     // FIND NEAREST REQUIRED ITEM
@@ -18,13 +18,14 @@ public class BuildingCraft : BuildingWorkable
     // JOB
     // =====================================================
 
-    public void CreateJob(J_CraftJob data)
+    public override JobBuilding CreateJob(JobDataWorkable data)
     {
+        var data2 = data as JobDataCraft;
         JobCraft job = new();
 
-        job.requiredSkills = data.requiredSkills;
-        job.recipeData = data.recipeData;
-        job.totalProgress = data.totalProgress;
+        job.requiredSkills = data2.requiredSkills;
+        job.recipeData = data2.recipeData;
+        job.totalProgress = data2.totalProgress;
 
         job.workBuilding = this;
         job.result = (pawn) =>
@@ -33,13 +34,6 @@ public class BuildingCraft : BuildingWorkable
         };
 
         jobManager.AddJob(job);
-    }
-
-    private void Update()
-    {
-        if (Keyboard.current[Key.P].wasPressedThisFrame)
-        {
-            CreateJob(jobs[0]);
-        }
+        return job;
     }
 }

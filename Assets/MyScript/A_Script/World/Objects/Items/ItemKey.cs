@@ -4,10 +4,10 @@ using System;
 [Serializable]
 public struct ItemKey
 {
-    public ItemData itemData;
+    public DataItem itemData;
     public ItemClass itemClass;
 
-    public ItemKey(ItemData data, ItemClass itemClass)
+    public ItemKey(DataItem data, ItemClass itemClass)
     {
         this.itemData = data;
         this.itemClass = itemClass;

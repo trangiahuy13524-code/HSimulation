@@ -29,7 +29,7 @@ public partial class Pawn
     }
 
     public int GetItemCountInventory(
-    ItemData item,
+    DataItem item,
     ItemClass itemClass)
     {
         ItemKey key = new(item, itemClass);
@@ -43,7 +43,7 @@ public partial class Pawn
     }
 
     public (int, List<Item>) DropItemInventory(
-    ItemData itemData,
+    DataItem itemData,
     ItemClass itemClass,
     int amount,
     Vector2Int? dropPos, WorldObject reservingOb)
@@ -103,7 +103,7 @@ public partial class Pawn
         {
             if (holdedItem.itemData == item.itemData && holdedItem.itemClass == item.itemClass)
             {
-
+                holdedItem.SetLayer(WorldStatic.Instance.topGridLayer + 1);
                 int takenAmount = amount;
                 if (amount >= item.StackCount)
                 {
@@ -130,6 +130,7 @@ public partial class Pawn
         holdedItem.reservingObject = this;
         holdedItem.transform.SetParent(handTransform);
         holdedItem.transform.localPosition = Vector3.zero;
+        holdedItem.SetLayer(WorldStatic.Instance.topGridLayer + 1);
         world.RegisterItem(null, holdedItem.CurrentGridPosition);
 
         return holdedItem.StackCount;
@@ -141,7 +142,7 @@ public partial class Pawn
             return new List<Item>{};
 
         List<Item> items;  
-        if (holdedItem.itemData.isStackable)
+        if (holdedItem.itemData.IsStackable)
         {
             items = world.CreateItem(currentGridPos, holdedItem.itemData, holdedItem.itemClass, holdedItem.StackCount, reservingOb);
             holdedItem.Despawn();

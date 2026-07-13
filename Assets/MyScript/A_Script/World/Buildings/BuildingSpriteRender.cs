@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class BuildingSpriteRender : MonoBehaviour
 {
-    
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Building building;
     int layerOffset;
@@ -47,7 +46,7 @@ public class BuildingSpriteRender : MonoBehaviour
         return vert;
     }
 
-    public virtual void UpdateLayer(int worldSize)
+    public virtual void UpdateLayer()
     {
         bool isVertical = building.checkVert(building.direction);
         int offset = 0;
@@ -59,6 +58,6 @@ public class BuildingSpriteRender : MonoBehaviour
         {
             offset = building.buildingGridSize.y - 1;
         }
-        spriteRenderer.sortingOrder = (worldSize - 1 - building.CurrentGridPosition.y - offset) * 5 + 10;
+        spriteRenderer.sortingOrder = WorldStatic.Instance.topGridLayer - (building.CurrentGridPosition.y + offset) * WorldStatic.Instance.spacing;
     }
 }

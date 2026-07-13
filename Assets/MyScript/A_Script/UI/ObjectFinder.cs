@@ -7,9 +7,8 @@ using UnityEngine.UI;
 
 public class ObjectFinder : MonoBehaviour
 {
-    [SerializeField] World world;
-    [SerializeField] ScreenAndTouchManager screenAndTouchManager;
-     Vector2Int selectGridPos => screenAndTouchManager.SelectedGrid;
+    [SerializeField] WorldMap world;
+    [SerializeField] ObjectSelector objectSelector;
     [SerializeField] ObjectIconButton worldObjectIcon;
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI text;
@@ -86,7 +85,7 @@ public class ObjectFinder : MonoBehaviour
     {
         if (@object == null)
         {
-            Debug.Log("class: ObjectFinder.line21");
+            Debug.Log("class: ObjectFinder, void CreateIcon");
             return;
         }
         worldObjectIcon.worldObject = @object;
@@ -98,7 +97,7 @@ public class ObjectFinder : MonoBehaviour
         Pawn p = @object as Pawn;
         if (p != null)
         {
-            p.SetSelectThreshold(true);
+            p.SetSelectThreshold(true, 1);
         }
     }
     void RemoveIcon(WorldObject @object)
@@ -107,7 +106,7 @@ public class ObjectFinder : MonoBehaviour
         Pawn p = @object as Pawn;
         if (p != null)
         {
-            p.SetSelectThreshold(false);
+            p.SetSelectThreshold(false, 1);
         }
         if (!pawnIconsFinder.TryGetValue(@object, out GameObject icon))
             return;

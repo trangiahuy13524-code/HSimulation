@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c9b70721c1bf7243b2cb92856c5b8fc, type: 3}
+  m_Name: MaleBody
+  m_EditorClassIdentifier: Assembly-CSharp::DirectionSpriteData
+  offset: {x: 0, y: -0.3}
+  childOffset: {x: 0, y: 1.2}
+  horizontalOffset: 0
+  scale: {x: 0.3, y: 0.3}
+  bodyPartShape: {fileID: 11400000, guid: 32dc9d24897890b4f9c1e2832eb7aac6, type: 2}
+  eastSprite: {fileID: 21300000, guid: c826be5deb6f1c047a0b4ed91dd4d3fc, type: 3}
+  northSprite: {fileID: 21300000, guid: 87d5d577eca02a94a96d84ca2d210181, type: 3}
+  southSprite: {fileID: 21300000, guid: 3ee743934bad7574a8a9fc9157fbc07c, type: 3}
+  attireOffset: {x: 0, y: 0}
+  bodySex: 0
+  hybridable: 0
+  baseHealth: 9
+  baseMana: 7
+  baseDefense: 4
+  baseAttack: 3
+  magicPotential: 0.5
+  baseSpeed: 1

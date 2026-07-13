@@ -2,11 +2,11 @@
 
 public class ResearchState
 {
-    public ResearchData data;
+    public JobDataResearch data;
     public float progress;
     public bool completed;
 
-    public ResearchState(ResearchData data)
+    public ResearchState(JobDataResearch data)
     {
         this.data = data;
         progress = 0;

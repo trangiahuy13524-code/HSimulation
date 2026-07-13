@@ -4,26 +4,31 @@ using System.Collections.Generic;
 
 public class WorldDebug : MonoBehaviour
 {
-    public static WorldDebug Instance { get; private set; }
 
-    public World world;
+    public WorldMap world;
     public MapRenderer mapRenderer;
-    public ScreenAndTouchManager screenAndTouchManager;
-    public List<GeneticData> pawnGeneticsData = new();
+    public ObjectSelector objectSelector;
+    [Header("Pawn")]
+    public List<DataGenetics> pawnGeneticsData = new();
+    [Header("Tile")]
     public AutoTillingTile wallTile;
     public PlaceableTile tileToPlace;
-    public Vector2Int spawnPos = Vector2Int.zero;
-    public ItemData debugItem;
+    [Header("Item")]
+    public DataItem debugItem;
     public ItemClass debugItemClass;
     public int debugItemAmount= 1;
     public byte spawnCount = 1;
+    [Header("Building")]
     public BuildingObject building;
     public Direction buildingDirection = Direction.South;
+    public JobDataWorkable jobToCreate;
+    [Header("Attire")]
+    public DataAttire debugAttire;
+    public ItemClass debugAttireClass;
+    public BodyTag debugAttireBodyTagToDrop;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Instance = this;
-        screenAndTouchManager = ScreenAndTouchManager.Instance;
         for (int i = 0; i < spawnCount; i++)
         {
             if (world == null) return;
@@ -58,21 +63,56 @@ public class WorldDebug : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current.eKey.wasPressedThisFrame)
-        {
-            mapRenderer.map.SetTile(screenAndTouchManager.SelectedGrid, tileToPlace);
-        }
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            mapRenderer.map.RevertToTerrainTile(screenAndTouchManager.SelectedGrid);
-        }
+        //if (Keyboard.current.eKey.wasPressedThisFrame)
+        //{
+        //    mapRenderer.map.SetTile(objectSelector.selectedGrid, tileToPlace);
+        //}
+        //if (Keyboard.current.rKey.wasPressedThisFrame)
+        //{
+        //    mapRenderer.map.RevertToTerrainTile(objectSelector.selectedGrid);
+        //}
         if (Keyboard.current.bKey.wasPressedThisFrame)
         {
-            world.CreateBuilding(screenAndTouchManager.SelectedGrid, building, buildingDirection);
+            world.CreateBuilding(objectSelector.selectedGrid, building, buildingDirection);
         }
-        if (Keyboard.current.nKey.wasPressedThisFrame)
+        if (Keyboard.current.iKey.wasPressedThisFrame)
         {
-            world.CreateItem(screenAndTouchManager.SelectedGrid, debugItem, debugItemClass, debugItemAmount, null);
+            if (debugItem.IsStackable) world.CreateItem(objectSelector.selectedGrid, debugItem, debugItemClass, debugItemAmount, null);
+            else world.CreateItem(objectSelector.selectedGrid, debugItem, debugItemClass, 1, null);
+        }
+        if (Keyboard.current.jKey.wasPressedThisFrame)
+        {
+            BuildingWorkable buildingWorkable = objectSelector.selectedObject as BuildingWorkable;
+            if (buildingWorkable)
+            {
+                if (jobToCreate != null)
+                {
+                    buildingWorkable.CreateJob(jobToCreate);
+                }
+                else
+                {
+                    Debug.LogWarning("Debug: jobToCreate is null. Please assign a valid job to create.");
+                }
+            }
+        }
+        if (Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            Pawn pawn = objectSelector.selectedPawn;
+            if (pawn)
+            {
+                if (pawn.GetAttireSprite(debugAttireBodyTagToDrop) != null)
+                {
+                    pawn.Undress(debugAttireBodyTagToDrop);
+                }
+                else
+                {
+                    if (debugAttire)
+                    {
+                        pawn.Wear(debugAttire, debugAttireClass, true);
+                    }
+                }
+            
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ public partial class Pawn
     [SerializeField] GenomeRT genome;
     public GenomeRT Genome => genome;
 
-    public void InitializePawn(GeneticData geneticData)
+    public void InitializePawn(DataGenetics geneticData)
     {
         if (initialized) return;
 
@@ -53,8 +53,7 @@ public partial class Pawn
         //-----------------------------------
         // 3. Skills (CORRECT PLACE)
         //-----------------------------------
-        pawnSkills = mother.source.pawnSkills
-        .ToDictionary(skill => skill, skill => (byte)0);
+        pawnSkills = mother.source.pawnSkills.ToDictionary(skill => skill, skill => (byte)0);
 
 
         iconSprite = mother.source.raceIcon;
@@ -63,10 +62,10 @@ public partial class Pawn
 
     
 
-    void SetBodySprite(SpritePart bodySprite, SpritePart headSprite = null, SpritePart hairSprite = null)
+    void SetBodySprite(PartBioSprite bodySprite, PartBioSprite headSprite = null, PartBioSprite hairSprite = null)
     {
-        bodyData.SetDirectionSpriteData(bodySprite);
-        headData.SetDirectionSpriteData(headSprite);
-        hairData.SetDirectionSpriteData(hairSprite);
+        bodyData.SetSpriteData(bodySprite);
+        headData.SetSpriteData(headSprite);
+        hairData.SetSpriteData(hairSprite);
     }
 }

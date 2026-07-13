@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public class GenomeRT
 {
-    public GeneticData source;
+    public DataGenetics source;
 
     public int health;
     public int mana;
@@ -15,12 +15,12 @@ public class GenomeRT
     public float speed;
     public Sex sex;
 
-    public BodySpritePart currentBody;
-    public SpritePart currentHead;
-    public SpritePart currentHair;
+    public PartBodySprite currentBody;
+    public PartBioSprite currentHead;
+    public PartBioSprite currentHair;
     public int generation;
 
-    public GenomeRT(GeneticData geneticData)
+    public GenomeRT(DataGenetics geneticData)
     {
         source = geneticData;
         //generation = 0;
@@ -101,20 +101,20 @@ public class GenomeRT
             : Sex.Male;
     }
 
-    static readonly List<SpritePart> spriteBuffer = new();
-    static readonly List<BodySpritePart> bodySpriteBuffer = new();
-    void GenerateBody(GeneticData data)
+    static readonly List<PartBioSprite> spriteBuffer = new();
+    static readonly List<PartBodySprite> bodySpriteBuffer = new();
+    void GenerateBody(DataGenetics data)
     {
         bool restrictBody = data.reproductionType == ReproductionType.Sexual;
 
         // Body => restricted only for sexual species
-        BodySpritePart body = PickValidSprite(data.bodyData, restrictBody);
+        PartBodySprite body = PickValidSprite(data.bodyData, restrictBody);
 
         // Head => same rule as body
-        SpritePart head = PickValidSprite(data.headData, restrictBody);
+        PartBioSprite head = PickValidSprite(data.headData, restrictBody);
 
         // Hair => same restricted
-        SpritePart hair = PickValidSprite(data.hairData, restrictBody);
+        PartBioSprite hair = PickValidSprite(data.hairData, restrictBody);
 
         currentBody = body;
         currentHead = head;
@@ -144,10 +144,10 @@ public class GenomeRT
             mother.source.hairData,
             restrictBody);
     }
-    SpritePart InheritPart(
-    SpritePart motherPart,
-    SpritePart fatherPart,
-    List<SpritePart> speciesPool,
+    PartBioSprite InheritPart(
+    PartBioSprite motherPart,
+    PartBioSprite fatherPart,
+    List<PartBioSprite> speciesPool,
     bool restrict)
     {
         spriteBuffer.Clear();
@@ -164,10 +164,10 @@ public class GenomeRT
             : PickValidSprite(speciesPool, restrict);
     }
 
-    BodySpritePart InheritPart(
-    BodySpritePart motherPart,
-    BodySpritePart fatherPart,
-    List<BodySpritePart> speciesPool,
+    PartBodySprite InheritPart(
+    PartBodySprite motherPart,
+    PartBodySprite fatherPart,
+    List<PartBodySprite> speciesPool,
     bool restrict)
     {
         bodySpriteBuffer.Clear();
@@ -184,8 +184,8 @@ public class GenomeRT
             : PickValidSprite(speciesPool, restrict);
     }
 
-    SpritePart PickValidSprite(
-    List<SpritePart> list,
+    PartBioSprite PickValidSprite(
+    List<PartBioSprite> list,
     bool restrictBySex)
     {
         if (list == null || list.Count == 0)
@@ -224,8 +224,8 @@ public class GenomeRT
         return spriteBuffer[UnityEngine.Random.Range(0, spriteBuffer.Count)];
     }
 
-    BodySpritePart PickValidSprite(
-    List<BodySpritePart> list,
+    PartBodySprite PickValidSprite(
+    List<PartBodySprite> list,
     bool restrictBySex)
     {
         if (list == null || list.Count == 0)

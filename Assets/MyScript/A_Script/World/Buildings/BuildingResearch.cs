@@ -5,8 +5,14 @@ public class BuildingResearch: BuildingWorkable
 {
     public ResearchTree researchTree;
 
-    public JobResearch CreateJob(ResearchData research)
+    public override JobBuilding CreateJob(JobDataWorkable data)
     {
+        var research = data as JobDataResearch;
+        if (research == null)
+        {
+            Debug.LogWarning("JobData is not JobDataResearch");
+            return null;
+        }
         JobResearch job = new();
 
         job.requiredSkills = research.requiredSkills;

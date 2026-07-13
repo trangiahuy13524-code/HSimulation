@@ -8,7 +8,7 @@ public class ResearchButtonUI : MonoBehaviour
     public TMP_Text title;
     public Button button;
 
-    public void SetData(ResearchData research)
+    public void SetData(JobDataResearch research)
     {
         title.text = research.researchName;
     }

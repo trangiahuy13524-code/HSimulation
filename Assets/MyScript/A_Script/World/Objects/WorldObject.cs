@@ -7,9 +7,10 @@ public class WorldObject : MonoBehaviour
     [SerializeField] protected Sprite iconSprite;
     protected Vector2Int currentGridPos;
     protected Vector2Int oldGridPos;
-    protected World world;
+    protected WorldMap world;
     protected JobManager jobManager;
     protected ResearchManager researchManager;
+    protected WorldStatic worldStatic;
     public bool isSelected { get; private set; }
 
     public List<Ability> abilities = new();
@@ -42,9 +43,10 @@ public class WorldObject : MonoBehaviour
 
     protected void Awake()
     {
-        world = World.Instance;
+        world = WorldMap.Instance;
         jobManager = JobManager.Instance;
         researchManager = ResearchManager.Instance;
+        worldStatic = WorldStatic.Instance;
     }
 
     protected virtual void Start()
@@ -52,7 +54,7 @@ public class WorldObject : MonoBehaviour
         transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
     }
 
-    public virtual void SetSelected(bool value)
+    public virtual void SetSelected(bool value, byte strength)
     {
         isSelected = value;
     }
@@ -66,7 +68,7 @@ public class WorldObject : MonoBehaviour
     {
         if (isSelected)
         {
-            ScreenAndTouchManager.Instance.DeselectObject();
+            ObjectSelector.Instance.DeselectObject();
         }
     }
 

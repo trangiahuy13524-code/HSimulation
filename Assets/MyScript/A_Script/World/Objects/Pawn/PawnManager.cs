@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PawnManager : MonoBehaviour
 {
-    [SerializeField] World world;
+    [SerializeField] WorldMap world;
     public static PawnManager Instance { get; private set; }
 
     private readonly List<IManagedUpdate> _managedObjects = new();

@@ -32,7 +32,7 @@ public class Map
             for (int y = 0; y < this.size.y; y++)
             {
                 float value = noiseMap[x, y];
-                this.tiles[x, y] = new CustomTile(x, y, Terrain.GetTerrain(value), this);
+                this.tiles[x, y] = new CustomTile(x, y, P_Terrain.GetTerrain(value), this);
             }
         }
        

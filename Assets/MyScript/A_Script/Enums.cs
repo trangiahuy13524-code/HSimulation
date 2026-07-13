@@ -94,3 +94,11 @@ public enum PawnState
     Resting,
     Dead
 }
+
+public enum BodyTag
+{
+    OffBody,
+    Legs,
+    Torso,
+    Head,
+}

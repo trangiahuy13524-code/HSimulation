@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class JobManager : MonoBehaviour
 {
-    [SerializeField] World world;
+    [SerializeField] WorldMap world;
     [SerializeField] ResearchManager researchManager;
     public static JobManager Instance { get; private set; }
 
@@ -62,13 +62,14 @@ public class JobManager : MonoBehaviour
             if (job is JobBuilding workableJob)
             {
                 JobCraft craftJob = workableJob as JobCraft;
-                //if (craftJob != null)
-                //{
-                //    if (!craftJob.recipeData.IsUnlocked())
-                //    {
-                //        continue;
-                //    }
-                //}
+                if (craftJob != null)
+                {
+                    if (!craftJob.recipeData.IsUnlocked())
+                    {
+                        availableJobs.RemoveAt(i);
+                        continue;
+                    }
+                }
 
                 WorkPosition[] positions =
                 workableJob.workBuilding.GetAvailableWorkPos();

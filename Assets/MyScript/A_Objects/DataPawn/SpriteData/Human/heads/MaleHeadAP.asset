@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7daa3a25bf8264047b2f5526d3b7534a, type: 3}
+  m_Name: MaleHeadAP
+  m_EditorClassIdentifier: Assembly-CSharp::DirectionSpriteData
+  offset: {x: 0, y: 0}
+  childOffset: {x: 0, y: 0}
+  horizontalOffset: 0.2
+  scale: {x: 1, y: 1}
+  bodyPartShape: {fileID: 11400000, guid: 808f0acd62cc898438f0e7fdde896040, type: 2}
+  eastSprite: {fileID: 21300000, guid: e3a34a0f02cb92241b4b376f87352c91, type: 3}
+  northSprite: {fileID: 21300000, guid: e4f9bb0392c2aeb4a830a8c800d3bb48, type: 3}
+  southSprite: {fileID: 21300000, guid: 8c3d9d68ed0da024ba2a2becee57a36f, type: 3}
+  attireOffset: {x: 0, y: 0}
+  bodySex: 0
+  hybridable: 0

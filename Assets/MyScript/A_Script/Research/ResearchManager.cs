@@ -5,14 +5,14 @@ public class ResearchManager : MonoBehaviour
 {
     public static ResearchManager Instance;
 
-    Dictionary<ResearchData, ResearchState> researches = new();
+    Dictionary<JobDataResearch, ResearchState> researches = new();
 
     void Start()
     {
         Instance = this;
     }
 
-    public ResearchState GetState(ResearchData data)
+    public ResearchState GetState(JobDataResearch data)
     {
         if (!researches.TryGetValue(data, out var state))
         {
@@ -24,7 +24,7 @@ public class ResearchManager : MonoBehaviour
     }
 
     public void AddProgress(
-        ResearchData data,
+        JobDataResearch data,
         float amount)
     {
         var state = GetState(data);
@@ -41,7 +41,7 @@ public class ResearchManager : MonoBehaviour
         }
     }
 
-    public bool IsCompleted(ResearchData data)
+    public bool IsCompleted(JobDataResearch data)
     {
         return GetState(data).completed;
     }

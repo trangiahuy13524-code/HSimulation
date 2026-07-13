@@ -13,6 +13,4 @@ MonoBehaviour:
   m_Name: craft2_2
   m_EditorClassIdentifier: Assembly-CSharp::ResearchNode
   researchData: {fileID: 11400000, guid: 81d486ed54dd81245aea4f23cb09eec5, type: 2}
-  children:
-  - {fileID: 11400000, guid: a68bb7c608f608148bb3c14f9bf8da34, type: 2}
-  - {fileID: 11400000, guid: 9b21e0f10d43fdb46951e34222788e6f, type: 2}
+  children: []

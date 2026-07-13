@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0721308baea4d4a9f8b7de8a9731ca, type: 3}
+  m_Name: gothicdress_f
+  m_EditorClassIdentifier: Assembly-CSharp::AttireData
+  itemName: female gothic dress
+  icon: {fileID: 21300000, guid: 2fe9493d2e4d36a479ff3e09d78ec191, type: 3}
+  isStackable: 0
+  maxStack: 1
+  itemSprite: {fileID: 11400000, guid: eba44da33fef7ee4eafb5b83d901ee75, type: 2}
+  bodyTag: 2
+  wearingTime: 10
+  attirePart: {fileID: 11400000, guid: 326d35ac1d22eb34091283ac363085ea, type: 2}

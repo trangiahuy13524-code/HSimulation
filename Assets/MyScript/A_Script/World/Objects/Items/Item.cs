@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 public class Item : WorldObjectDynamic
 {
     public override bool isPassable => true;
-    public ItemData itemData { get; private set; }
+    public DataItem itemData { get; private set; }
     public bool reserved => reservingObject != null;
     public WorldObject reservingObject;
     [SerializeField] int stackCount = 1;
@@ -14,7 +14,7 @@ public class Item : WorldObjectDynamic
         get => stackCount;
         set
         {
-            if (!itemData.isStackable)
+            if (!itemData.IsStackable)
             {
                 stackCount = 1;
             }
@@ -31,7 +31,7 @@ public class Item : WorldObjectDynamic
     [SerializeField] SpriteRenderer objectSpriteRenderder;
     [SerializeField] TextMeshPro displayAmount;
     public ItemClass itemClass;
-    public void SetItemData(ItemData data, ItemClass itemClass, int amount = 1)
+    public void SetItemData(DataItem data, ItemClass itemClass, int amount = 1)
     {
         itemData = data;
         this.itemClass = itemClass;
@@ -46,7 +46,7 @@ public class Item : WorldObjectDynamic
 
     public int ReduceStack(int amount)
     {
-        if (!itemData.isStackable && amount > 0)
+        if (!itemData.IsStackable && amount > 0)
         {
             Despawn();
             return 1;
@@ -78,6 +78,11 @@ public class Item : WorldObjectDynamic
 
     public override void UpdateLayer()
     {
-        objectSpriteRenderder.sortingOrder = (world.WorldSize - 1) * 5 - currentGridPos.y * 5 + 11;
+        if (worldStatic) objectSpriteRenderder.sortingOrder = worldStatic.topGridLayer - currentGridPos.y * worldStatic.spacing + 1;
+    }
+
+    public void SetLayer(int layer)
+    {
+        objectSpriteRenderder.sortingOrder = layer;
     }
 }

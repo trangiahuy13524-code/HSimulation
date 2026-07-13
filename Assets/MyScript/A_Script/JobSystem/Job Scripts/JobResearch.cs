@@ -3,7 +3,7 @@ using System.Threading;
 
 public class JobResearch : JobBuilding
 {
-    public ResearchData researchData;
+    public JobDataResearch researchData;
 
     protected override async UniTask<ActionResult> WorkRoutine(Pawn pawn, WorkPosition wP, CancellationToken token)
     {

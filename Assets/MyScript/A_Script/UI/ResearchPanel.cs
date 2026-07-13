@@ -114,7 +114,8 @@ public class ResearchPanel : MonoBehaviour
             if (curJob != null)
                 curJob.externalRemoved = true;
 
-            curJob = buildingResearch.CreateJob(node.researchData);
+            JobDataWorkable data = node.researchData;
+            curJob = buildingResearch.CreateJob(data) as JobResearch;
         });
     }
 

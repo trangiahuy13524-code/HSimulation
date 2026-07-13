@@ -7,16 +7,16 @@ using UnityEngine;
 public partial class Pawn : WorldObjectDynamic
 {
     [Header("Pawn Movement")]
-    [SerializeField] GameObject hightlight;
 
-    [SerializeField] BodyData bodyData;
-    [SerializeField] HeadData headData;
-    [SerializeField] HairData hairData;
+    [SerializeField] SpriteBody bodyData;
+    [SerializeField] SpriteHead headData;
+    [SerializeField] SpriteHair hairData;
     //[SerializeField] FacialAnimator facial;
     [SerializeField] Direction oldDirection = Direction.South;
-    public BodyData BodyData => bodyData;
-    public HeadData HeadData => headData;
-    public HairData HairData => hairData;
+    public Direction CurrentDirection => oldDirection;
+    public SpriteBody BodyData => bodyData;
+    public SpriteHead HeadData => headData;
+    public SpriteHair HairData => hairData;
     //public FacialAnimator Facial => facial;
 
     public override Vector2 GetWorldPos()
@@ -66,6 +66,7 @@ public partial class Pawn : WorldObjectDynamic
         if (bodyData) bodyData.SetDirection(dir);
         if (headData) headData.SetDirection(dir);
         if (hairData) hairData.SetDirection(dir);
+        ChangeAttireDirection(dir);
         //if (facial) facial.SetDirection(dir);
     }
     public override void UpdateLayer()
@@ -73,6 +74,7 @@ public partial class Pawn : WorldObjectDynamic
         if (bodyData) bodyData.UpdateLayer();
         if (headData) headData.UpdateLayer();
         if (hairData) hairData.UpdateLayer();
+        UpdateAttireLayer();
     }
 
     bool isRecalculating = false;
@@ -127,7 +129,6 @@ public partial class Pawn : WorldObjectDynamic
                             PathReset();
                         }
                     }
-                    if (debug) Debug.Log("wow!");
                     ReCalculatePath(worldTS).Forget();
                 }
                 else

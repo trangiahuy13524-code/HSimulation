@@ -8,7 +8,7 @@ public class ButtonDebug : MonoBehaviour
     [SerializeField] Button wall;
     [SerializeField] Button remove;
     [SerializeField] ScreenAndTouchManager screenAndTouchManager;
-    [SerializeField] List<GeneticData> pawnGeneticsData = new();
+    [SerializeField] List<DataGenetics> pawnGeneticsData = new();
     [SerializeField] AutoTillingTile wallTile;
 
     void Start()
@@ -16,15 +16,15 @@ public class ButtonDebug : MonoBehaviour
         if (pawn) pawn.onClick.AddListener(() => {
             Vector2Int spawnPos = screenAndTouchManager.SelectedGrid;
             int index = Random.Range(0, pawnGeneticsData.Count);
-            World.Instance.CreatePawn(spawnPos, pawnGeneticsData[index]);
+            WorldMap.Instance.CreatePawn(spawnPos, pawnGeneticsData[index]);
         });
         if (wall) wall.onClick.AddListener(() => {
             Vector2Int spawnPos = screenAndTouchManager.SelectedGrid;
-            World.Instance.GenerateWall(spawnPos, wallTile);
+            WorldMap.Instance.GenerateWall(spawnPos, wallTile);
         });
         if (remove) remove.onClick.AddListener(() => {
             Vector2Int removePos = screenAndTouchManager.SelectedGrid;
-            World.Instance.RemoveObject(removePos);
+            WorldMap.Instance.RemoveObject(removePos);
         });
     }
 }
