@@ -7,7 +7,7 @@ public partial class Pawn
     [Header("Pawn Genetics")]
     [SerializeField] bool initialized = false;
     [SerializeField] GenomeRT genome;
-    public GenomeRT Genome => genome;
+    public override Sprite IconSprite => genome?.source?.raceIcon;
 
     public void InitializePawn(DataGenetics geneticData)
     {
@@ -32,7 +32,6 @@ public partial class Pawn
 
 
 
-        iconSprite = geneticData.raceIcon;
         initialized = true;
         }
 
@@ -54,9 +53,6 @@ public partial class Pawn
         // 3. Skills (CORRECT PLACE)
         //-----------------------------------
         pawnSkills = mother.source.pawnSkills.ToDictionary(skill => skill, skill => (byte)0);
-
-
-        iconSprite = mother.source.raceIcon;
         initialized = true;
     }
 

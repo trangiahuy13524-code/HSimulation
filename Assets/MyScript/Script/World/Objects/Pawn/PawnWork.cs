@@ -7,7 +7,7 @@ using UnityEngine;
 public partial class Pawn
 {
     [Header("Pawn Work")]
-    Dictionary<Skill, byte> pawnSkills = new();
+    Dictionary<DataSkill, byte> pawnSkills = new();
     [SerializeField] ProgressBar progressBarPrefab;
     ProgressBar progressBarInstance;
 

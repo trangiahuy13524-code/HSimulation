@@ -4,6 +4,6 @@ using UnityEngine;
 [Serializable]
 public class SkillRequirement
 {
-    public Skill skillRef;
+    public DataSkill skillRef;
     public byte level;
 }

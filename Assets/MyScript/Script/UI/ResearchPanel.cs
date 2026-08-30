@@ -19,16 +19,14 @@ public class ResearchPanel : MonoBehaviour
     public float startY = -50f;
 
     private Dictionary<ResearchNode, float> nodeX = new();
-    float minX, maxX, minY, maxY;
+    float maxX, minY;
 
     void Start()
     {
         Instance = this;
         gameObject.SetActive(false);
-        minX = float.MaxValue;
         maxX = float.MinValue;
         minY = float.MaxValue;
-        maxY = float.MinValue;
     }
 
     public void CreateResearchUI(BuildingResearch buildingResearch)
@@ -83,10 +81,8 @@ public class ResearchPanel : MonoBehaviour
         );
 
         // 📦 track bounds
-        if (pos.x < minX) minX = pos.x;
         if (pos.x > maxX) maxX = pos.x;
         if (pos.y < minY) minY = pos.y;
-        if (pos.y > maxY) maxY = pos.y;
 
         CreateButton(node, buildingResearch, pos.x, pos.y);
 
@@ -124,10 +120,10 @@ public class ResearchPanel : MonoBehaviour
         RectTransform rt = contentTransform;
 
         float width = maxX;
-        float height = maxY - minY;
+        float height = -minY;
 
         // Add padding so nodes aren't clipped
-        float padding = 200f;
+        float padding = 100;
 
         rt.sizeDelta = new Vector2(
             width + padding,

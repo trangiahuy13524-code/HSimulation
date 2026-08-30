@@ -8,10 +8,10 @@ public class GenomeRT
     public DataGenetics source;
 
     public int health;
-    public int mana;
     public int defense;
     public int attack;
     public float magicPotential;
+    public int mana;
     public float speed;
     public Sex sex;
 

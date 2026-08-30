@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "Game/AbilityUI/MoveToObject")]
-public class AbilityMoveToObject : Ability
+public class AbilityMoveToObject : DataAbility
 {
     public override void Execute(WorldObject caster, Image image = null)
     {

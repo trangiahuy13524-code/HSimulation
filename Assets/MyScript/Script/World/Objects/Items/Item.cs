@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Item : WorldObjectDynamic
 {
@@ -9,6 +8,8 @@ public class Item : WorldObjectDynamic
     public bool reserved => reservingObject != null;
     public WorldObject reservingObject;
     [SerializeField] int stackCount = 1;
+    public override string ThingName => itemData?.thingName;
+    public override Sprite IconSprite => itemData?.icon;
     public int StackCount
     {
         get => stackCount;
@@ -35,8 +36,6 @@ public class Item : WorldObjectDynamic
     {
         itemData = data;
         this.itemClass = itemClass;
-        iconSprite = data.icon;
-        objectName = data.thingName;
         objectSpriteRenderder.sprite = data.itemSprite.sprite;
         objectSpriteRenderder.size = data.itemSprite.size;
         transform.localPosition += (Vector3)data.itemSprite.offset;

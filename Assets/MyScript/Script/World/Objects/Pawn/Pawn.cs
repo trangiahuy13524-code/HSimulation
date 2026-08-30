@@ -23,19 +23,6 @@ public partial class Pawn : WorldObjectDynamic
     {
         return new Vector2(rb.position.x, rb.position.y - .5f);
     }
-
-    public override string ObjectName
-    {
-        get
-        {
-            return objectName;
-        }
-        set
-        {
-            objectName = value;
-            if (displayTextName) displayTextName.text = value;
-        }
-    }
     [SerializeField] TextMeshPro displayTextName;
     [SerializeField] Rigidbody2D rb;
     public Vector2 CurrentWorldPos => rb.position;

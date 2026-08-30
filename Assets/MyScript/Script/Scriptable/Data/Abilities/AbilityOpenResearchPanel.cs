@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "Game/AbilityUI/OpenResearchPanel")]
-public class AbilityOpenResearchPanel : Ability
+public class AbilityOpenResearchPanel : DataAbility
 {
 
     public override void Execute(WorldObject caster, Image image = null)

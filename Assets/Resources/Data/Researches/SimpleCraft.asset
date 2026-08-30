@@ -12,17 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ddeefa58d3523d4a90c5cd1ddd84c01, type: 3}
   m_Name: SimpleCraft
   m_EditorClassIdentifier: Assembly-CSharp::ResearchData
-  localizedText:
-    thingName_en: Simple Craft
-    thingDescription_en: 
-    thingName_vi: "Ch\u1EBF t\u1EA1o \u0111\u01A1n gi\u1EA3n"
-    thingDescription_vi: 
-    thingName_cn: 
-    thingDescription_cn: 
-    thingName_jp: 
-    thingDescription_jp: 
+  thingNameKey: 
+  thingDescriptionKey: 
   requiredSkills:
   - skillRef: {fileID: 11400000, guid: 0fcb770092584054abe9d1baf744b7c3, type: 2}
     level: 0
   totalProgress: 100
-  icon: {fileID: 2732054388920105772, guid: dc3227c063c9c5e4687647fd5c231e9a, type: 3}
+  icon: {fileID: 1414478694623257066, guid: 12770b1347f88214aa2a2dc93c890e67, type: 3}

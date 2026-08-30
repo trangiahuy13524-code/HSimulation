@@ -53,7 +53,7 @@ public class ObjectSelector: MonoBehaviour
         // Clear old UI
         RemoveGridAbilities();
 
-        foreach (Ability ability in @object.abilities)
+        foreach (DataAbility ability in @object.abilities)
         {
             AbilityIconUI icon =
                 Instantiate(abilityIconPrefab, abilityGrid);

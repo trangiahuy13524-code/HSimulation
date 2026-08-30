@@ -12,15 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0721308baea4d4a9f8b7de8a9731ca, type: 3}
   m_Name: gothicdress_h
   m_EditorClassIdentifier: Assembly-CSharp::DataAttire
-  localizedText:
-    thingName_en: Hulk Gothic Dress
-    thingDescription_en: 
-    thingName_vi: "\xC1o Goth L\u1EDBn"
-    thingDescription_vi: 
-    thingName_cn: 
-    thingDescription_cn: 
-    thingName_jp: 
-    thingDescription_jp: 
+  thingNameKey: gothicDressHulk
+  thingDescriptionKey: gothicDressHulkDesc
   icon: {fileID: 21300000, guid: af8b92f35e739ab4ca9d5d816caf3e88, type: 3}
   isStackable: 0
   maxStack: 1

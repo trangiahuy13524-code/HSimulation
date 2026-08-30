@@ -94,7 +94,6 @@ public partial class Pawn
             BodyTag.Legs => bodyData.spriteTransform.transform,
             _ => null
         };
-
         PartBioSprite parentPart = bodyTag switch
         {
             BodyTag.Head => headData?.SpritePart,

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class Ability : ScriptableObject
+public abstract class DataAbility : DataMain
 {
     [SerializeField] protected Sprite icon;
 

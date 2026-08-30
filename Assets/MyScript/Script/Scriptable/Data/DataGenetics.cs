@@ -20,8 +20,8 @@ public class DataGenetics : DataMain
     public List<PartBioSprite> hairData;
 
     [Header("Skill")]
-    public List<Skill> pawnSkills;
+    public List<DataSkill> pawnSkills;
 
     [Header("Abilities")]
-    public List<Ability> pawnAbilities;
+    public List<DataAbility> pawnAbilities;
 }

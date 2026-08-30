@@ -90,7 +90,7 @@ public class ObjectFinder : MonoBehaviour
         }
         worldObjectIcon.worldObject = @object;
         image.sprite = @object.IconSprite;
-        text.text = @object.ObjectName;
+        text.text = @object.ThingName;
         GameObject icon = Instantiate(worldObjectIcon.gameObject, objectGridPanel);
         Instantiate(text.gameObject, icon.transform);
         pawnIconsFinder[@object] = icon;

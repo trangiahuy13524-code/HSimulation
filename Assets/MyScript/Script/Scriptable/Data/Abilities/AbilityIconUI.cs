@@ -8,10 +8,10 @@ public class AbilityIconUI : MonoBehaviour
     [SerializeField] Button iconButton;
     [SerializeField] TextMeshProUGUI text;
 
-    public void Setup(Ability ability, WorldObject caster)
+    public void Setup(DataAbility ability, WorldObject caster)
     {
         icon.sprite = ability.GetDefaultIcon(caster);
-        text.text = ability.name;
+        text.text = ability.thingName;
 
         iconButton.onClick.AddListener(() =>
         {

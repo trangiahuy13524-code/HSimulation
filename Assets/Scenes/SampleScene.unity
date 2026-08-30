@@ -563,7 +563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &279799917
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1095,7 +1095,7 @@ GameObject:
   - component: {fileID: 550615541}
   - component: {fileID: 550615540}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: debug text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1467,7 +1467,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a281c96fe91a88449b9dc69bf56156bb, type: 2}
+  - {fileID: 2100000, guid: a60687bceb8ff6146b77128554a87fd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1702,10 +1702,10 @@ MonoBehaviour:
   contentTransform: {fileID: 1059877542}
   researchButtonPrefab: {fileID: 3230900638078510331, guid: ac3881b3646f7884cb62ad1ee6811efd, type: 3}
   researchPanel: {fileID: 850186459}
-  xSpacing: 100
-  ySpacing: 50
-  startX: 150
-  startY: -50
+  xSpacing: 110
+  ySpacing: 110
+  startX: 100
+  startY: -100
 --- !u!1 &794719655
 GameObject:
   m_ObjectHideFlags: 0
@@ -1752,7 +1752,7 @@ GameObject:
   - component: {fileID: 827516352}
   - component: {fileID: 827516351}
   m_Layer: 5
-  m_Name: plus
+  m_Name: crosshair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2551,7 +2551,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 719.1, y: 404.0257}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1100501595
 GameObject:
@@ -2611,7 +2611,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a281c96fe91a88449b9dc69bf56156bb, type: 2}
+  - {fileID: 2100000, guid: a60687bceb8ff6146b77128554a87fd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2921,7 +2921,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1144622151
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3290,7 +3290,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a281c96fe91a88449b9dc69bf56156bb, type: 2}
+  - {fileID: 2100000, guid: a60687bceb8ff6146b77128554a87fd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3852,9 +3852,9 @@ MonoBehaviour:
   bottomGridLayer: 1000
   spacing: 10
   topGridLayer: 1000
-  defaultMat: {fileID: 0}
-  hoverMat: {fileID: 0}
-  selectedMat: {fileID: 0}
+  defaultMat: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  hoverMat: {fileID: 2100000, guid: e42558ba42384884f8648e8a80589b7a, type: 2}
+  selectedMat: {fileID: 2100000, guid: a281c96fe91a88449b9dc69bf56156bb, type: 2}
   genes: []
   buildings: []
   items: []
@@ -3862,6 +3862,9 @@ MonoBehaviour:
   tiles: []
   walls: []
   dataResearches: []
+  abilities: []
+  skills: []
+  currentLanguage: 0
 --- !u!4 &1628186616
 Transform:
   m_ObjectHideFlags: 0
@@ -3958,7 +3961,7 @@ MonoBehaviour:
   debugItemClass: 0
   debugItemAmount: 31
   spawnCount: 1
-  building: {fileID: 11400000, guid: f9f3561038d1c8d4d997c928bda94bfb, type: 2}
+  building: {fileID: 11400000, guid: fe95614252d5ef448bfeb3809599d0bd, type: 2}
   buildingDirection: 1
   jobToCreate: {fileID: 11400000, guid: aa725ef6ab692684b9c5f51fb9b1f0e4, type: 2}
   debugAttire: {fileID: 11400000, guid: 04daa5188cb5d55449701551edb856ee, type: 2}
@@ -4652,11 +4655,11 @@ MonoBehaviour:
   m_Inertia: 1
   m_DecelerationRate: 0.135
   m_ScrollSensitivity: 1
-  m_Viewport: {fileID: 95859523}
-  m_HorizontalScrollbar: {fileID: 1144622152}
-  m_VerticalScrollbar: {fileID: 279799918}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
+  m_Viewport: {fileID: 0}
+  m_HorizontalScrollbar: {fileID: 0}
+  m_VerticalScrollbar: {fileID: 0}
+  m_HorizontalScrollbarVisibility: 1
+  m_VerticalScrollbarVisibility: 1
   m_HorizontalScrollbarSpacing: -3
   m_VerticalScrollbarSpacing: -3
   m_OnValueChanged:

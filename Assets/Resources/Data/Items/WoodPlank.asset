@@ -12,15 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf29a21075af624bae1b8ab613f086d, type: 3}
   m_Name: WoodPlank
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  localizedText:
-    thingName_en: Wood Plank
-    thingDescription_en: 
-    thingName_vi: "V\xE1n G\u1ED7"
-    thingDescription_vi: 
-    thingName_cn: 
-    thingDescription_cn: 
-    thingName_jp: 
-    thingDescription_jp: 
+  thingNameKey: plankWood
+  thingDescriptionKey: 
   icon: {fileID: 1414478694623257066, guid: 12770b1347f88214aa2a2dc93c890e67, type: 3}
   isStackable: 1
   maxStack: 100

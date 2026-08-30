@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "Game/AbilityUI/ControlPawn")]
-public class AbilityControlPawn : Ability
+public class AbilityControlPawn : DataAbility
 {
     [SerializeField] Sprite onControl;
 

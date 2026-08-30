@@ -10,6 +10,7 @@ public class ResearchButtonUI : MonoBehaviour
 
     public void SetData(DataJobResearch research)
     {
-        title.text = research.thingName;
+        //title.text = research.thingName;
+        icon.sprite = research.icon;
     }
 }

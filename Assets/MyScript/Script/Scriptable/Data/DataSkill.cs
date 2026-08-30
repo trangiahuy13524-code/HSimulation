@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Game/Skill")]
-public class Skill : ScriptableObject
+public class DataSkill : DataMain
 {
     //public string skillName;
 }

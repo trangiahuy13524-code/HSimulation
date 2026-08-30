@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf29a21075af624bae1b8ab613f086d, type: 3}
   m_Name: UnfinishedCraft
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemName: Unfinished Craft
+  thingNameKey: unfinishedCraft
+  thingDescriptionKey: 
   icon: {fileID: 21300000, guid: 84354ba9b73a94a44a7d07556aea82a7, type: 3}
   isStackable: 0
   maxStack: 1

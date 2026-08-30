@@ -1,5 +1,5 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class WorldData : MonoBehaviour
@@ -22,7 +22,11 @@ public class WorldData : MonoBehaviour
     [SerializeField] DataTile[] tiles;
     [SerializeField] DataWall[] walls;
     [SerializeField] DataJobResearch[] dataResearches;
-
+    [SerializeField] DataAbility[] abilities;
+    [SerializeField] DataSkill[] skills;
+    [Header("Language")]
+    [SerializeField] private Language currentLanguage;
+    private LocalizationData localizationData;
 
     public static WorldData Instance { get; private set; }
     void Start()
@@ -37,43 +41,62 @@ public class WorldData : MonoBehaviour
         tiles = Resources.LoadAll<DataTile>("Data/Tiles");
         walls = Resources.LoadAll<DataWall>("Data/Walls");
         dataResearches = Resources.LoadAll<DataJobResearch>("Data/Researches");
+        abilities = Resources.LoadAll<DataAbility>("Data/Abilities");
+        skills = Resources.LoadAll<DataSkill>("Data/Skills");
 
-        Language lang = Language.vi;
-        Localize(genes, lang);
-        Localize(buildings, lang);
-        Localize(items, lang);
-        Localize(attires, lang);
-        Localize(tiles, lang);
-        Localize(walls, lang);
-        Localize(dataResearches, lang);
+        LoadLanguage(currentLanguage);
 
-        //List<Idatamain> allData = new();
-
-        //allData.AddRange(genes.Cast<Idatamain>());
-        //allData.AddRange(buildings.Cast<Idatamain>());
-        //allData.AddRange(items.Cast<Idatamain>());
-        //allData.AddRange(attires.Cast<Idatamain>());
-        //allData.AddRange(tiles.Cast<Idatamain>());
-        //allData.AddRange(walls.Cast<Idatamain>());
-        //allData.AddRange(dataResearches.Cast<Idatamain>());
-
-        //foreach (var data in allData)
-        //{
-        //    data.LocalizeText(Language.vi);
-        //}
+        List<Idatamain> allData = new();
+        allData.AddRange(genes);
+        allData.AddRange(buildings);
+        allData.AddRange(items);
+        allData.AddRange(attires);
+        allData.AddRange(tiles);
+        allData.AddRange(walls);
+        allData.AddRange(dataResearches);
+        allData.AddRange(abilities);
+        allData.AddRange(skills);
+        Localize(allData);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LoadLanguage(Language language)
     {
-        
+        TextAsset jsonFile = Resources.Load<TextAsset>(
+            $"Localization/JSON/{language}"
+        );
+
+        if (jsonFile == null)
+        {
+            Debug.LogError(
+                $"Localization file not found: {language}"
+            );
+
+            return;
+        }
+
+        Dictionary<string, string> dictionary =
+            JsonConvert.DeserializeObject<Dictionary<string, string>>(
+                jsonFile.text
+            );
+
+        localizationData = new LocalizationData(dictionary);
+
+        Debug.Log($"Loaded language: {language}");
     }
 
-    void Localize<T>(T[] datas, Language lang) where T : Idatamain
+    void Localize<T>(T[] datas) where T : Idatamain
     {
         foreach (var data in datas)
         {
-            data.LocalizeText(lang);
+            data.LocalizeText(localizationData);
+        }
+    }
+
+    void Localize<T>(List<T> datas) where T : Idatamain
+    {
+        foreach (var data in datas)
+        {
+            data.LocalizeText(localizationData);
         }
     }
 }
