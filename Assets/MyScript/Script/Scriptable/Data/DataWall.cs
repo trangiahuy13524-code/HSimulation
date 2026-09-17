@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 [Serializable, CreateAssetMenu(fileName = "Wall Tile", menuName = "Tiles/Wall Tile")]
 public class DataWall : TileBase, Idatamain
@@ -20,6 +21,7 @@ public class DataWall : TileBase, Idatamain
 
 
     [Header("Sprites")]
+    public Sprite Icon;
     public Sprite[] sprites;
     public override void GetTileData(
         Vector3Int position,

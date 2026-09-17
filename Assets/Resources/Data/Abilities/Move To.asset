@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38154c4231edcee47ae092f64de41214, type: 3}
   m_Name: Move To
   m_EditorClassIdentifier: Assembly-CSharp::AbilityMoveToObject
+  thingNameKey: abi_movTo
+  thingDescriptionKey: 
   icon: {fileID: 0}

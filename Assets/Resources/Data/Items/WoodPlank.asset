@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf29a21075af624bae1b8ab613f086d, type: 3}
   m_Name: WoodPlank
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  thingNameKey: plankWood
-  thingDescriptionKey: 
+  thingNameKey: it_plkWood
+  thingDescriptionKey: it_plkWoodDesc
   icon: {fileID: 1414478694623257066, guid: 12770b1347f88214aa2a2dc93c890e67, type: 3}
   isStackable: 1
   maxStack: 100

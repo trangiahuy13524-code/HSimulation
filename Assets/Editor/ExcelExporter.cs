@@ -1,15 +1,13 @@
-#if UNITY_EDITOR
-
-using UnityEngine;
-using UnityEditor;
-
-using System;
-using System.IO;
-using System.Text;
-using System.Collections.Generic;
-
-using Newtonsoft.Json;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using UnityEditor;
+using UnityEngine;
 
 public class ExcelExporter : EditorWindow
 {
@@ -17,15 +15,19 @@ public class ExcelExporter : EditorWindow
     // Settings
     // ============================================================
 
-    private string excelTemplatePath = "";
+    private string excelTemplatePath = Path.Combine(
+        Environment.GetFolderPath(
+            Environment.SpecialFolder.MyDocuments
+        ),
+        "HumanSimulation.xlsx"
+    );
 
-    private string outputPath =
-        Path.Combine(
-            Environment.GetFolderPath(
-                Environment.SpecialFolder.MyDocuments
-            ),
-            "Localization_Updated.xlsx"
-        );
+    private string outputPath = Path.Combine(
+        Environment.GetFolderPath(
+            Environment.SpecialFolder.MyDocuments
+        ),
+        "HumanSimulation.xlsx"
+    );
 
     private string sheetName = "Localization";
 
@@ -269,21 +271,34 @@ public class ExcelExporter : EditorWindow
 
         try
         {
-            // ----------------------------------------------------
-            // Collect keys
-            // ----------------------------------------------------
+            // ====================================================
+            // Collect Keys
+            // ====================================================
 
             HashSet<string> keys =
                 CollectKeys();
 
-            // ----------------------------------------------------
-            // Load translations
-            // ----------------------------------------------------
+            if (keys.Count == 0)
+            {
+                ShowError(
+                    "No localization keys were found."
+                );
+
+                return;
+            }
+
+            // ====================================================
+            // Load Languages
+            // ====================================================
 
             Language[] languages =
                 (Language[])Enum.GetValues(
                     typeof(Language)
                 );
+
+            // ====================================================
+            // Load Translations
+            // ====================================================
 
             Dictionary<
                 Language,
@@ -300,106 +315,126 @@ public class ExcelExporter : EditorWindow
                     LoadLanguageJSON(language);
             }
 
-            // ----------------------------------------------------
-            // Open existing Excel
-            // ----------------------------------------------------
+            // ====================================================
+            // Open Excel
+            // ====================================================
 
             using (XLWorkbook workbook =
                 new XLWorkbook(
                     excelTemplatePath
                 ))
             {
+                // ------------------------------------------------
+                // Find Worksheet
+                // ------------------------------------------------
+
+                if (!workbook.Worksheets.Contains(
+                    sheetName))
+                {
+                    ShowError(
+                        $"Worksheet '{sheetName}' was not found."
+                    );
+
+                    return;
+                }
+
+
+
                 IXLWorksheet worksheet =
                     workbook.Worksheets
                         .Worksheet(sheetName);
 
+                // =================================================
+                // CLEAR EVERYTHING
+                // =================================================
+
+                
+
+                worksheet.Clear(
+                    XLClearOptions.All
+                );
+
+                for (int i = worksheet.Tables.Count() - 1; i >= 0; i--)
+                {
+                    worksheet.Tables.Remove(i);
+                }
+
+                // =================================================
+                // Write Header
+                // =================================================
+
+                int lastColumn =
+                    keyColumn + languages.Length;
+
+                // Key header
+                IXLCell cell = worksheet.Cell(
+                    headerRow,
+                    keyColumn
+                );
+                cell.Value = "Key";
+                cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                // Language headers
+                for (int i = 0;
+                     i < languages.Length;
+                     i++)
+                {
+                    int column =
+                        keyColumn + i + 1;
+
+                    cell = worksheet.Cell(
+                        headerRow,
+                        column
+                    );
+                    cell.Value = languages[i].ToString();
+                    cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                }
+
                 // ------------------------------------------------
-                // Find language columns
+                // Header formatting
                 // ------------------------------------------------
 
-                Dictionary<
-                    Language,
-                    int
-                > languageColumns =
-                    FindLanguageColumns(
-                        worksheet,
-                        languages
+                IXLRange headerRange =
+                    worksheet.Range(
+                        headerRow,
+                        keyColumn,
+                        headerRow,
+                        lastColumn
                     );
 
-                // ------------------------------------------------
-                // Find existing keys
-                // ------------------------------------------------
+                headerRange.Style.Font.Bold = true;
 
-                Dictionary<
-                    string,
-                    int
-                > existingKeys =
-                    FindExistingKeys(
-                        worksheet
-                    );
+                // =================================================
+                // Write Data
+                // =================================================
 
-                // ------------------------------------------------
-                // Update / Add
-                // ------------------------------------------------
-
-                int updatedCount = 0;
-                int addedCount = 0;
-
-                int nextRow =
-                    GetNextRow(
-                        worksheet
-                    );
+                int currentRow =
+                    headerRow + 1;
 
                 foreach (string key in keys)
                 {
-                    int row;
+                    // ------------------------------------------------
+                    // Key
+                    // ------------------------------------------------
 
-                    // ============================================
-                    // Existing key
-                    // ============================================
+                    worksheet.Cell(
+                        currentRow,
+                        keyColumn
+                    ).Value = key;
 
-                    if (existingKeys.TryGetValue(
-                        key,
-                        out row))
+                    // ------------------------------------------------
+                    // Translations
+                    // ------------------------------------------------
+
+                    for (int i = 0;
+                         i < languages.Length;
+                         i++)
                     {
-                        updatedCount++;
-                    }
-                    else
-                    {
-                        // ========================================
-                        // New key
-                        // ========================================
+                        Language language =
+                            languages[i];
 
-                        row = nextRow++;
-
-                        worksheet.Cell(
-                            row,
-                            keyColumn
-                        ).Value = key;
-
-                        CopyRowFormatting(
-                            worksheet,
-                            row - 1,
-                            row
-                        );
-
-                        addedCount++;
-                    }
-
-                    // ============================================
-                    // Write translations
-                    // ============================================
-
-                    foreach (Language language in languages)
-                    {
-                        int column;
-
-                        if (!languageColumns.TryGetValue(
-                            language,
-                            out column))
-                        {
-                            continue;
-                        }
+                        int column =
+                            keyColumn + i + 1;
 
                         string value = "";
 
@@ -408,25 +443,68 @@ public class ExcelExporter : EditorWindow
                                 key,
                                 out string translation))
                         {
-                            value = translation;
+                            value =
+                                translation ?? "";
                         }
 
-                        // IMPORTANT:
-                        //
-                        // Only modify the value.
-                        //
-                        // Existing formatting remains.
-                        //
                         worksheet.Cell(
-                            row,
+                            currentRow,
                             column
                         ).Value = value;
                     }
+
+                    currentRow++;
                 }
 
-                // ------------------------------------------------
+                // =================================================
+                // Create Table
+                // =================================================
+
+                int lastRow =
+                    currentRow - 1;
+
+                IXLRange tableRange =
+                    worksheet.Range(
+                        headerRow,
+                        keyColumn,
+                        lastRow,
+                        lastColumn
+                    );
+
+                IXLTable table =
+                    tableRange.CreateTable(
+                        "LocalizationTable"
+                    );
+
+                // Show table styling
+                table.Theme =
+                    XLTableTheme.TableStyleMedium2;
+
+                // =================================================
+                // Formatting
+                // =================================================
+
+                worksheet.Columns()
+                    .AdjustToContents();
+
+                // Prevent extremely wide columns
+                worksheet.Column(keyColumn)
+                    .Width = 35;
+
+                for (int i = 0;
+                     i < languages.Length;
+                     i++)
+                {
+                    int column =
+                        keyColumn + i + 1;
+
+                    worksheet.Column(column)
+                        .Width = 40;
+                }
+
+                // =================================================
                 // Save
-                // ------------------------------------------------
+                // =================================================
 
                 string directory =
                     Path.GetDirectoryName(
@@ -435,7 +513,8 @@ public class ExcelExporter : EditorWindow
 
                 if (!string.IsNullOrEmpty(
                     directory) &&
-                    !Directory.Exists(directory))
+                    !Directory.Exists(
+                        directory))
                 {
                     Directory.CreateDirectory(
                         directory
@@ -446,15 +525,16 @@ public class ExcelExporter : EditorWindow
                     outputPath
                 );
 
-                // ------------------------------------------------
+                // =================================================
                 // Result
-                // ------------------------------------------------
+                // =================================================
 
                 string message =
                     "Excel generated successfully.\n\n" +
                     $"Keys: {keys.Count}\n" +
-                    $"Updated: {updatedCount}\n" +
-                    $"Added: {addedCount}\n\n" +
+                    $"Languages: {languages.Length}\n" +
+                    $"Rows: {keys.Count}\n" +
+                    $"Table: LocalizationTable\n\n" +
                     outputPath;
 
                 Debug.Log(message);
@@ -465,6 +545,22 @@ public class ExcelExporter : EditorWindow
                     "OK"
                 );
             }
+        }
+        catch (IOException e)
+        {
+            string message =
+                "Cannot access the Excel file.\n\n" +
+                "The file may currently be open in Excel " +
+                "or locked by OneDrive.\n\n" +
+                e.Message;
+
+            Debug.LogError(message);
+
+            EditorUtility.DisplayDialog(
+                "File Locked",
+                message,
+                "OK"
+            );
         }
         catch (Exception e)
         {
@@ -516,166 +612,6 @@ public class ExcelExporter : EditorWindow
     }
 
     // ============================================================
-    // Find Language Columns
-    // ============================================================
-
-    private Dictionary<
-        Language,
-        int
-    > FindLanguageColumns(
-        IXLWorksheet worksheet,
-        Language[] languages)
-    {
-        Dictionary<
-            Language,
-            int
-        > result =
-            new Dictionary<
-                Language,
-                int
-            >();
-
-        foreach (Language language in languages)
-        {
-            string languageName =
-                language.ToString();
-
-            foreach (
-                IXLCell cell
-                in worksheet.Row(headerRow).CellsUsed())
-            {
-                string header =
-                    cell.GetString().Trim();
-
-                if (string.Equals(
-                    header,
-                    languageName,
-                    StringComparison.OrdinalIgnoreCase))
-                {
-                    result[language] =
-                        cell.Address.ColumnNumber;
-
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    // ============================================================
-    // Find Existing Keys
-    // ============================================================
-
-    private Dictionary<
-        string,
-        int
-    > FindExistingKeys(
-        IXLWorksheet worksheet)
-    {
-        Dictionary<
-            string,
-            int
-        > result =
-            new Dictionary<
-                string,
-                int
-            >(
-                StringComparer.OrdinalIgnoreCase
-            );
-
-        foreach (
-            IXLCell cell
-            in worksheet.Column(keyColumn).CellsUsed())
-        {
-            if (cell.Address.RowNumber <= headerRow)
-                continue;
-
-            string key =
-                cell.GetString().Trim();
-
-            if (string.IsNullOrEmpty(key))
-                continue;
-
-            if (!result.ContainsKey(key))
-            {
-                result.Add(
-                    key,
-                    cell.Address.RowNumber
-                );
-            }
-        }
-
-        return result;
-    }
-
-    // ============================================================
-    // Get Next Row
-    // ============================================================
-
-    private int GetNextRow(
-        IXLWorksheet worksheet)
-    {
-        IXLRange usedRange =
-            worksheet.RangeUsed();
-
-        if (usedRange == null)
-        {
-            return headerRow + 1;
-        }
-
-        return usedRange.LastRow()
-            .RowNumber() + 1;
-    }
-
-    // ============================================================
-    // Copy Formatting
-    // ============================================================
-
-    private void CopyRowFormatting(
-        IXLWorksheet worksheet,
-        int sourceRow,
-        int targetRow)
-    {
-        if (sourceRow <= headerRow)
-            return;
-
-        IXLRow source =
-            worksheet.Row(sourceRow);
-
-        IXLRow target =
-            worksheet.Row(targetRow);
-
-        // --------------------------------------------------------
-        // Row height
-        // --------------------------------------------------------
-
-        target.Height =
-            source.Height;
-
-        // --------------------------------------------------------
-        // Copy cell styles
-        // --------------------------------------------------------
-
-        foreach (
-            IXLCell sourceCell
-            in source.CellsUsed())
-        {
-            int column =
-                sourceCell.Address.ColumnNumber;
-
-            IXLCell targetCell =
-                worksheet.Cell(
-                    targetRow,
-                    column
-                );
-
-            targetCell.Style =
-                sourceCell.Style;
-        }
-    }
-
-    // ============================================================
     // Load JSON
     // ============================================================
 
@@ -695,13 +631,33 @@ public class ExcelExporter : EditorWindow
         if (!File.Exists(path))
         {
             Debug.LogWarning(
-                $"JSON not found: {path}"
+                $"JSON not found, creating: {path}"
             );
 
-            return new Dictionary<
-                string,
-                string
-            >();
+            Dictionary<string, string> newData =
+                new Dictionary<string, string>();
+
+            string json =
+                JsonConvert.SerializeObject(
+                    newData,
+                    Formatting.Indented
+                );
+
+            string directory =
+                Path.GetDirectoryName(path);
+
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            File.WriteAllText(
+                path,
+                json,
+                Encoding.UTF8
+            );
+
+            return newData;
         }
 
         try
@@ -828,5 +784,3 @@ public class ExcelExporter : EditorWindow
         );
     }
 }
-
-#endif

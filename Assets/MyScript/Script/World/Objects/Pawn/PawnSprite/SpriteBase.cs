@@ -3,8 +3,8 @@ using UnityEngine;
 
 public abstract class SpriteBase : MonoBehaviour
 {
-    private WorldData worldData;
     public PartBioSprite SpritePart => spriteData;
+
     [Header("References")]
     public Transform spriteTransform;
     [SerializeField] protected SpriteBase parent;
@@ -15,45 +15,62 @@ public abstract class SpriteBase : MonoBehaviour
     [SerializeField] protected Pawn pawn;
 
     protected Vector2 baseOffset;
+    protected float baseHorizontalOffset;
     protected Direction currentDirection = Direction.South;
 
     protected virtual int LayerPriority => 0;
-
-    protected virtual void Start()
-    {
-        worldData = WorldData.Instance;
-        Refresh();
-    }
+    protected virtual bool InheritParentScale => true;
 
     public void Refresh()
     {
-        ApplyOffset();
-        ApplyDirection(currentDirection);
-        UpdateLayer();
+        RefreshSelf();
 
         foreach (var child in children)
+        {
             child.Refresh();
+        }
+    }
+
+    private void RefreshSelf()
+    {
+        ApplyDirection(currentDirection);
+        UpdateLayer();
     }
 
     protected virtual void ApplyOffset()
     {
         baseOffset = Vector2.zero;
+        baseHorizontalOffset = 0f;
 
         if (parent && parent.spriteData)
+        {
             baseOffset += parent.spriteData.childOffset;
+            baseHorizontalOffset += parent.spriteData.childHorizontalOffset;
+        }
 
         if (spriteData)
         {
             baseOffset += spriteData.offset;
-            spriteTransform.localScale = spriteData.scale;
+            baseHorizontalOffset += spriteData.horizontalOffset;
+            ApplyScale();
         }
 
-        spriteTransform.localPosition = baseOffset;
+        transform.localPosition = baseOffset;
+    }
+
+    protected virtual void ApplyScale()
+    {
+        transform.localScale = spriteData.scale;
+        if (!InheritParentScale)
+        {
+            transform.localScale = spriteData.scale * spriteData.scale / transform.lossyScale.x;
+        }
     }
 
     public virtual void SetSpriteData(PartBioSprite data)
     {
         spriteData = data;
+        ApplyOffset();
         Refresh();
     }
 
@@ -67,40 +84,90 @@ public abstract class SpriteBase : MonoBehaviour
     {
         if (!spriteData) return false;
 
-        switch (dir)
+        if (!SpriteDirectionApplicator.Apply(
+            spriteRenderer,
+            spriteData.eastSprite,
+            spriteData.northSprite,
+            spriteData.southSprite,
+            dir))
         {
-            case Direction.North:
-                spriteRenderer.sprite = spriteData.northSprite;
-                spriteRenderer.flipX = false;
-                break;
-
-            case Direction.South:
-                spriteRenderer.sprite = spriteData.southSprite;
-                spriteRenderer.flipX = false;
-                break;
-
-            case Direction.East:
-                spriteRenderer.sprite = spriteData.eastSprite;
-                spriteRenderer.flipX = false;
-                break;
-
-            case Direction.West:
-                spriteRenderer.sprite = spriteData.eastSprite;
-                spriteRenderer.flipX = true;
-                break;
+            return false;
         }
 
+        ApplyDirectionalOffset(dir);
         return true;
+    }
+
+    protected virtual void ApplyDirectionalOffset(Direction dir)
+    {
     }
 
     public virtual void UpdateLayer()
     {
+        WorldData worldData = WorldData.Instance;
         if (worldData == null) return;
-        spriteRenderer.sortingOrder = worldData.topGridLayer - pawn.CurrentGridPosition.y * worldData.spacing + LayerPriority;
+
+        int sortingOrder = worldData.topGridLayer - pawn.CurrentGridPosition.y * worldData.spacing + LayerPriority;
+        if (spriteRenderer.sortingOrder != sortingOrder)
+        {
+            spriteRenderer.sortingOrder = sortingOrder;
+        }
     }
 
     public virtual void SetMaterial(Material mat)
     {
         spriteRenderer.sharedMaterial = mat;
+    }
+}
+
+internal static class SpriteDirectionApplicator
+{
+    public static bool Apply(
+        SpriteRenderer spriteRenderer,
+        Sprite eastSprite,
+        Sprite northSprite,
+        Sprite southSprite,
+        Direction direction)
+    {
+        Sprite sprite;
+        bool flipX;
+
+        switch (direction)
+        {
+            case Direction.North:
+                sprite = northSprite;
+                flipX = false;
+                break;
+
+            case Direction.South:
+                sprite = southSprite;
+                flipX = false;
+                break;
+
+            case Direction.East:
+                sprite = eastSprite;
+                flipX = false;
+                break;
+
+            case Direction.West:
+                sprite = eastSprite;
+                flipX = true;
+                break;
+
+            default:
+                return false;
+        }
+
+        if (spriteRenderer.sprite != sprite)
+        {
+            spriteRenderer.sprite = sprite;
+        }
+
+        if (spriteRenderer.flipX != flipX)
+        {
+            spriteRenderer.flipX = flipX;
+        }
+
+        return true;
     }
 }

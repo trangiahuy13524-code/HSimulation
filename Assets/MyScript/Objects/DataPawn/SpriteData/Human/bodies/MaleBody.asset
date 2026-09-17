@@ -15,6 +15,7 @@ MonoBehaviour:
   offset: {x: 0, y: -0.3}
   childOffset: {x: 0, y: 1.2}
   horizontalOffset: 0
+  childHorizontalOffset: 0.2
   scale: {x: 0.3, y: 0.3}
   bodyPartShape: {fileID: 11400000, guid: 32dc9d24897890b4f9c1e2832eb7aac6, type: 2}
   eastSprite: {fileID: 21300000, guid: c826be5deb6f1c047a0b4ed91dd4d3fc, type: 3}

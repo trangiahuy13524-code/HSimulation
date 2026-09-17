@@ -131,36 +131,36 @@ public partial class Pawn : IManagedUpdate
         base.OnDestroy();
     }
 
-    public override void SetSelected(bool value, byte strength)
-    {
-        base.SetSelected(value, strength);
-        SetSelectThreshold(value, strength);
-    }
+    //public override void SetSelected(bool value, byte strength)
+    //{
+    //    base.SetSelected(value, strength);
+    //    SetSelectThreshold(value, strength);
+    //}
 
-    public byte selectThreshHold = 0;
-    public void SetSelectThreshold(bool value, byte strength)
-    {
-        if (value)
-        {
-            selectThreshHold += strength;
-        }
-        else
-        {
-            selectThreshHold -= strength;
-        }
-        if (selectThreshHold == 0)
-        {
-            SetPawnMaterial(worldData.defaultMat);
-        }
-        else if (selectThreshHold == 1)
-        {
-            SetPawnMaterial(worldData.hoverMat);
-        }
-        else
-        {
-            SetPawnMaterial(worldData.selectedMat);
-        }
-    }
+    //public byte selectThreshHold = 0;
+    //public void SetSelectThreshold(bool value, byte strength)
+    //{
+    //    if (value)
+    //    {
+    //        selectThreshHold += strength;
+    //    }
+    //    else
+    //    {
+    //        selectThreshHold -= strength;
+    //    }
+    //    if (selectThreshHold == 0)
+    //    {
+    //        SetPawnMaterial(worldData.defaultMat);
+    //    }
+    //    else if (selectThreshHold == 1)
+    //    {
+    //        SetPawnMaterial(worldData.hoverMat);
+    //    }
+    //    else
+    //    {
+    //        SetPawnMaterial(worldData.selectedMat);
+    //    }
+    //}
 
     public void SetPawnMaterial(Material mat)
     {

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ddeefa58d3523d4a90c5cd1ddd84c01, type: 3}
   m_Name: SimpleCraft
   m_EditorClassIdentifier: Assembly-CSharp::ResearchData
-  thingNameKey: 
-  thingDescriptionKey: 
+  thingNameKey: res_simCraft
+  thingDescriptionKey: res_simCraftDesc
   requiredSkills:
   - skillRef: {fileID: 11400000, guid: 0fcb770092584054abe9d1baf744b7c3, type: 2}
     level: 0

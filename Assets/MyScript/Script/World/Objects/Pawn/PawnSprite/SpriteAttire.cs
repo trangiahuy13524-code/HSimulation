@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class SpriteAttire : MonoBehaviour
 {
-    private WorldData worldData;
     public DataAttire attireData { get; private set; }
     public bool debug { get; private set; }
+
     [Header("References")]
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] PartAttire spriteData;
@@ -18,7 +18,6 @@ public class SpriteAttire : MonoBehaviour
 
     void Start()
     {
-        worldData = WorldData.Instance;
         Refresh();
     }
     //protected override int LayerPriority => 3;
@@ -51,8 +50,17 @@ public class SpriteAttire : MonoBehaviour
     {
         if (spriteData)
         {
-            transform.localPosition = spriteData.offset + baseOffset;
-            transform.localScale = spriteData.scale;
+            Vector3 localPosition = spriteData.offset + baseOffset;
+            if (transform.localPosition != localPosition)
+            {
+                transform.localPosition = localPosition;
+            }
+
+            Vector3 localScale = spriteData.scale;
+            if (transform.localScale != localScale)
+            {
+                transform.localScale = localScale;
+            }
         }
     }
 
@@ -72,35 +80,23 @@ public class SpriteAttire : MonoBehaviour
     {
         if (!spriteData) return false;
 
-        switch (dir)
-        {
-            case Direction.North:
-                spriteRenderer.sprite = spriteData.northSprite;
-                spriteRenderer.flipX = false;
-                break;
-
-            case Direction.South:
-                spriteRenderer.sprite = spriteData.southSprite;
-                spriteRenderer.flipX = false;
-                break;
-
-            case Direction.East:
-                spriteRenderer.sprite = spriteData.eastSprite;
-                spriteRenderer.flipX = false;
-                break;
-
-            case Direction.West:
-                spriteRenderer.sprite = spriteData.eastSprite;
-                spriteRenderer.flipX = true;
-                break;
-        }
-
-        return true;
+        return SpriteDirectionApplicator.Apply(
+            spriteRenderer,
+            spriteData.eastSprite,
+            spriteData.northSprite,
+            spriteData.southSprite,
+            dir);
     }
 
     public void UpdateLayer()
     {
+        WorldData worldData = WorldData.Instance;
         if (worldData == null) return;
-        spriteRenderer.sortingOrder = worldData.topGridLayer - pawn.CurrentGridPosition.y * worldData.spacing + layerIndex;
+
+        int sortingOrder = worldData.topGridLayer - pawn.CurrentGridPosition.y * worldData.spacing + layerIndex;
+        if (spriteRenderer.sortingOrder != sortingOrder)
+        {
+            spriteRenderer.sortingOrder = sortingOrder;
+        }
     }
 }

@@ -5,7 +5,7 @@ public class BuildingResearch: BuildingWorkable
 {
     public ResearchTree researchTree;
 
-    public override JobBuilding CreateJob(JobDataWorkable data)
+    public override JobBuilding CreateJob(DataJobWorkable data)
     {
         var research = data as DataJobResearch;
         if (research == null)

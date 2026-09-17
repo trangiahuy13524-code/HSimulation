@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Building : WorldObjectStatic
 {
-
     [SerializeField] protected Transform midPoint;
     [SerializeField] protected BuildingSpriteRender render;
     public Direction direction;
@@ -10,6 +9,7 @@ public class Building : WorldObjectStatic
     public BuildingSprite sprite;
     public override bool isPassable => false;
     public override bool canHoldItems => true;
+    public override Sprite IconSprite => sprite.icon;
 
     Vector2Int xRange;
     Vector2Int yRange;
@@ -45,6 +45,7 @@ public class Building : WorldObjectStatic
 
     public virtual bool checkPlaceable(Vector2Int position, Direction direction, WorldMap world)
     {
+        if (sprite.fixedSouth) direction = Direction.South;
         bool isVert = checkVert(direction);
         int sizeX = isVert?buildingGridSize.y:buildingGridSize.x;
         int sizeY = isVert ? buildingGridSize.x : buildingGridSize.y;
@@ -54,7 +55,7 @@ public class Building : WorldObjectStatic
             {
                 tempPos = new Vector2Int(i, j);
                 if (!world.IsInside(tempPos)) return false;
-                if (world.GetFastObjectAtPosition(tempPos) != null) return false;
+                if (world.GetObjectAtPosition(tempPos) != null) return false;
                 if (world.FastGridMaxPawn(tempPos)) return false;
             }
         return true;

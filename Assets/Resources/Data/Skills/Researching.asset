@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a0bd15b7cfc6ea4ebaa094c720d154d, type: 3}
   m_Name: Researching
   m_EditorClassIdentifier: Assembly-CSharp::SkillObject
-  skillName: Researching
+  thingNameKey: sk_research
+  thingDescriptionKey: sk_researchDesc

@@ -19,7 +19,7 @@ public class WorldMap : MonoBehaviour
     [SerializeField] short worldSize = 50;
 
     [SerializeField] byte maxPawnCount = 2;
-    WorldObject[,] objects;
+    WorldObjectStatic[,] objects;
     Item[,] items;
 
     public byte[,] pawnCountOnGrid { get; private set; }
@@ -34,7 +34,7 @@ public class WorldMap : MonoBehaviour
         Instance = this;
         Application.targetFrameRate = gameFPS;
 
-        objects = new WorldObject[worldSize, worldSize];
+        objects = new WorldObjectStatic[worldSize, worldSize];
         items = new Item[worldSize, worldSize];
         notPassableTiles = new bool[worldSize, worldSize];
 
@@ -81,7 +81,7 @@ public class WorldMap : MonoBehaviour
         return notPassableTiles[position.x, position.y];
     }
 
-    public void RegisterObject(WorldObject obj, Vector2Int position)
+    public void RegisterObject(WorldObjectStatic obj, Vector2Int position)
     {
         if (!IsInside(position)) return;
         if (objects[position.x, position.y] != null) return;
@@ -91,7 +91,7 @@ public class WorldMap : MonoBehaviour
     public void RemoveObject(Vector2Int position)
     {
         if (!IsInside(position)) return;
-        WorldObject ob = objects[position.x, position.y];
+        WorldObjectStatic ob = objects[position.x, position.y];
         if (ob == null) return;
         ob.Despawn();
     }
@@ -121,7 +121,7 @@ public class WorldMap : MonoBehaviour
         notPassableTiles[position.x, position.y] = false;
     }
 
-    public WorldObject GetFastObjectAtPosition(Vector2Int position)
+    public WorldObjectStatic GetObjectAtPosition(Vector2Int position)
     {
         return objects[position.x, position.y];
     }
@@ -162,6 +162,7 @@ public class WorldMap : MonoBehaviour
         wallTileMap.SetTile(new Vector3Int(x, y, 0), wallTile);
         RefreshNeighborWall(x, y);
         Wall dummy = Instantiate(wallDummyPrefab, wallDummies);
+        dummy.SetData(wallTile);
         dummy.CurrentGridPosition = position;
         //dummy.wallTile = wallTile;
         mapRenderer.map.SetTile(position, wallDummyTile);

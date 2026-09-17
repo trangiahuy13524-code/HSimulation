@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2876662777100111687}
   - component: {fileID: 2464960545398590279}
   - component: {fileID: 2731955364493801248}
+  - component: {fileID: 7863682857291970176}
   m_Layer: 5
   m_Name: AbilityUIicon
   m_TagString: Untagged
@@ -137,6 +138,20 @@ MonoBehaviour:
   icon: {fileID: 2464960545398590279}
   iconButton: {fileID: 2876662777100111687}
   text: {fileID: 8678336762719842431}
+--- !u!114 &7863682857291970176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6121189098612202382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19c024f6a41d49e429b69832067574ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WGetFontMaterial
+  texts:
+  - {fileID: 8678336762719842431}
 --- !u!1 &8807146200392856829
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,8 +219,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ec2d85607e6c39e44986bd51ac5b198e, type: 2}
-  m_sharedMaterial: {fileID: -5878321975634312132, guid: ec2d85607e6c39e44986bd51ac5b198e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: da6dd765a7de9fc4b9068a014571ed7e, type: 2}
+  m_sharedMaterial: {fileID: 21430869121301638, guid: da6dd765a7de9fc4b9068a014571ed7e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -268,7 +283,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -0.000026695629, y: -0.45733738, z: 0, w: 1.6006875}
+  m_margin: {x: -0.51117706, y: -1.3092508, z: -0.51114655, w: -2.1477408}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

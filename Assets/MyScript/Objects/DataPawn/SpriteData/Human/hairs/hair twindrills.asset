@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7daa3a25bf8264047b2f5526d3b7534a, type: 3}
+  m_Name: hair twindrills
+  m_EditorClassIdentifier: Assembly-CSharp::PartBioSprite
+  offset: {x: 0, y: 0}
+  childOffset: {x: 0, y: 0}
+  horizontalOffset: 0
+  scale: {x: 0.6, y: 0.6}
+  bodyPartShape: {fileID: 0}
+  eastSprite: {fileID: 21300000, guid: d10cc2e6ec3251e4b8acdf5cfcf7753f, type: 3}
+  northSprite: {fileID: 21300000, guid: 0bbb003913c330a429f4b5a24a53c3d1, type: 3}
+  southSprite: {fileID: 21300000, guid: fd716cb2fc4dc4d4096e127b1a421afa, type: 3}
+  attireOffset: {x: 0, y: 0}
+  bodySex: 1
+  hybridable: 0

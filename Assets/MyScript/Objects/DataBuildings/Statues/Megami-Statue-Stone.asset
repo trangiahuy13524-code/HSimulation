@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfaaa5672c924524b97679fc16e12092, type: 3}
+  m_Name: Megami-Statue-Stone
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingSprite
+  size: {x: 1.1, y: 1.1}
+  fixedSouth: 1
+  horizontalOffset: {x: 1.01, y: 2.54}
+  verticalOffset: {x: 0, y: 0}
+  icon: {fileID: 21300000, guid: 00724c5cfe20f07419390cc1c377ff87, type: 3}
+  eastSprite: {fileID: 0}
+  northSprite: {fileID: 0}
+  southSprite: {fileID: 21300000, guid: 00724c5cfe20f07419390cc1c377ff87, type: 3}

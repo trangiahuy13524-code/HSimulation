@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class BuildingCraft : BuildingWorkable
 {
-    public List<JobDataCraft> jobs;
+    public List<DataJobCraft> jobs;
 
     // =====================================================
     // FIND NEAREST REQUIRED ITEM
@@ -18,9 +18,9 @@ public class BuildingCraft : BuildingWorkable
     // JOB
     // =====================================================
 
-    public override JobBuilding CreateJob(JobDataWorkable data)
+    public override JobBuilding CreateJob(DataJobWorkable data)
     {
-        var data2 = data as JobDataCraft;
+        var data2 = data as DataJobCraft;
         JobCraft job = new();
 
         job.requiredSkills = data2.requiredSkills;

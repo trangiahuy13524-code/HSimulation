@@ -63,7 +63,7 @@ public abstract class BuildingWorkable : Building
         }
     }
 
-    public abstract JobBuilding CreateJob(JobDataWorkable data);
+    public abstract JobBuilding CreateJob(DataJobWorkable data);
 
 
     //public Action onDestroy;

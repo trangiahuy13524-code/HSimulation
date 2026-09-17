@@ -4,7 +4,7 @@ using UnityEngine;
 public class WorldObject : MonoBehaviour
 {
     public virtual string ThingName => null;
-    public virtual Sprite IconSprite => null;
+    public virtual Sprite IconSprite { get; set; }
     protected Vector2Int currentGridPos;
     protected Vector2Int oldGridPos;
     protected WorldMap world;
@@ -13,7 +13,8 @@ public class WorldObject : MonoBehaviour
     protected WorldData worldData;
     public bool isSelected { get; private set; }
 
-    public List<DataAbility> abilities = new();
+    public List<DataAbility> fixedAbilities = new();
+    public List<DataAbility> dynamicAbilities = new();
 
     public virtual bool isPassable => true;
     public virtual bool canHoldItems => false;
@@ -42,9 +43,48 @@ public class WorldObject : MonoBehaviour
         transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
     }
 
-    public virtual void SetSelected(bool value, byte strength)
+    [SerializeField] protected SpriteRenderer selectionSR;
+    protected byte selectThreshHold = 0;
+    public virtual void SetSelectedThreshold(bool value, byte strength)
     {
-        isSelected = value;
+        if (value)
+        {
+            selectThreshHold += strength;
+        }
+        else
+        {
+            selectThreshHold -= strength;
+        }
+        if (selectThreshHold > 0)
+        {
+            if (selectionSR == null)
+            {
+                selectionSR = Instantiate(WorldData.Instance.selectionPrefab, transform);
+                selectionSR.transform.localPosition = Vector3.down*0.5f;
+            }
+            else
+            {
+                selectionSR.gameObject.SetActive(true);
+            }
+            if (selectThreshHold == 1)
+            {
+                selectionSR.sprite = WorldData.Instance.hlSprite;
+                isSelected = false;
+            }
+            else
+            {
+                selectionSR.sprite = WorldData.Instance.selSprite;
+                isSelected = true;
+            }
+        }
+        else
+        {
+            isSelected = false;
+            if (selectionSR != null)
+            {
+                selectionSR.gameObject.SetActive(false);
+            }
+        }
     }
 
     public virtual void Despawn()

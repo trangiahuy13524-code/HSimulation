@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class WorldData : MonoBehaviour
@@ -12,8 +13,8 @@ public class WorldData : MonoBehaviour
 
     [Header("Shader")]
     public Material defaultMat;
-    public Material hoverMat;
-    public Material selectedMat;
+    public Material outlineMat;
+    public Material outlineAnimatedMat;
     [Header("Data")]
     [SerializeField] DataGenetics[] genes;
     [SerializeField] DataBuilding[] buildings;
@@ -24,15 +25,21 @@ public class WorldData : MonoBehaviour
     [SerializeField] DataJobResearch[] dataResearches;
     [SerializeField] DataAbility[] abilities;
     [SerializeField] DataSkill[] skills;
+    [SerializeField] DataJobBase[] jobs;
     [Header("Language")]
+    public TMP_FontAsset globalFontAsset;
     [SerializeField] private Language currentLanguage;
     private LocalizationData localizationData;
+    [Header("Selection")]
+    public SpriteRenderer selectionPrefab;
+    public Sprite hlSprite;
+    public Sprite selSprite;
 
     public static WorldData Instance { get; private set; }
     void Start()
     {
         Instance = this;
-        topGridLayer = WorldMap.Instance.WorldSize * spacing + bottomGridLayer;
+        topGridLayer = WorldMap.Instance.WorldSize * spacing + bottomGridLayer; 
 
         genes = Resources.LoadAll<DataGenetics>("Data/Genes");
         buildings = Resources.LoadAll<DataBuilding>("Data/Buildings");
@@ -43,6 +50,7 @@ public class WorldData : MonoBehaviour
         dataResearches = Resources.LoadAll<DataJobResearch>("Data/Researches");
         abilities = Resources.LoadAll<DataAbility>("Data/Abilities");
         skills = Resources.LoadAll<DataSkill>("Data/Skills");
+        jobs = Resources.LoadAll<DataJobBase>("Data/Jobs");
 
         LoadLanguage(currentLanguage);
 
@@ -56,6 +64,7 @@ public class WorldData : MonoBehaviour
         allData.AddRange(dataResearches);
         allData.AddRange(abilities);
         allData.AddRange(skills);
+        allData.AddRange(jobs);
         Localize(allData);
     }
 

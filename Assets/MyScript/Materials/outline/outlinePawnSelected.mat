@@ -69,7 +69,7 @@ Material:
     - _EnableExternalAlpha: 0
     - _OutlineEnabled: 1
     - _OutlineSize: 1
-    - _Outline_Thickness: 3
+    - _Outline_Thickness: 10
     - _ZWrite: 0
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}

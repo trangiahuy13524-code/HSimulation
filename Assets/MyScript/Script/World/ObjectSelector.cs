@@ -35,14 +35,14 @@ public class ObjectSelector: MonoBehaviour
     {
         if (selectedObject != null)
         {
-            selectedObject.SetSelected(false, 2);
+            selectedObject.SetSelectedThreshold(false, 2);
             //if (selectedPawn != null)
             //{
             //    selectedPawn.StopControlPawn();
             //}
         }
         selectedObject = worldObject;
-        selectedObject.SetSelected(true, 2);
+        selectedObject.SetSelectedThreshold(true, 2);
         selectedPawn = selectedObject as Pawn;
         ShowAbilities(selectedObject);
         deselectIcon.SetActive(true);
@@ -53,7 +53,15 @@ public class ObjectSelector: MonoBehaviour
         // Clear old UI
         RemoveGridAbilities();
 
-        foreach (DataAbility ability in @object.abilities)
+        foreach (DataAbility ability in @object.fixedAbilities)
+        {
+            AbilityIconUI icon =
+                Instantiate(abilityIconPrefab, abilityGrid);
+
+            icon.Setup(ability, @object);
+        }
+
+        foreach (DataAbility ability in @object.dynamicAbilities)
         {
             AbilityIconUI icon =
                 Instantiate(abilityIconPrefab, abilityGrid);
@@ -64,7 +72,7 @@ public class ObjectSelector: MonoBehaviour
     public void DeselectObject()
     {
         if (deselectIcon != null) deselectIcon.SetActive(false);
-        if (selectedObject != null) selectedObject.SetSelected(false, 2);
+        if (selectedObject != null) selectedObject.SetSelectedThreshold(false, 2);
         selectedPawn = null;
         selectedObject = null;
         RemoveGridAbilities();

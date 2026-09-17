@@ -5,5 +5,6 @@ public class PartBase : ScriptableObject
     public Vector2 offset;
     public Vector2 childOffset;
     public float horizontalOffset;
+    public float childHorizontalOffset;
     public Vector2 scale = Vector2.one;
 }

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7daa3a25bf8264047b2f5526d3b7534a, type: 3}
+  m_Name: hair wildbun
+  m_EditorClassIdentifier: Assembly-CSharp::PartBioSprite
+  offset: {x: 0, y: 0}
+  childOffset: {x: 0, y: 0}
+  horizontalOffset: 0
+  scale: {x: 0.6, y: 0.6}
+  bodyPartShape: {fileID: 0}
+  eastSprite: {fileID: 21300000, guid: 2c0f746eb469ab545b4b3976fc3a0d64, type: 3}
+  northSprite: {fileID: 21300000, guid: 1d866a6be0e8a7f469a3e64ec549209a, type: 3}
+  southSprite: {fileID: 21300000, guid: 3d17aee3d797a9446a657416cbfa34e5, type: 3}
+  attireOffset: {x: 0, y: 0}
+  bodySex: 1
+  hybridable: 0
