@@ -5,60 +5,34 @@ using UnityEngine;
 public partial class Pawn
 {
     [Header("Pawn Genetics")]
-    [SerializeField] bool initialized = false;
+    [SerializeField] bool initialized;
     [SerializeField] GenomeRT genome;
+
     public override Sprite IconSprite => genome?.source?.raceIcon;
 
     public void InitializePawn(DataGenetics geneticData)
     {
         if (initialized) return;
 
-        //-----------------------------------
-        // 1. Create Runtime Genome
-        //-----------------------------------
-        genome = new GenomeRT(geneticData);
-
-        //-----------------------------------
-        // 2. Generate Appearance
-        //-----------------------------------
-        SetBodySprite(genome.currentBody, genome.currentHead, genome.currentHair);
-        
-
-        //-----------------------------------
-        // 3. Skills (CORRECT PLACE)
-        //-----------------------------------
-        pawnSkills = geneticData.pawnSkills
-        .ToDictionary(skill => skill, skill => (byte)0);
-
-
-
-        initialized = true;
-        }
+        InitializeGenome(new GenomeRT(geneticData), geneticData.pawnSkills);
+    }
 
     public void InitializePawn(GenomeRT mother, GenomeRT father)
     {
         if (initialized) return;
 
-        //-----------------------------------
-        // 1. Create Runtime Genome
-        //-----------------------------------
-        genome = new GenomeRT(mother, father);
+        InitializeGenome(new GenomeRT(mother, father), mother.source.pawnSkills);
+    }
 
-        //-----------------------------------
-        // 2. Generate Appearance
-        //-----------------------------------
+    private void InitializeGenome(GenomeRT runtimeGenome, IEnumerable<DataSkill> skills)
+    {
+        genome = runtimeGenome;
         SetBodySprite(genome.currentBody, genome.currentHead, genome.currentHair);
-
-        //-----------------------------------
-        // 3. Skills (CORRECT PLACE)
-        //-----------------------------------
-        pawnSkills = mother.source.pawnSkills.ToDictionary(skill => skill, skill => (byte)0);
+        pawnSkills = skills.ToDictionary(skill => skill, skill => (byte)0);
         initialized = true;
     }
 
-    
-
-    void SetBodySprite(PartBioSprite bodySprite, PartBioSprite headSprite = null, PartBioSprite hairSprite = null)
+    private void SetBodySprite(PartBioSprite bodySprite, PartBioSprite headSprite = null, PartBioSprite hairSprite = null)
     {
         bodyData.SetSpriteData(bodySprite);
         headData.SetSpriteData(headSprite);

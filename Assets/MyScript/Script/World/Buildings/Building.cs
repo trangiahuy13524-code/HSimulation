@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Building : WorldObjectStatic
 {
+    [Header("Building Info")]
     [SerializeField] protected Transform midPoint;
     [SerializeField] protected BuildingSpriteRender render;
     public Direction direction;

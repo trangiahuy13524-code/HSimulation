@@ -5,22 +5,17 @@ public partial class Pawn
 {
     [Header("Attire")]
     [SerializeField] SpriteAttire attirePrefab;
-    Dictionary<BodyTag, SpriteAttire> attireSprites = new();
+    private readonly Dictionary<BodyTag, SpriteAttire> attireSprites = new();
 
     public bool Wear(Item item)
     {
         if (item == null) return false;
         DataAttire attireData = item.itemData as DataAttire;
 
-        if (Wear(attireData, item.itemClass))
-        {
-            item.Despawn();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        if (!Wear(attireData, item.itemClass)) return false;
+
+        item.Despawn();
+        return true;
     }
 
     public bool Wear(DataAttire attireData, ItemClass itemClass, bool debug = false)
@@ -37,48 +32,45 @@ public partial class Pawn
 
     public SpriteAttire GetAttireSprite(BodyTag bodyTag)
     {
-        if (attireSprites.ContainsKey(bodyTag))
-        {
-            return attireSprites[bodyTag];
-        }
-        return null;
+        attireSprites.TryGetValue(bodyTag, out SpriteAttire attireSprite);
+        return attireSprite;
     }
 
     public bool Undress(BodyTag bodyTag)
     {
-        if (!attireSprites.ContainsKey(bodyTag) || !attireSprites[bodyTag])
+        if (!attireSprites.TryGetValue(bodyTag, out SpriteAttire attireSprite) || !attireSprite)
         {
             return false;
         }
-        SpriteAttire attireSprite = attireSprites[bodyTag];
-        if (attireSprite != null)
+
+        attireSprites.Remove(bodyTag);
+        if (!attireSprite.debug)
         {
-            attireSprites.Remove(bodyTag);
-            if (!attireSprite.debug) world.CreateItem(currentGridPos, attireSprite.attireData, attireSprite.itemClass, 1, null);
-            Destroy(attireSprite.gameObject);
-            return true;
+            world.CreateItem(currentGridPos, attireSprite.attireData, attireSprite.itemClass, 1, null);
         }
-        return false;
+
+        Destroy(attireSprite.gameObject);
+        return true;
     }
 
     void ChangeAttireDirection(Direction dir)
     {
-        foreach (var attire in attireSprites)
+        foreach (SpriteAttire attire in attireSprites.Values)
         {
-            if (attire.Value)
+            if (attire)
             {
-                attire.Value.SetDirection(dir);
+                attire.SetDirection(dir);
             }
         }
     }
 
     void UpdateAttireLayer()
     {
-        foreach (var attire in attireSprites)
+        foreach (SpriteAttire attire in attireSprites.Values)
         {
-            if (attire.Value)
+            if (attire)
             {
-                attire.Value.UpdateLayer();
+                attire.UpdateLayer();
             }
         }
     }
@@ -89,9 +81,9 @@ public partial class Pawn
         Transform parent = bodyTag switch
         {
             BodyTag.OffBody => transform,
-            BodyTag.Head => headData?.spriteTransform.transform,
-            BodyTag.Torso => bodyData.spriteTransform.transform,
-            BodyTag.Legs => bodyData.spriteTransform.transform,
+            BodyTag.Head => headData?.spriteTransform,
+            BodyTag.Torso => bodyData.spriteTransform,
+            BodyTag.Legs => bodyData.spriteTransform,
             _ => null
         };
         PartBioSprite parentPart = bodyTag switch

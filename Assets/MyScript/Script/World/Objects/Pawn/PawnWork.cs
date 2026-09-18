@@ -1,54 +1,48 @@
 using Cysharp.Threading.Tasks;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
 public partial class Pawn
 {
-    [Header("Pawn Work")]
-    Dictionary<DataSkill, byte> pawnSkills = new();
-    [SerializeField] ProgressBar progressBarPrefab;
-    ProgressBar progressBarInstance;
+    private const float WORK_PROGRESS_PER_SECOND = 20f;
+    private const float PROGRESS_BAR_VERTICAL_OFFSET = 0.5f;
 
+    [Header("Pawn Work")]
+    private Dictionary<DataSkill, byte> pawnSkills = new();
+    [SerializeField] ProgressBar progressBarPrefab;
+    private ProgressBar progressBarInstance;
+    private bool reachDestination;
+    private bool destinationInvalid;
+    private JobBase currentJob;
+    private CancellationTokenSource jobCTS;
 
     public bool QualifyForSkills(IEnumerable<SkillRequirement> requiredSkills)
     {
-        foreach (var required in requiredSkills)
+        foreach (SkillRequirement required in requiredSkills)
         {
             if (!pawnSkills.TryGetValue(required.skillRef, out byte level))
+            {
                 return false;
+            }
 
             if (level < required.level)
+            {
                 return false;
+            }
         }
-
         return true;
     }
 
-    bool reachDestination = false;
-    bool destinationInvalid = false;
-    JobBase currentJob;
-
     public async UniTask<bool> TryFindJob(CancellationToken token)
     {
-        if (currentJob != null)
-        {
-            return false;
-        }
+        if (currentJob != null) return false;
 
         JobBase job = await jobManager.GetJob(this, token);
+        if (job == null) return false;
 
-
-        if (job != null)
-        {
-            currentJob = job;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        currentJob = job;
+        return true;
     }
 
     public void RemoveJob()
@@ -57,63 +51,41 @@ public partial class Pawn
         jobManager.RemoveJob(currentJob);
         currentJob = null;
     }
+
     public void ReturnJob()
     {
-        if (currentJob == null)
-            return;
+        if (currentJob == null) return;
+
         currentState = PawnState.Idle;
         jobManager.ReturnJob(currentJob, this);
-
         currentJob = null;
     }
 
-    bool IsCurrentJobStillValid()
+    private bool IsCurrentJobStillValid()
     {
-        if (currentJob != null)
-        {
-            if (currentJob.removed)
-            {
-                RemoveJob();
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        else
-        {
-            return true;
-        }
+        if (currentJob == null || !currentJob.removed) return true;
+
+        RemoveJob();
+        return false;
     }
 
-    CancellationTokenSource jobCTS;
-    public async UniTask<ActionResult> MoveTo(
-    Vector2Int targetPos,
-    CancellationToken token)
+    public async UniTask<ActionResult> MoveTo(Vector2Int targetPos, CancellationToken token)
     {
-        ActionResult result = ActionResult.Success;
         reachDestination = false;
         destinationInvalid = false;
         await MakePath(targetPos, PawnManager.Instance.GetWTS());
 
         while (!reachDestination)
         {
-
-            if (currentJob == null || currentJob.removed)
-                return ActionResult.Cancelled;
-
+            if (currentJob == null || currentJob.removed) return ActionResult.Cancelled;
             await UniTask.Yield(token);
         }
 
-        if (destinationInvalid)
-            return ActionResult.Cancelled;
-
-        return result;
+        return destinationInvalid ? ActionResult.Cancelled : ActionResult.Success;
     }
+
     public async UniTask<(ActionResult, int)> MoveToAndPickUp(Item item, int amount, CancellationToken token)
     {
-        
         reachDestination = false;
         destinationInvalid = false;
 
@@ -124,7 +96,6 @@ public partial class Pawn
         await UniTask.Yield(token);
         while (!reachDestination)
         {
-
             if (currentJob == null || currentJob.removed)
             {
                 item.reservingObject = null;
@@ -135,7 +106,6 @@ public partial class Pawn
             {
                 return (ActionResult.Success, 0);
             }
-
 
             await UniTask.Yield(token);
         }
@@ -161,64 +131,15 @@ public partial class Pawn
 
         takenAmount = HoldItem(item, takenAmount);
         await UniTask.Yield(token);
-
-
         return (ActionResult.Success, takenAmount);
     }
-
-    // public async UniTask<(ActionResult, List<Item>)> TryDrop(
-    // ItemData item,
-    // ItemClass itemClass,
-    // int amount,
-    // CancellationToken token
-    // )
-    // {
-    //     int remaining = amount;
-    //     List<Item> droppedItems = null;
-
-    //     while (remaining > 0)
-    //     {
-    //         token.ThrowIfCancellationRequested();
-
-    //         // move to drop location
-    //         //ActionResult moveResult =
-    //         //    await MoveTo(targetPos, token);
-
-    //         //if (moveResult != ActionResult.Success)
-    //         //    return (moveResult, null);
-
-    //         // try dropping
-    //         (remaining, droppedItems) = DropItemInventory(
-    //             item,
-    //             itemClass,
-    //             remaining,
-    //             currentGridPos + direction());
-
-    //         // nothing dropped this loop
-    //         if (remaining == amount)
-    //             return (ActionResult.Cancelled, droppedItems);
-
-    //         // update original amount for next loop check
-    //         amount = remaining;
-
-    //         // optional small delay
-    //         await UniTask.Yield(token);
-    //     }
-
-    //     return (ActionResult.Success, droppedItems);
-    // }
 
     public async UniTask<ActionResult> DoProgressWork(
     Direction workDirection,
     CancellationToken token)
     {
         ChangeDirection(workDirection);
-
-        progressBarInstance =
-            Instantiate(progressBarPrefab,
-            WorldCanvasUI.Instance.transform);
-
-        progressBarInstance.Setup(transform, 0.5f);
+        CreateProgressBar();
 
         try
         {
@@ -228,19 +149,15 @@ public partial class Pawn
             {
                 token.ThrowIfCancellationRequested();
 
-                currentJob.currentProgress += Time.deltaTime * 20;
-
-                progressBarInstance.SetProgress(
-                    currentJob.currentProgress /
-                    currentJob.totalProgress);
+                currentJob.currentProgress += Time.deltaTime * WORK_PROGRESS_PER_SECOND;
+                progressBarInstance.SetProgress(currentJob.currentProgress / currentJob.totalProgress);
 
                 await UniTask.Yield(token);
             }
         }
         finally
         {
-            if (progressBarInstance != null)
-                Destroy(progressBarInstance.gameObject);
+            DestroyProgressBar();
         }
 
         if (currentJob == null || currentJob.removed)
@@ -255,16 +172,8 @@ public partial class Pawn
     CancellationToken token)
     {
         ChangeDirection(workDirection);
-
-        Debug.Log(researchManager);
-
         var state = researchManager.GetState(researchData);
-
-        progressBarInstance =
-            Instantiate(progressBarPrefab,
-            WorldCanvasUI.Instance.transform);
-
-        progressBarInstance.Setup(transform, 0.5f);
+        CreateProgressBar();
 
         try
         {
@@ -274,8 +183,7 @@ public partial class Pawn
             {
                 token.ThrowIfCancellationRequested();
 
-                researchManager.AddProgress(researchData, Time.deltaTime * 20);
-
+                researchManager.AddProgress(researchData, Time.deltaTime * WORK_PROGRESS_PER_SECOND);
                 progressBarInstance.SetProgress(state.progress / researchData.totalProgress);
 
                 await UniTask.Yield(token);
@@ -283,13 +191,26 @@ public partial class Pawn
         }
         finally
         {
-            if (progressBarInstance != null)
-                Destroy(progressBarInstance.gameObject);
+            DestroyProgressBar();
         }
 
         if (currentJob == null || currentJob.removed)
             return ActionResult.Cancelled;
 
         return ActionResult.Success;
+    }
+
+    private void CreateProgressBar()
+    {
+        progressBarInstance = Instantiate(progressBarPrefab, WorldCanvasUI.Instance.transform);
+        progressBarInstance.Setup(transform, PROGRESS_BAR_VERTICAL_OFFSET);
+    }
+
+    private void DestroyProgressBar()
+    {
+        if (progressBarInstance != null)
+        {
+            Destroy(progressBarInstance.gameObject);
+        }
     }
 }

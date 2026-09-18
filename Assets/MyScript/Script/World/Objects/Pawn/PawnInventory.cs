@@ -1,84 +1,70 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public partial class Pawn
 {
     [Header("Pawn Inventory")]
-    Dictionary<ItemKey, int> inventory = new Dictionary<ItemKey, int>();
+    private readonly Dictionary<ItemKey, int> inventory = new();
     [SerializeField] Item holdedItem;
     [SerializeField] Transform handTransform;
 
     public Item HoldedItem => holdedItem;
-    public void TakeItemInventory(
-    Item item,
-    int amount)
+
+    public void TakeItemInventory(Item item, int amount)
     {
         ItemKey key = new(item.itemData, item.itemClass);
-
-        if (inventory.ContainsKey(key))
-        {
-            inventory[key] += amount;
-        }
-        else
-        {
-            inventory[key] = amount;
-        }
-
+        inventory.TryGetValue(key, out int currentAmount);
+        inventory[key] = currentAmount + amount;
         item.ReduceStack(amount);
     }
 
-    public int GetItemCountInventory(
-    DataItem item,
-    ItemClass itemClass)
+    public int GetItemCountInventory(DataItem item, ItemClass itemClass)
     {
         ItemKey key = new(item, itemClass);
-
-        if (inventory.TryGetValue(key, out int count))
-        {
-            return count;
-        }
-
-        return 0;
+        return inventory.TryGetValue(key, out int count) ? count : 0;
     }
 
     public (int, List<Item>) DropItemInventory(
     DataItem itemData,
     ItemClass itemClass,
     int amount,
-    Vector2Int? dropPos, WorldObject reservingOb)
+        Vector2Int? dropPos, WorldObject reservingOb)
     {
         ItemKey key = new(itemData, itemClass);
-        if (!inventory.ContainsKey(key))
-            return (amount, null);
+        if (!inventory.TryGetValue(key, out int storedAmount)) return (amount, null);
 
-        int droppedAmount =
-            Mathf.Min(inventory[key], amount);
+        int droppedAmount = Mathf.Min(storedAmount, amount);
 
-        inventory[key] -= droppedAmount;
+        storedAmount -= droppedAmount;
 
-        if (inventory[key] <= 0)
+        if (storedAmount <= 0)
         {
             inventory.Remove(key);
         }
+        else
+        {
+            inventory[key] = storedAmount;
+        }
 
-        var items = world.CreateItem(dropPos ?? currentGridPos, itemData, itemClass, droppedAmount, reservingOb);
-
-        // return remaining amount not dropped
+        List<Item> items = world.CreateItem(dropPos ?? currentGridPos, itemData, itemClass, droppedAmount, reservingOb);
         return (amount - droppedAmount, items);
     }
 
     public void RemoveItemsInventory(List<ItemDataContainer> requireItemDatas)
     {
-        foreach (var req in requireItemDatas)
+        foreach (ItemDataContainer requirement in requireItemDatas)
         {
-            ItemKey key = new(req.itemData, req.itemClass);
-            if (inventory.ContainsKey(key))
+            ItemKey key = new(requirement.itemData, requirement.itemClass);
+            if (inventory.TryGetValue(key, out int storedAmount))
             {
-                inventory[key] -= req.amount;
-                if (inventory[key] <= 0)
+                storedAmount -= requirement.amount;
+                if (storedAmount <= 0)
                 {
                     inventory.Remove(key);
+                }
+                else
+                {
+                    inventory[key] = storedAmount;
                 }
             }
         }
@@ -86,12 +72,13 @@ public partial class Pawn
 
     public void DropAllItemsInventory(Vector2Int? dropPos, WorldObject reservingOb)
     {
-        foreach (var kvp in inventory)
+        foreach (KeyValuePair<ItemKey, int> itemEntry in inventory)
         {
-            ItemKey key = kvp.Key;
-            int amount = kvp.Value;
+            ItemKey key = itemEntry.Key;
+            int amount = itemEntry.Value;
             world.CreateItem(dropPos ?? currentGridPos, key.itemData, key.itemClass, amount, reservingOb);
         }
+
         inventory.Clear();
     }
 
@@ -104,26 +91,21 @@ public partial class Pawn
             if (holdedItem.itemData == item.itemData && holdedItem.itemClass == item.itemClass)
             {
                 holdedItem.SetLayer(WorldData.Instance.topGridLayer + 1);
-                int takenAmount = amount;
                 if (amount >= item.StackCount)
                 {
-                    takenAmount = item.StackCount;
+                    int takenAmount = item.StackCount;
                     holdedItem.StackCount += takenAmount;
                     item.Despawn();
                     return takenAmount;
                 }
-                else
-                {
-                    holdedItem.StackCount += takenAmount;
-                    item.ReduceStack(takenAmount);
-                    item.reservingObject = null;
-                    return takenAmount;
-                }
+
+                holdedItem.StackCount += amount;
+                item.ReduceStack(amount);
+                item.reservingObject = null;
+                return amount;
             }
-            else
-            {
-                return 0;
-            }
+
+            return 0;
         }
 
         holdedItem = item;
@@ -139,9 +121,9 @@ public partial class Pawn
     public List<Item> DropHoldedItem(WorldObject reservingOb)
     {
         if (holdedItem == null)
-            return new List<Item>{};
+            return new List<Item>();
 
-        List<Item> items;  
+        List<Item> items;
         if (holdedItem.itemData.IsStackable)
         {
             items = world.CreateItem(currentGridPos, holdedItem.itemData, holdedItem.itemClass, holdedItem.StackCount, reservingOb);
@@ -150,7 +132,6 @@ public partial class Pawn
         }
         else
         {
-            
             holdedItem.transform.SetParent(null);
             holdedItem.CurrentGridPosition = currentGridPos;
             holdedItem.reservingObject = reservingOb;
@@ -160,8 +141,8 @@ public partial class Pawn
                 holdedItem
             };
             holdedItem = null;
-            
         }
+
         return items;
     }
 }

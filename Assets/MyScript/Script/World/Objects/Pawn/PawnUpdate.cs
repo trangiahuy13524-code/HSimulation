@@ -1,29 +1,32 @@
 using Cysharp.Threading.Tasks;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public partial class Pawn : IManagedUpdate
 {
+    private const int DISPLAY_NAME_SORTING_ORDER = 2000;
+
     [Header("Pawn Update")]
     [SerializeField] float idleTime = 2f;
-    [SerializeField] float currentIdleTime = 0f;
+    [SerializeField] float currentIdleTime;
     [SerializeField] PawnState currentState = PawnState.Idle;
+
+    private CancellationTokenSource thinkCTS;
+    private bool thinking;
+
     public PawnState PawnState => currentState;
     public bool onDuty => currentState == PawnState.Working || currentState == PawnState.Controlled;
+
     protected override void Start()
     {
-        displayTextName.sortingOrder = 2000;
+        displayTextName.sortingOrder = DISPLAY_NAME_SORTING_ORDER;
         transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
         paths = new Queue<Vector2Int>();
         oldGridPos = currentGridPos;
         oldDestination = currentGridPos;
         world.ModifyPawnCountGrid(currentGridPos, true);
         UpdateLayer();
-        //ObjectName = "Noob";
-        //currentJob = null;
         PawnManager.Register(this);
     }
 
@@ -31,54 +34,42 @@ public partial class Pawn : IManagedUpdate
     {
         TickUpdate(worldTS);
     }
-    void TickUpdate(WorldThreadSafe worldTS, byte speed = 1)
+
+    private void TickUpdate(WorldThreadSafe worldTS, byte speed = 1)
     {
-        if (thinking)
-            return;
+        if (thinking) return;
 
         bool donePathing = Move(speed, worldTS);
+        if (currentState == PawnState.Controlled || !donePathing) return;
 
-        if (currentState == PawnState.Controlled)
-            return;
-
-        if (!donePathing)
-            return;
-
-        
-
-        // reached movement destination
         if (currentState == PawnState.Working)
         {
             reachDestination = true;
             return;
         }
 
-        // idle timer
         if (currentIdleTime < idleTime)
         {
             currentIdleTime += Time.deltaTime * speed;
             return;
         }
 
-        // async think
-        if (thinkCTS == null)
-        {
-            thinkCTS = new CancellationTokenSource();
+        if (thinkCTS != null) return;
 
-            ThinkAsync(worldTS, thinkCTS.Token).Forget();
-        }
+        thinkCTS = new CancellationTokenSource();
+        ThinkAsync(worldTS, thinkCTS.Token).Forget();
     }
 
     public static bool aPawnThoughtThisFrame = false;
-    CancellationTokenSource thinkCTS;
-    bool thinking = false;
+
     public void CancelThink()
     {
         thinkCTS?.Cancel();
         thinkCTS = null;
         thinking = false;
     }
-    async UniTaskVoid ThinkAsync(WorldThreadSafe worldTS, CancellationToken token)
+
+    private async UniTaskVoid ThinkAsync(WorldThreadSafe worldTS, CancellationToken token)
     {
         if (aPawnThoughtThisFrame)
         {
@@ -97,9 +88,6 @@ public partial class Pawn : IManagedUpdate
             currentState = PawnState.Working;
 
             jobCTS = new CancellationTokenSource();
-
-            // IMPORTANT:
-            // await job
             currentJob.DoJob(this, jobCTS.Token).Forget();
         }
         else
@@ -110,12 +98,6 @@ public partial class Pawn : IManagedUpdate
         thinkCTS = null;
         thinking = false;
     }
-
-    //public override void Despawn()
-    //{
-        
-    //    base.Despawn();
-    //}
 
     protected override void OnDestroy()
     {
@@ -130,37 +112,6 @@ public partial class Pawn : IManagedUpdate
         if (progressBarInstance != null) Destroy(progressBarInstance.gameObject);
         base.OnDestroy();
     }
-
-    //public override void SetSelected(bool value, byte strength)
-    //{
-    //    base.SetSelected(value, strength);
-    //    SetSelectThreshold(value, strength);
-    //}
-
-    //public byte selectThreshHold = 0;
-    //public void SetSelectThreshold(bool value, byte strength)
-    //{
-    //    if (value)
-    //    {
-    //        selectThreshHold += strength;
-    //    }
-    //    else
-    //    {
-    //        selectThreshHold -= strength;
-    //    }
-    //    if (selectThreshHold == 0)
-    //    {
-    //        SetPawnMaterial(worldData.defaultMat);
-    //    }
-    //    else if (selectThreshHold == 1)
-    //    {
-    //        SetPawnMaterial(worldData.hoverMat);
-    //    }
-    //    else
-    //    {
-    //        SetPawnMaterial(worldData.selectedMat);
-    //    }
-    //}
 
     public void SetPawnMaterial(Material mat)
     {

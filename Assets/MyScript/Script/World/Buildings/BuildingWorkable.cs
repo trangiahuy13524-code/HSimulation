@@ -7,6 +7,7 @@ using UnityEngine;
 
 public abstract class BuildingWorkable : Building
 {
+    [Header("Work Positions")]
     [SerializeField] Transform baseWorkPosTf;
     [SerializeField] List<Transform> workPosTf;
     protected List<WorkPosition> workPos = new();

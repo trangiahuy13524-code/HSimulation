@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class BuildingCraft : BuildingWorkable
 {
+    [Header("Craft Jobs")]
     public List<DataJobCraft> jobs;
 
     // =====================================================

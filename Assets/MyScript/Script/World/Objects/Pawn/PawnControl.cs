@@ -1,8 +1,5 @@
-using UnityEngine;
-
 public partial class Pawn
 {
-
     public void ControlPawn()
     {
         if (currentState == PawnState.Controlled) return;
@@ -20,6 +17,5 @@ public partial class Pawn
         CancelPathfinding();
         currentState = PawnState.Idle;
         PathReset();
-
     }
 }

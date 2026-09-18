@@ -1804,7 +1804,7 @@ SpriteRenderer:
   m_Size: {x: 6.3, y: 7}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &692508757
 Transform:
@@ -2812,7 +2812,7 @@ SpriteRenderer:
   m_Size: {x: 9, y: 9}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1010494665
 GameObject:
@@ -4554,7 +4554,7 @@ MonoBehaviour:
   debugItemClass: 0
   debugItemAmount: 31
   spawnCount: 1
-  building: {fileID: 11400000, guid: fe95614252d5ef448bfeb3809599d0bd, type: 2}
+  building: {fileID: 11400000, guid: f9f3561038d1c8d4d997c928bda94bfb, type: 2}
   buildingDirection: 1
   jobToCreate: {fileID: 11400000, guid: aa725ef6ab692684b9c5f51fb9b1f0e4, type: 2}
   debugAttire: {fileID: 11400000, guid: 04daa5188cb5d55449701551edb856ee, type: 2}

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public abstract class DataAbility : DataMain
 {
     [SerializeField] protected Sprite icon;
+    public bool isDebugAbility = false;
 
     public abstract void Execute(WorldObject caster, Image image = null);
 
