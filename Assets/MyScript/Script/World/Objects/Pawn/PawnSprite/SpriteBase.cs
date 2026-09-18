@@ -50,10 +50,12 @@ public abstract class SpriteBase : MonoBehaviour
 
         if (spriteData)
         {
-            baseOffset += spriteData.offset;
-            baseHorizontalOffset += spriteData.horizontalOffset;
             ApplyScale();
+            baseOffset += spriteData.offset * transform.localScale / transform.lossyScale;
+            baseHorizontalOffset += spriteData.horizontalOffset * transform.localScale.x / transform.lossyScale.x;
         }
+
+        
 
         transform.localPosition = baseOffset;
     }
@@ -63,7 +65,7 @@ public abstract class SpriteBase : MonoBehaviour
         transform.localScale = spriteData.scale;
         if (!InheritParentScale)
         {
-            transform.localScale = spriteData.scale * spriteData.scale / transform.lossyScale.x;
+            transform.localScale = spriteData.scale * spriteData.scale / transform.lossyScale;
         }
     }
 

@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: c2132ddd8d0f2454fa395202f3f68baa
+guid: 216e7baf3f0d8f649b1ce34f8a39fd3a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 329457125313477989
-    second: Body-FemaleBB-south_0
+      213: -7102360152011564186
+    second: Body-Male-1-east_0
+  - first:
+      213: 6508961876702281599
+    second: Body-Male-1-east_1
+  - first:
+      213: 6184071507301470594
+    second: Body-Male-1-east_2
+  - first:
+      213: 8324533890357595123
+    second: Body-Male-1-east_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +122,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Body-FemaleBB-south_0
+      name: Body-Male-1-east_0
       rect:
         serializedVersion: 2
-        x: 219
-        y: 88
-        width: 462
-        height: 724
+        x: 97
+        y: 569
+        width: 17
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +137,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 56df70b8287729400800000000000000
-      internalID: 329457125313477989
+      spriteID: 66b167852195f6d90800000000000000
+      internalID: -7102360152011564186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Body-Male-1-east_1
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 551
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7f3665475a745a50800000000000000
+      internalID: 6508961876702281599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Body-Male-1-east_2
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 52
+        width: 474
+        height: 543
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2819152754c32d550800000000000000
+      internalID: 6184071507301470594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Body-Male-1-east_3
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 495
+        width: 34
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fb077fc77fa68370800000000000000
+      internalID: 8324533890357595123
       vertices: []
       indices: 
       edges: []
@@ -148,7 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Body-FemaleBB-south_0: 329457125313477989
+      Body-Male-1-east_0: -7102360152011564186
+      Body-Male-1-east_1: 6508961876702281599
+      Body-Male-1-east_2: 6184071507301470594
+      Body-Male-1-east_3: 8324533890357595123
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c2132ddd8d0f2454fa395202f3f68baa
+guid: 765f9a2a8dc6e0b418da84257556ce0a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 329457125313477989
-    second: Body-FemaleBB-south_0
+      213: -7817215797754870690
+    second: Human-Icon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Body-FemaleBB-south_0
+      name: Human-Icon_0
       rect:
         serializedVersion: 2
-        x: 219
-        y: 88
-        width: 462
-        height: 724
+        x: 18
+        y: 0
+        width: 300
+        height: 337
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 56df70b8287729400800000000000000
-      internalID: 329457125313477989
+      spriteID: e54cf3a36aba38390800000000000000
+      internalID: -7817215797754870690
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Body-FemaleBB-south_0: 329457125313477989
+      Human-Icon_0: -7817215797754870690
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

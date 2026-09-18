@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c2132ddd8d0f2454fa395202f3f68baa
+guid: fde2fefa46b264d4e8b7e47f30ce52bf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 329457125313477989
-    second: Body-FemaleBB-south_0
+      213: -3005699497833503964
+    second: onControl_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 256
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -109,17 +109,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Body-FemaleBB-south_0
+      name: onControl_0
       rect:
         serializedVersion: 2
-        x: 219
-        y: 88
-        width: 462
-        height: 724
+        x: 0
+        y: 0
+        width: 512
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 56df70b8287729400800000000000000
-      internalID: 329457125313477989
+      spriteID: 423601a4b3c9946d0800000000000000
+      internalID: -3005699497833503964
       vertices: []
       indices: 
       edges: []
@@ -148,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Body-FemaleBB-south_0: 329457125313477989
+      onControl_0: -3005699497833503964
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

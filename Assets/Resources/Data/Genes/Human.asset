@@ -14,22 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GeneticData
   thingNameKey: ge_human
   thingDescriptionKey: ge_humanDesc
-  raceIcon: {fileID: 21300000, guid: 19ac6c749eb986b4992b939702037666, type: 3}
+  raceIcon: {fileID: 21300000, guid: 765f9a2a8dc6e0b418da84257556ce0a, type: 3}
   reproductionType: 1
   femaleBirthChance: 0.5
   birthType: 1
   bodyData:
   - {fileID: 11400000, guid: d4f53e22bae8bed4a981aeeea78f8b3b, type: 2}
   - {fileID: 11400000, guid: bf8251a377a157645bd08ef6893964cf, type: 2}
-  - {fileID: 11400000, guid: 8a141ca1f5244b44a98b69f832338599, type: 2}
   - {fileID: 11400000, guid: 4c645d9511556c3449525153281fa2cc, type: 2}
   headData:
   - {fileID: 11400000, guid: f5d65dc6d88e84c4183d32ea65063d99, type: 2}
-  - {fileID: 11400000, guid: 9426bb21713c6fb428a62ff38c1d4ddf, type: 2}
-  - {fileID: 11400000, guid: 9a1e980d204ccb84097587bd29e6b0f3, type: 2}
   - {fileID: 11400000, guid: b0bb5dba72e579c459de280e2d52c372, type: 2}
-  - {fileID: 11400000, guid: 1ed86b0a27265a341ace22a6c7d01e51, type: 2}
-  - {fileID: 11400000, guid: aa6f1ea61f6446a41a93e4cf4dd24e59, type: 2}
   hairData:
   - {fileID: 11400000, guid: 891a4858f0c5dde4ab73f3146207ad88, type: 2}
   - {fileID: 11400000, guid: 8c79d3b33db29044ca2aa0bd54066906, type: 2}

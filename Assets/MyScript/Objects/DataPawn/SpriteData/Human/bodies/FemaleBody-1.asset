@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: FemaleBody-1
   m_EditorClassIdentifier: Assembly-CSharp::DirectionSpriteData
   offset: {x: 0, y: -0.44}
-  childOffset: {x: 0, y: 4.6}
+  childOffset: {x: 0, y: 3.3}
   horizontalOffset: 0
-  childHorizontalOffset: 0.9
+  childHorizontalOffset: 1.1
   scale: {x: 0.13, y: 0.13}
   bodyPartShape: {fileID: 11400000, guid: 17cf0159f8117154c8b27a7b1ab1954c, type: 2}
   eastSprite: {fileID: 21300000, guid: 05c36cda4ca83ea48b1db4db8a83365e, type: 3}
