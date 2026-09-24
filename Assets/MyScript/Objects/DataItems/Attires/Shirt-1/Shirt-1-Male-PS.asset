@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c958e9868a3074a8efe158131d57ae, type: 3}
+  m_Name: Shirt-1-Male-PS
+  m_EditorClassIdentifier: Assembly-CSharp::PartAttire
+  offset: {x: 0, y: 0}
+  scale: {x: 1, y: 1}
+  bodyPartShape: {fileID: 11400000, guid: 32dc9d24897890b4f9c1e2832eb7aac6, type: 2}
+  eastSprite: {fileID: 21300000, guid: 516da7122b0187c468b2b10d9bc6efa1, type: 3}
+  northSprite: {fileID: 21300000, guid: a88e6899a0cd82d42af01ecab88e672b, type: 3}
+  southSprite: {fileID: 21300000, guid: 881cef58770c02b4e8676ece5c112ada, type: 3}

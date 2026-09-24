@@ -104,6 +104,7 @@ public partial class Pawn
             PathReset();
         }
 
+        paths.Clear();
         ReCalculatePath(worldTS).Forget();
     }
 

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf29a21075af624bae1b8ab613f086d, type: 3}
   m_Name: Wood
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  thingNameKey: it_lgWood
-  thingDescriptionKey: it_lgWoodDesc
+  thingNameKey: it-lgWood
+  thingDescriptionKey: it-lgWoodDesc
   icon: {fileID: -8937251575758773851, guid: 12770b1347f88214aa2a2dc93c890e67, type: 3}
   isStackable: 1
   maxStack: 100

@@ -5,13 +5,11 @@ using UnityEngine;
 
 public partial class Pawn
 {
-    private const float WORK_PROGRESS_PER_SECOND = 20f;
-    private const float PROGRESS_BAR_VERTICAL_OFFSET = 0.5f;
+    
 
     [Header("Pawn Work")]
     private Dictionary<DataSkill, byte> pawnSkills = new();
-    [SerializeField] ProgressBar progressBarPrefab;
-    private ProgressBar progressBarInstance;
+    
     private bool reachDestination;
     private bool destinationInvalid;
     private JobBase currentJob;
@@ -200,17 +198,5 @@ public partial class Pawn
         return ActionResult.Success;
     }
 
-    private void CreateProgressBar()
-    {
-        progressBarInstance = Instantiate(progressBarPrefab, WorldCanvasUI.Instance.transform);
-        progressBarInstance.Setup(transform, PROGRESS_BAR_VERTICAL_OFFSET);
-    }
-
-    private void DestroyProgressBar()
-    {
-        if (progressBarInstance != null)
-        {
-            Destroy(progressBarInstance.gameObject);
-        }
-    }
+    
 }

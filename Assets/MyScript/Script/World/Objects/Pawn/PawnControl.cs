@@ -5,6 +5,7 @@ public partial class Pawn
         if (currentState == PawnState.Controlled) return;
         CancelPathfinding();
         CancelThink();
+        CancelWear(true);
         ChangeDirection(Direction.South);
         ReturnJob();
         currentState = PawnState.Controlled;
@@ -15,6 +16,7 @@ public partial class Pawn
     {
         if (currentState != PawnState.Controlled) return;
         CancelPathfinding();
+        CancelWear(true);
         currentState = PawnState.Idle;
         PathReset();
     }

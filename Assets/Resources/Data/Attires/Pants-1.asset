@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0721308baea4d4a9f8b7de8a9731ca, type: 3}
+  m_Name: Pants-1
+  m_EditorClassIdentifier: Assembly-CSharp::DataAttire
+  thingNameKey: at-pants-1
+  thingDescriptionKey: at-pants-1-desc
+  icon: {fileID: 21300000, guid: 2b1c2d56e04b56341b7fb4e253116822, type: 3}
+  isStackable: 0
+  maxStack: 1
+  itemSprite: {fileID: 11400000, guid: 14e4955c9a3e18649969026c86f68248, type: 2}
+  bodyTag: 1
+  wearingTime: 10
+  attireParts:
+  - {fileID: 11400000, guid: 1de3e87f33637294fa647271dea52325, type: 2}
+  - {fileID: 11400000, guid: dff9b44ca7883b6489b24c573aaa9915, type: 2}
+  - {fileID: 11400000, guid: 7bff0b5e50cfd6346988bba4425ecac6, type: 2}

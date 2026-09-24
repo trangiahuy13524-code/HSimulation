@@ -1,4 +1,7 @@
+using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public partial class Pawn
@@ -6,51 +9,280 @@ public partial class Pawn
     [Header("Attire")]
     [SerializeField] SpriteAttire attirePrefab;
     private readonly Dictionary<BodyTag, SpriteAttire> attireSprites = new();
-
-    public bool Wear(Item item)
+    CancellationTokenSource wearCancellation;
+    public async UniTask MoveToAndWear(Item item)
     {
-        if (item == null) return false;
+        CancelWear();
+
         DataAttire attireData = item.itemData as DataAttire;
-
-        if (!Wear(attireData, item.itemClass)) return false;
-
-        item.Despawn();
-        return true;
-    }
-
-    public bool Wear(DataAttire attireData, ItemClass itemClass, bool debug = false)
-    {
-        if (attireData == null) return false;
-        if (attireData.attirePart.bodyPartShape != null && genome.currentBody.bodyPartShape != attireData.attirePart.bodyPartShape)
+        if (attireData == null)
         {
-            Debug.LogWarning($"class PawnAttire line 34: Failed to wear item {attireData.thingName} due to body part shape mismatch");
+            Debug.LogWarning($"Item {item.ThingName} is not an attire.");
+            return;
+        }
+
+        wearCancellation = new CancellationTokenSource();
+
+        reachDestination = false;
+        destinationInvalid = false;
+        item.reservingObject = this;
+        await MakePathWithoutLast(item.CurrentGridPosition, PawnManager.Instance.GetWTS());
+        
+        try
+        {
+            wearCancellation.Token.ThrowIfCancellationRequested();
+
+            while (!reachDestination)
+            {
+                if (item == null)
+                {
+                    CancelWear();
+                }
+
+                await UniTask.Yield(wearCancellation.Token);
+            }
+
+            if (destinationInvalid)
+            {
+                Debug.LogWarning($"Destination for item {item.ThingName} is invalid.");
+                CancelWear();
+                wearCancellation.Token.ThrowIfCancellationRequested();
+            }
+
+            if (!attireSprites.TryGetValue(attireData.bodyTag, out SpriteAttire attireSprite) || !attireSprite)
+            {
+                Debug.LogWarning($"No attire sprite found for body tag {attireData.bodyTag}.");
+            }
+            else
+            {
+                await CreateWearProgress(item, attireSprite.attireData.wearingTime, wearCancellation.Token);
+                wearCancellation.Token.ThrowIfCancellationRequested();
+
+                attireSprites.Remove(attireData.bodyTag);
+
+                if (!attireSprite.debug)
+                {
+                    world.CreateItem(
+                        currentGridPos,
+                        attireSprite.attireData,
+                        attireSprite.itemClass,
+                        1,
+                        null
+                    );
+                }
+
+                Destroy(attireSprite.gameObject);
+            }
+
+
+            await CreateWearProgress(item, attireData.wearingTime, wearCancellation.Token);
+            wearCancellation.Token.ThrowIfCancellationRequested();
+
+            CreateAttireSprite(
+                attireData,
+                item.itemClass,
+                attireData.bodyTag,
+                false
+            );
+        }
+        finally
+        {
+            if (item)
+            {
+                item.reservingObject = null;
+            }
+            wearCancellation?.Dispose();
+            wearCancellation = null;
+        }
+    }
+    async UniTask CreateWearProgress(Item item, float wearingTime, CancellationToken token)
+    {
+        try
+        {
+            CreateProgressBar();
+            float elapsedTime = 0f;
+
+            while (elapsedTime < wearingTime)
+            {
+                if (item == null)
+                {
+                    CancelWear();
+                }
+
+                await UniTask.Yield(token);
+
+                elapsedTime += Time.deltaTime * WORK_PROGRESS_PER_SECOND;
+                progressBarInstance.SetProgress(Mathf.Clamp01(elapsedTime / wearingTime));
+            }
+        }
+        finally
+        {
+            DestroyProgressBar();
+        }
+    }
+    public void Wear(DataAttire attireData, ItemClass itemClass, bool debug = false)
+    {
+        StartWear(attireData, itemClass, debug).Forget();
+    }
+    public void Undress(BodyTag bodyTag)
+    {
+        StartUndress(bodyTag).Forget();
+    }
+    public void CancelWear(bool dispose = false)
+    {
+        wearCancellation?.Cancel();
+        if (dispose)
+        {
+            wearCancellation?.Dispose();
+            wearCancellation = null;
+        }
+    }
+    async UniTask StartWear(
+        DataAttire attireData,
+        ItemClass itemClass,
+        bool debug)
+    {
+        CancelWear();
+
+        var cts = new CancellationTokenSource();
+        wearCancellation = cts;
+
+        try
+        {
+            await WearOperation(attireData, itemClass, debug, cts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        finally
+        {
+            if (wearCancellation == cts)
+                wearCancellation = null;
+
+            cts.Dispose();
+        }
+    }
+    async UniTask StartUndress(BodyTag bodyTag)
+    {
+        CancelWear();
+
+        var cts = new CancellationTokenSource();
+        wearCancellation = cts;
+
+        try
+        {
+            await Undress(bodyTag, cts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            // Wear cancelled.
+        }
+        finally
+        {
+            if (wearCancellation == cts)
+                wearCancellation = null;
+
+            cts.Dispose();
+        }
+    }
+    async UniTask<bool> WearOperation(
+    DataAttire attireData,
+    ItemClass itemClass,
+    bool debug,
+    CancellationToken cancellationToken)
+    {
+
+        if (!attireData.HasAttirePart(genome.currentBody.bodyPartShape))
+        {
+            Debug.LogWarning(
+                $"Failed to wear {attireData.thingName} due to body part shape mismatch"
+            );
+
             return false;
         }
-        CreateAttireSprite(attireData, itemClass, attireData.bodyTag, debug);
+
+        // Cancel can also happen while undressing.
+        await Undress(attireData.bodyTag, cancellationToken);
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        await RunWearProgressAsync(attireData.wearingTime, cancellationToken);
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        CreateAttireSprite(
+            attireData,
+            itemClass,
+            attireData.bodyTag,
+            debug
+        );
+
         return true;
     }
 
-    public SpriteAttire GetAttireSprite(BodyTag bodyTag)
-    {
-        attireSprites.TryGetValue(bodyTag, out SpriteAttire attireSprite);
-        return attireSprite;
-    }
-
-    public bool Undress(BodyTag bodyTag)
+    async UniTask<bool> Undress(
+    BodyTag bodyTag,
+    CancellationToken cancellationToken = default)
     {
         if (!attireSprites.TryGetValue(bodyTag, out SpriteAttire attireSprite) || !attireSprite)
         {
             return false;
         }
 
+        await RunWearProgressAsync(
+            attireSprite.attireData.wearingTime,
+            cancellationToken
+        );
+
+        cancellationToken.ThrowIfCancellationRequested();
+
         attireSprites.Remove(bodyTag);
+
         if (!attireSprite.debug)
         {
-            world.CreateItem(currentGridPos, attireSprite.attireData, attireSprite.itemClass, 1, null);
+            world.CreateItem(
+                currentGridPos,
+                attireSprite.attireData,
+                attireSprite.itemClass,
+                1,
+                null
+            );
         }
 
         Destroy(attireSprite.gameObject);
+
         return true;
+    }
+
+    private async UniTask RunWearProgressAsync(
+        float duration,
+        CancellationToken cancellationToken)
+    {
+        ProgressBar progressBar = CreateProgressBar();
+        float elapsedTime = 0f;
+
+        try
+        {
+            while (elapsedTime < duration)
+            {
+                await UniTask.Yield(cancellationToken);
+
+                elapsedTime += Time.deltaTime * WORK_PROGRESS_PER_SECOND;
+                progressBar.SetProgress(Mathf.Clamp01(elapsedTime / duration));
+            }
+
+            cancellationToken.ThrowIfCancellationRequested();
+        }
+        finally
+        {
+            DestroyProgressBar(progressBar);
+        }
+    }
+
+    public SpriteAttire GetAttireSprite(BodyTag bodyTag)
+    {
+        attireSprites.TryGetValue(bodyTag, out SpriteAttire attireSprite);
+        return attireSprite;
     }
 
     void ChangeAttireDirection(Direction dir)

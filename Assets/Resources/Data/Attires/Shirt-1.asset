@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0721308baea4d4a9f8b7de8a9731ca, type: 3}
+  m_Name: Shirt-1
+  m_EditorClassIdentifier: Assembly-CSharp::DataAttire
+  thingNameKey: at-shirt-1
+  thingDescriptionKey: at-shirt-1-desc
+  icon: {fileID: 21300000, guid: 2b1c2d56e04b56341b7fb4e253116822, type: 3}
+  isStackable: 0
+  maxStack: 1
+  itemSprite: {fileID: 11400000, guid: fb388c68fa3b3e645a958702735efb8f, type: 2}
+  bodyTag: 2
+  wearingTime: 10
+  attireParts:
+  - {fileID: 11400000, guid: b21da0191b972e245abe31b0f3546a22, type: 2}
+  - {fileID: 11400000, guid: 47118e543d3b0d849ada1cef4e8ca7ed, type: 2}
+  - {fileID: 11400000, guid: ed22bf7e7ea17d84891ac686d935bdcd, type: 2}

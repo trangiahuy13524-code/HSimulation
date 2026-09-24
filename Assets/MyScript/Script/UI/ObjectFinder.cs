@@ -9,8 +9,6 @@ public class ObjectFinder : MonoBehaviour
     [SerializeField] ObjectSelector objectSelector;
     [SerializeField] ScreenAndTouchManager touchManager;
     [SerializeField] ObjectIconButton worldObjectIcon;
-    [SerializeField] Image image;
-    [SerializeField] TextMeshProUGUI text;
     [SerializeField] Transform objectGridPanel;
 
     Dictionary<WorldObject, ObjectIconButton> dynamicIconsFinder = new();
@@ -113,11 +111,10 @@ public class ObjectFinder : MonoBehaviour
             Debug.Log("class: ObjectFinder, void CreateIcon");
             return;
         }
-        image.sprite = @object.IconSprite;
-        text.text = @object.ThingName;
         ObjectIconButton icon = Instantiate(worldObjectIcon, objectGridPanel);
+        icon.icon.sprite = @object.IconSprite;
+        icon.text.text = @object.ThingName;
         icon.worldObject = @object;
-        Instantiate(text.gameObject, icon.transform);
         iconsFinder[@object] = icon;
         @object.SetSelectedThreshold(true, 1);
     }

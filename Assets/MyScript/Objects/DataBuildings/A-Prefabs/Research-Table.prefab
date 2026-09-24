@@ -51,6 +51,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2707dee392177d942b3a4b55e1a09d5d, type: 2}
   - {fileID: 11400000, guid: 7e265b2ce9278b04d8a42f6718e6bcb6, type: 2}
   dynamicAbilities: []
+  selectionSR: {fileID: 0}
   midPoint: {fileID: 90009266151979148}
   render: {fileID: 7981898458633342981}
   direction: 1

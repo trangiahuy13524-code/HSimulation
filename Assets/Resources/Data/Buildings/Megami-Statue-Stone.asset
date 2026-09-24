@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2fb5093d887274ab83a50ae4add912, type: 3}
   m_Name: Megami-Statue-Stone
   m_EditorClassIdentifier: Assembly-CSharp::DataBuilding
-  thingNameKey: bd_megStaStone
-  thingDescriptionKey: bd_megStaStoneDesc
+  thingNameKey: bd-megStaStone
+  thingDescriptionKey: bd-megStaStoneDesc
   building: {fileID: 9076029519526537029, guid: d691e4cd893e82a4a9fe72d0ad7ba00a, type: 3}

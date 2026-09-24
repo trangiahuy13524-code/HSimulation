@@ -100,6 +100,7 @@ public class WorldDebug : MonoBehaviour
             Pawn pawn = objectSelector.selectedPawn;
             if (pawn)
             {
+                debugAttireBodyTagToDrop = debugAttire.bodyTag;
                 if (pawn.GetAttireSprite(debugAttireBodyTagToDrop) != null)
                 {
                     pawn.Undress(debugAttireBodyTagToDrop);

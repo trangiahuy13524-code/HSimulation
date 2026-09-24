@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2fb5093d887274ab83a50ae4add912, type: 3}
   m_Name: Craft-Table
   m_EditorClassIdentifier: Assembly-CSharp::BuildingObject
-  thingNameKey: bd_craftTab
-  thingDescriptionKey: bd_craftTabDesc
+  thingNameKey: bd-craftTab
+  thingDescriptionKey: bd-craftTabDesc
   building: {fileID: -6043515063044391140, guid: 3b753f96bc820354591d7376b3850182, type: 3}

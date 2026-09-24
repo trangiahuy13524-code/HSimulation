@@ -88,10 +88,21 @@ public class ObjectSelector: MonoBehaviour
 
     public void HandleTap(Vector2Int pos)
     {
-        if (selectedObject == null) return;
+        if (selectedObject == null)
+        {
+            return;
+        }
 
         if (selectedPawn)
         {
+            Item item = WorldMap.Instance.GetItem(pos);
+            if (item != null)
+            {
+                Debug.Log($"Selected pawn {selectedPawn.name} will move to {pos} and wear item {item.name}");
+                selectedPawn.MoveToAndWear(item).Forget();
+                return;
+            }
+
             if (selectedPawn.PawnState == PawnState.Controlled)
             {
                 selectedPawn.MakePathContinuous(pos, PawnManager.Instance.GetWTS()).Forget();

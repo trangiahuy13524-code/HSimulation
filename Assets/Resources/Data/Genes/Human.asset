@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c6d6ecc303401d4e9cde1bf7e620004, type: 3}
   m_Name: Human
   m_EditorClassIdentifier: Assembly-CSharp::GeneticData
-  thingNameKey: ge_human
-  thingDescriptionKey: ge_humanDesc
+  thingNameKey: ge-human
+  thingDescriptionKey: ge-humanDesc
   raceIcon: {fileID: 21300000, guid: 765f9a2a8dc6e0b418da84257556ce0a, type: 3}
   reproductionType: 1
   femaleBirthChance: 0.5
@@ -21,7 +21,6 @@ MonoBehaviour:
   bodyData:
   - {fileID: 11400000, guid: d4f53e22bae8bed4a981aeeea78f8b3b, type: 2}
   - {fileID: 11400000, guid: bf8251a377a157645bd08ef6893964cf, type: 2}
-  - {fileID: 11400000, guid: 4c645d9511556c3449525153281fa2cc, type: 2}
   headData:
   - {fileID: 11400000, guid: f5d65dc6d88e84c4183d32ea65063d99, type: 2}
   - {fileID: 11400000, guid: b0bb5dba72e579c459de280e2d52c372, type: 2}

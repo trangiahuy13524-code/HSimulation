@@ -7,7 +7,7 @@ public partial class Pawn
     [Header("Pawn Genetics")]
     [SerializeField] bool initialized;
     [SerializeField] GenomeRT genome;
-
+    public GenomeRT Genome => genome;
     public override Sprite IconSprite => genome?.source?.raceIcon;
 
     public void InitializePawn(DataGenetics geneticData)

@@ -42,6 +42,7 @@ public partial class Pawn : IManagedUpdate
         bool donePathing = Move(speed, worldTS);
         if (currentState == PawnState.Controlled || !donePathing) return;
 
+        
         if (currentState == PawnState.Working)
         {
             reachDestination = true;

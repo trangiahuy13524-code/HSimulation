@@ -25,7 +25,7 @@ public class SpriteAttire : MonoBehaviour
     {
         this.pawn = pawn;
         this.attireData = attireData;
-        spriteData = attireData.attirePart;
+        spriteData = attireData.GetAttirePart(pawn.Genome.currentBody.bodyPartShape);
         currentDirection = pawn.CurrentDirection;
         this.itemClass = itemClass;
         layerIndex = attireData.bodyTag switch
@@ -50,17 +50,11 @@ public class SpriteAttire : MonoBehaviour
     {
         if (spriteData)
         {
-            Vector3 localPosition = spriteData.offset + baseOffset;
-            if (transform.localPosition != localPosition)
-            {
-                transform.localPosition = localPosition;
-            }
+            transform.localScale = spriteData.scale;
+            transform.localPosition = spriteData.offset + baseOffset;
+            //transform.localPosition = spriteData.offset * transform.localScale / transform.lossyScale + baseOffset;
+            //transform.localScale = spriteData.scale * spriteData.scale / transform.lossyScale;
 
-            Vector3 localScale = spriteData.scale;
-            if (transform.localScale != localScale)
-            {
-                transform.localScale = localScale;
-            }
         }
     }
 

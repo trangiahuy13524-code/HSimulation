@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c6d6ecc303401d4e9cde1bf7e620004, type: 3}
   m_Name: OcularSlinger
   m_EditorClassIdentifier: Assembly-CSharp::GeneticData
-  thingNameKey: ge_oclarSling
-  thingDescriptionKey: ge_oclarSlingDesc
+  thingNameKey: ge-oclarSling
+  thingDescriptionKey: ge-oclarSlingDesc
   raceIcon: {fileID: 21300000, guid: 2513fbb879b2d0c47b37df8c93efce70, type: 3}
   reproductionType: 2
   femaleBirthChance: 0.5

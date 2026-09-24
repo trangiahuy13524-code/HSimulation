@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c90bdf1f7520c84b89df74d84abe612, type: 3}
   m_Name: Open Research Panel
   m_EditorClassIdentifier: Assembly-CSharp::AbilityOpenResearchPanel
-  thingNameKey: abi_openResPnl
-  thingDescriptionKey: 
+  thingNameKey: abi-openResPnl
+  thingDescriptionKey: abi-openResPnlDesc
   icon: {fileID: 21300000, guid: bcbbfd51d5edbb94e9fb885d5bc79715, type: 3}
+  isDebugAbility: 0

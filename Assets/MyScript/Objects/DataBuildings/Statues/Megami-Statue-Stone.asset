@@ -16,7 +16,7 @@ MonoBehaviour:
   fixedSouth: 1
   horizontalOffset: {x: 1.01, y: 2.54}
   verticalOffset: {x: 0, y: 0}
-  icon: {fileID: 21300000, guid: 00724c5cfe20f07419390cc1c377ff87, type: 3}
+  icon: {fileID: 21300000, guid: 2857a5e5e485e0a43b3e4bda48cb402f, type: 3}
   eastSprite: {fileID: 0}
   northSprite: {fileID: 0}
-  southSprite: {fileID: 21300000, guid: 00724c5cfe20f07419390cc1c377ff87, type: 3}
+  southSprite: {fileID: 21300000, guid: 2857a5e5e485e0a43b3e4bda48cb402f, type: 3}

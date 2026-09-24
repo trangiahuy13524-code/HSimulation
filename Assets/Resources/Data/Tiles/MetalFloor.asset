@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d1e2cd5fd74a143b9a307604ffa17f, type: 3}
   m_Name: MetalFloor
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableTile
-  thingNameKey: ti_metalFlr
-  thingDescriptionKey: ti_metalFlrDesc
+  thingNameKey: ti-metalFlr
+  thingDescriptionKey: ti-metalFlrDesc
   terrainMaterial: {fileID: 2100000, guid: cc10f43a0d7b1314b9ef9d68d8bcd5e2, type: 2}
   blend: 0
   movementCost: 0

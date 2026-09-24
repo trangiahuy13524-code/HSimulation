@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2fb5093d887274ab83a50ae4add912, type: 3}
   m_Name: Research-Table
   m_EditorClassIdentifier: Assembly-CSharp::BuildingObject
-  thingNameKey: bd_resTab
-  thingDescriptionKey: bd_resTabDesc
+  thingNameKey: bd-resTab
+  thingDescriptionKey: bd-resTabDesc
   building: {fileID: 6651262306680950534, guid: 74a3258c66e365544b176fca76050203, type: 3}
