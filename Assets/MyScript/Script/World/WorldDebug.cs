@@ -21,7 +21,6 @@ public class WorldDebug : MonoBehaviour
     [Header("Building")]
     public DataBuilding building;
     public Direction buildingDirection = Direction.South;
-    public DataJobWorkable jobToCreate;
     [Header("Attire")]
     public DataAttire debugAttire;
     public ItemClass debugAttireClass;
@@ -74,26 +73,6 @@ public class WorldDebug : MonoBehaviour
         if (Keyboard.current.bKey.wasPressedThisFrame)
         {
             world.CreateBuilding(objectSelector.selectedGrid, building, buildingDirection);
-        }
-        //if (Keyboard.current.iKey.wasPressedThisFrame)
-        //{
-        //    if (debugItem.IsStackable) world.CreateItem(objectSelector.selectedGrid, debugItem, debugItemClass, debugItemAmount, null);
-        //    else world.CreateItem(objectSelector.selectedGrid, debugItem, debugItemClass, 1, null);
-        //}
-        if (Keyboard.current.jKey.wasPressedThisFrame)
-        {
-            BuildingWorkable buildingWorkable = objectSelector.selectedObject as BuildingWorkable;
-            if (buildingWorkable)
-            {
-                if (jobToCreate != null)
-                {
-                    buildingWorkable.CreateJob(jobToCreate);
-                }
-                else
-                {
-                    Debug.LogWarning("Debug: jobToCreate is null. Please assign a valid job to create.");
-                }
-            }
         }
         if (Keyboard.current.wKey.wasPressedThisFrame)
         {

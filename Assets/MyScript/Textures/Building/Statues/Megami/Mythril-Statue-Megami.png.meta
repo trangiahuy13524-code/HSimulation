@@ -116,10 +116,10 @@ TextureImporter:
       name: Mythril-Statue-Megami_0
       rect:
         serializedVersion: 2
-        x: 158
-        y: 32
-        width: 284
-        height: 536
+        x: 127
+        y: 0
+        width: 258
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

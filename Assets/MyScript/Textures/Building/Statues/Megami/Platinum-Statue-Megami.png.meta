@@ -116,10 +116,10 @@ TextureImporter:
       name: Platinum-Statue-Megami_0
       rect:
         serializedVersion: 2
-        x: 157
-        y: 32
-        width: 285
-        height: 536
+        x: 127
+        y: 0
+        width: 258
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

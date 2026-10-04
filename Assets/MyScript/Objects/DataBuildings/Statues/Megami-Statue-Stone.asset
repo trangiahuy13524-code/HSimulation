@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingSprite
   size: {x: 1.1, y: 1.1}
   fixedSouth: 1
-  horizontalOffset: {x: 1.01, y: 2.54}
+  horizontalOffset: {x: 1, y: 2.3}
   verticalOffset: {x: 0, y: 0}
   icon: {fileID: 21300000, guid: 2857a5e5e485e0a43b3e4bda48cb402f, type: 3}
   eastSprite: {fileID: 0}
