@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8109650e6dff034896405805fbb3a78, type: 3}
+  m_Name: Copper-Wall
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTillingTile
+  thingNameKey: wl-copWall
+  thingDescriptionKey: wl-copWallDesc
+  Icon: {fileID: -1627103713387243164, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  sprites:
+  - {fileID: -819342788, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: -439960737, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: -1202773051, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: -1983258530, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: -5644519684820675966, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: 9171868836800163113, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: 360423074, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: 1030126506, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: -1627103713387243164, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: -6212546882235085597, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: 8082491086415087026, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: -953877754462890873, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: 3191787544561333685, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: -1792895393673002331, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: 4507293285409140605, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}
+  - {fileID: -4864702616949811541, guid: 2402928fec2d41a43aea3de3dda3166b, type: 3}

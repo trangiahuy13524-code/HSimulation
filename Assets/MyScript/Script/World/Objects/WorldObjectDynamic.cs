@@ -7,7 +7,8 @@ public class WorldObjectDynamic : WorldObject
         get => currentGridPos;
         set
         {
-            base.CurrentGridPosition = value;
+            currentGridPos = value;
+            transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
             UpdateLayer();
         }
     }

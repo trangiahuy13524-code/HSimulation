@@ -18,10 +18,9 @@ public partial class Pawn : IManagedUpdate
     public PawnState PawnState => currentState;
     public bool onDuty => currentState == PawnState.Working || currentState == PawnState.Controlled;
 
-    protected override void Start()
+    public override void Initialize()
     {
         displayTextName.sortingOrder = DISPLAY_NAME_SORTING_ORDER;
-        transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
         paths = new Queue<Vector2Int>();
         oldGridPos = currentGridPos;
         oldDestination = currentGridPos;
@@ -89,7 +88,7 @@ public partial class Pawn : IManagedUpdate
             currentState = PawnState.Working;
 
             jobCTS = new CancellationTokenSource();
-            currentJob.DoJob(this, jobCTS.Token).Forget();
+            RunCurrentJob(currentJob, jobCTS).Forget();
         }
         else
         {
@@ -102,16 +101,15 @@ public partial class Pawn : IManagedUpdate
 
     protected override void OnDestroy()
     {
+        base.OnDestroy();
         PawnManager.Unregister(this);
         DropAllItemsInventory(currentGridPos, null);
         if (world != null) world.ModifyPawnCountGrid(currentGridPos, false);
         ReturnJob();
         jobCTS?.Cancel();
-        jobCTS?.Dispose();
         thinkCTS?.Cancel();
         thinkCTS?.Dispose();
         if (progressBarInstance != null) Destroy(progressBarInstance.gameObject);
-        base.OnDestroy();
     }
 
     public void SetPawnMaterial(Material mat)

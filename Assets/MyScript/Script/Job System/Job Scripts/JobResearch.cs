@@ -5,15 +5,12 @@ public class JobResearch : JobBuilding
 {
     public DataJobResearch researchData;
 
-    protected override async UniTask<ActionResult> WorkRoutine(Pawn pawn, WorkPosition wP, CancellationToken token)
+    protected override async UniTask WorkRoutine(
+        Pawn pawn,
+        WorkPosition wP,
+        CancellationToken token)
     {
-        var moveResult = await pawn.MoveTo(wP.workPos, token);
-
-        if (moveResult != ActionResult.Success)
-            return moveResult;
-
-        moveResult = await pawn.DoResearch(researchData, workBuilding.workDirection, token);
-
-        return moveResult;
+        await pawn.MoveTo(wP.workPos, token);
+        await pawn.DoResearch(researchData, workBuilding.workDirection, token);
     }
 }

@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Threading;
-using UnityEngine;
 
 public abstract class JobBuilding : JobBase
 {
@@ -8,52 +8,28 @@ public abstract class JobBuilding : JobBase
     public BuildingWorkable workBuilding;
     public WorkPosition reservedWorkPos;
     public override bool removed => workBuilding == null || externalRemoved;
-    public override UniTask DoJob(
-    Pawn worker,
-    CancellationToken token)
+
+    public override async UniTask DoJob(Pawn worker, CancellationToken token)
     {
-        return WorkToDo(worker, token);
+        await ExecuteWork(worker, token, async () =>
+        {
+            if (reservedWorkPos == null)
+            {
+                throw new OperationCanceledException(token);
+            }
+
+            await WorkRoutine(worker, reservedWorkPos, token);
+        });
     }
 
-    async UniTask WorkToDo(
-    Pawn worker,
-    CancellationToken token)
+    protected abstract UniTask WorkRoutine(
+        Pawn worker,
+        WorkPosition wP,
+        CancellationToken token);
+
+    public override void OnJobCancelled(Pawn worker)
     {
-
-        if (reservedWorkPos == null)
-        {
-            worker.ReturnJob();
-            return;
-        }
-
-
-        ActionResult result = await WorkRoutine(worker, reservedWorkPos, token);
-        Debug.Log($"Work Routine Result: {result}");
-
-        switch (result)
-        {
-            
-            case ActionResult.Success:
-                await FinishWork(worker, token);
-                worker.RemoveJob();
-                break;
-            case ActionResult.Cancelled:
-                OnJobCancelled(worker);
-                break;
-        }
-    }
-
-
-
-    protected abstract UniTask<ActionResult> WorkRoutine(
-    Pawn worker,
-    WorkPosition wP,
-    CancellationToken token);
-
-    public virtual void OnJobCancelled(Pawn worker)
-    {
-        Debug.Log("Job Cancelled");
-        worker.ReturnJob();
+        base.OnJobCancelled(worker);
     }
 
     public override void ReturnJob(Pawn worker)
@@ -63,15 +39,5 @@ public abstract class JobBuilding : JobBase
             reservedWorkPos.occupied = false;
             reservedWorkPos = null;
         }
-    }
-
-    protected override async UniTask FinishWork(Pawn worker, CancellationToken token)
-    {
-        if (reservedWorkPos != null)
-        {
-            reservedWorkPos.occupied = false;
-            reservedWorkPos = null;
-        }
-        await base.FinishWork(worker, token);
     }
 }

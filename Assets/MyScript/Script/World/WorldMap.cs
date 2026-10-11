@@ -126,15 +126,7 @@ public class WorldMap : MonoBehaviour
         return objects[position.x, position.y];
     }
 
-    public void SetWallTile(Vector2Int position, Tile tile)
-    {
-        if (wallTileMap == null) return;
-        if (!IsInside(position)) return;
-        int x = position.x;
-        int y = position.y;
-        wallTileMap.SetTile(new Vector3Int(x, y, 0), tile);
-        RefreshNeighborWall(x, y);
-    }
+    
 
     public void ModifyPawnCountGrid(Vector2Int position, bool add)
     {
@@ -159,25 +151,11 @@ public class WorldMap : MonoBehaviour
         if (items[x, y] != null) return;
         WorldObject existingObject = objects[x, y];
         if (objects[x, y] != null) return;
-        wallTileMap.SetTile(new Vector3Int(x, y, 0), wallTile);
-        RefreshNeighborWall(x, y);
-        Wall dummy = Instantiate(wallDummyPrefab, wallDummies);
-        dummy.SetData(wallTile);
-        dummy.CurrentGridPosition = position;
-        //dummy.wallTile = wallTile;
-        mapRenderer.map.SetTile(position, wallDummyTile);
-    }
 
-    private void RefreshNeighborWall(int x, int y)
-    {
-        for (int dx = -1; dx <= 1; dx++)
-        {
-            for (int dy = -1; dy <= 1; dy++)
-            {
-                if (dx == 0 && dy == 0) continue;
-                wallTileMap.RefreshTile(new Vector3Int(x + dx, y + dy, 0));
-            }
-        }
+        Wall dummy = Instantiate(wallDummyPrefab, wallDummies);
+        dummy.CurrentGridPosition = position;
+        dummy.SetData(wallTile, wallTileMap);
+        dummy.Initialize();
     }
 
     Queue<Vector2Int> fnaQueue = new();
@@ -278,21 +256,23 @@ public class WorldMap : MonoBehaviour
         {
             if (!existingObject.isPassable) return null;
         }
+
         Pawn pawn = Instantiate(pawnPrefab);
-        if (pawn == null) return null;
         pawn.CurrentGridPosition = position;
-        pawn.transform.position = new Vector3Int(x, y, 0);
         pawn.InitializePawn(geneticData);
+        pawn.Initialize();
         return pawn;
     }
 
     public void CreateBuilding(Vector2Int position, DataBuilding buildingObject, Direction direction)
     {
         if (buildingObject == null) return;
+
         if (!buildingObject.building.checkPlaceable(position, direction, this)) return;
         Building building = Instantiate(buildingObject.building);
         building.CurrentGridPosition = position;
         building.direction = direction;
+        building.Initialize();
     }
 
     public List<Item> CreateItem( Vector2Int position, DataItem itemData, ItemClass itemClass, int quantity, WorldObject reservingOb)
@@ -384,9 +364,9 @@ public class WorldMap : MonoBehaviour
     {
         Item item = Instantiate(itemPrefab);
         item.CurrentGridPosition = position;
-        item.transform.position = new Vector3Int(position.x, position.y, 0);
         item.SetItemData(itemData, itemClass);
         item.StackCount = quantity;
+        item.Initialize();
         return item;
     }
 }

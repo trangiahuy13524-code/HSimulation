@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class WorldObjectStatic : WorldObject
 {
-    protected override void Start()
+    public override void Initialize()
     {
-        base.Start();
+        base.Initialize();
         world.RegisterObject(this, currentGridPos);
     }
 }

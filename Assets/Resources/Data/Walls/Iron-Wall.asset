@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8109650e6dff034896405805fbb3a78, type: 3}
+  m_Name: Iron-Wall
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTillingTile
+  thingNameKey: wl-ironWall
+  thingDescriptionKey: wl-ironWallDesc
+  Icon: {fileID: -5277732204416620505, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  sprites:
+  - {fileID: -153447575, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: 709065859, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: 1642378339, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: -773337899, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: 6236818118428790042, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: -5341679968254374126, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: -503074161, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: 667796895, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: -5277732204416620505, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: 1793215789448946912, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: 3992927885348540604, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: 3205913144068739807, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: -5273328640611238405, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: -7096082457152886392, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: -8732063361358662392, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}
+  - {fileID: 9168967817526298838, guid: fe8f992e962ff594f9fe4b02a31f9b8f, type: 3}

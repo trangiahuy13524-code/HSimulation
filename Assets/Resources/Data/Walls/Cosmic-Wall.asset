@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8109650e6dff034896405805fbb3a78, type: 3}
+  m_Name: Cosmic-Wall
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTillingTile
+  thingNameKey: wl-cosmicWall
+  thingDescriptionKey: wl-cosmicWallDesc
+  Icon: {fileID: -1637115408228507281, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  sprites:
+  - {fileID: 985374978, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: -1584195869, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: 1994683899, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: -810440817, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: 3978962850552357731, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: 8666324290548424569, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: 1650524607, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: 21143869, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: -1637115408228507281, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: -7716227364464895905, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: 1393658510891405662, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: 4467603090983613855, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: -3528645338903581276, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: -8820861400211872911, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: 8384491510283554924, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}
+  - {fileID: 2440362220282148793, guid: cfdde119947e0cd4a8807ed640b88127, type: 3}

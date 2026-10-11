@@ -13,45 +13,35 @@ public class JobCraft : JobBuilding
 
     public BuildingCraft CraftBuilding => (BuildingCraft)workBuilding;
 
-    protected override async UniTask<ActionResult> WorkRoutine(
+    private const int UNFINISHED_ITEM_AMOUNT = 1;
+
+    protected override async UniTask WorkRoutine(
         Pawn worker,
         WorkPosition workPos,
         CancellationToken token)
     {
         if (unfinishedItem == null)
         {
-            var collectResult =
-                await CollectIngredients(worker, workPos, token);
-
-            if (collectResult != ActionResult.Success)
-                return collectResult;
+            await CollectIngredients(worker, workPos, token);
+            token.ThrowIfCancellationRequested();
 
             if (!ValidateIngredients())
-                return ActionResult.Cancelled;
+            {
+                throw new OperationCanceledException(token);
+            }
 
             ConsumeIngredients();
-
             unfinishedItem = SpawnUnfinishedItem(worker);
         }
         else
         {
-            var carryResult =
-                await CarryUnfinishedItem(worker, workPos, token);
-
-            if (carryResult != ActionResult.Success)
-                return carryResult;
+            await CarryUnfinishedItem(worker, workPos, token);
         }
 
-        return await worker.DoProgressWork(
-            workBuilding.workDirection,
-            token);
+        await worker.DoProgressWork(workBuilding.workDirection, token);
     }
 
-    // =====================================================
-    // COLLECT INGREDIENTS
-    // =====================================================
-
-    private async UniTask<ActionResult> CollectIngredients(
+    private async UniTask CollectIngredients(
         Pawn worker,
         WorkPosition workPos,
         CancellationToken token)
@@ -61,85 +51,55 @@ public class JobCraft : JobBuilding
         foreach (var required in recipeData.requiredItems)
         {
             int remaining = required.amount;
-
             while (remaining > 0)
             {
-                var result =
-                    await PickRequiredItem(worker, workPos, required, remaining, token);
-
-                if (result.result != ActionResult.Success)
-                    return result.result;
-
-                remaining -= result.amount;
+                remaining -= await PickRequiredItem(worker, workPos, required, remaining, token);
 
                 while (remaining > 0 &&
                        worker.HoldedItem != null &&
-                       worker.HoldedItem.StackCount <
-                       worker.HoldedItem.itemData.maxStack)
+                       worker.HoldedItem.StackCount < worker.HoldedItem.itemData.maxStack)
                 {
-                    result =
-                        await PickRequiredItem(worker, workPos, required, remaining, token);
-
-                    if (result.result != ActionResult.Success)
-                        return result.result;
-
-                    remaining -= result.amount;
+                    remaining -= await PickRequiredItem(worker, workPos, required, remaining, token);
                 }
 
-                var dropResult =
-                    await DropHeldItems(worker, workPos, token);
-
-                if (dropResult != ActionResult.Success)
-                    return dropResult;
+                await DropHeldItems(worker, workPos, token);
             }
         }
-
-        return ActionResult.Success;
     }
 
-    private async UniTask<(ActionResult result, int amount)> PickRequiredItem(
+    private async UniTask<int> PickRequiredItem(
         Pawn worker,
         WorkPosition workPos,
         ItemDataContainer required,
         int remaining,
         CancellationToken token)
     {
-        ItemContainer found =
-            FindItem(workPos.workPos, required);
-
+        token.ThrowIfCancellationRequested();
+        ItemContainer found = FindItem(workPos.workPos, required);
         if (found.item == null)
-            return (ActionResult.Cancelled, 0);
+        {
+            throw new OperationCanceledException(token);
+        }
 
-        return await worker.MoveToAndPickUp(
-            found.item,
-            remaining,
-            token);
+        int amount = await worker.MoveToAndPickUp(found.item, remaining, token);
+        if (amount <= 0)
+        {
+            throw new OperationCanceledException(token);
+        }
+
+        return amount;
     }
 
-    private async UniTask<ActionResult> DropHeldItems(
+    private async UniTask DropHeldItems(
         Pawn worker,
         WorkPosition workPos,
         CancellationToken token)
     {
-        var result =
-            await worker.MoveTo(workPos.workPos, token);
-
-        if (result != ActionResult.Success)
-            return result;
-
+        await worker.MoveTo(workPos.workPos, token);
         worker.ChangeDirection(workBuilding.workDirection);
-
-        await UniTask.Yield(token);
-
+        token.ThrowIfCancellationRequested();
         usedItems.UnionWith(worker.DropHoldedItem(worker));
-
-        return ActionResult.Success;
     }
-
-    // =====================================================
-    // VALIDATE + CONSUME
-    // =====================================================
-
     private bool ValidateIngredients()
     {
         Dictionary<ItemKey, int> requiredMap =
@@ -213,41 +173,29 @@ public class JobCraft : JobBuilding
         return map;
     }
 
-    // =====================================================
-    // UNFINISHED ITEM
-    // =====================================================
-
     private Item SpawnUnfinishedItem(Pawn worker)
     {
         return WorldMap.Instance.CreateItem(
             worker.CurrentGridPosition + worker.direction(),
             recipeData.unfinishedCraftItemData,
             ItemClass.None,
-            1,
+            UNFINISHED_ITEM_AMOUNT,
             worker)[0];
     }
 
-    private async UniTask<ActionResult> CarryUnfinishedItem(
+    private async UniTask CarryUnfinishedItem(
         Pawn worker,
         WorkPosition workPos,
         CancellationToken token)
     {
-        var result =
-            await worker.MoveToAndPickUp(
-                unfinishedItem,
-                1,
-                token);
+        int amount = await worker.MoveToAndPickUp(unfinishedItem, UNFINISHED_ITEM_AMOUNT, token);
+        if (amount <= 0)
+        {
+            throw new OperationCanceledException(token);
+        }
 
-        if (result.Item1 != ActionResult.Success)
-            return result.Item1;
-
-        return await DropHeldItems(worker, workPos, token);
+        await DropHeldItems(worker, workPos, token);
     }
-
-    // =====================================================
-    // FINISH / RETURN
-    // =====================================================
-
     public override void ReturnJob(Pawn worker)
     {
         if (unfinishedItem != null)
@@ -259,19 +207,17 @@ public class JobCraft : JobBuilding
                 item.reservingObject = null;
         }
 
+        usedItems.Clear();
         worker.DropHoldedItem(null);
 
         base.ReturnJob(worker);
     }
 
-    protected override async UniTask FinishWork(
-        Pawn worker,
-        CancellationToken token)
+    protected override async UniTask FinishWork(Pawn worker, CancellationToken token)
     {
-        if (unfinishedItem != null)
-            unfinishedItem.Despawn();
+        token.ThrowIfCancellationRequested();
 
-        await UniTask.Yield(token);
+        // Commit the completed craft without yielding between its outputs.
         foreach (var output in recipeData.outputItems)
         {
             WorldMap.Instance.CreateItem(
@@ -280,17 +226,15 @@ public class JobCraft : JobBuilding
                 output.itemClass,
                 output.amount,
                 null);
+        }
 
-            await UniTask.Yield(token);
+        if (unfinishedItem != null)
+        {
+            unfinishedItem.Despawn();
         }
 
         await base.FinishWork(worker, token);
     }
-
-    // =====================================================
-    // FIND ITEM
-    // =====================================================
-
     public ItemContainer FindItem(
         Vector2Int workPos,
         ItemDataContainer required)

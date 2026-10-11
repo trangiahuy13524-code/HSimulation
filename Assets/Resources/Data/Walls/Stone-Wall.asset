@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8109650e6dff034896405805fbb3a78, type: 3}
+  m_Name: Stone-Wall
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTillingTile
+  thingNameKey: wl-stoneWall
+  thingDescriptionKey: wl-stoneWallDesc
+  Icon: {fileID: -8472633600437852719, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  sprites:
+  - {fileID: 862054933, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: 1611983586, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: 1266840378, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: -219158616, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: -1253375674406726851, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: 872971159715944542, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: -142595101, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: -502787526, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: -8472633600437852719, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: 6140125152031524836, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: 5180967287081885097, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: 1408631681384144911, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: -3695489637406129541, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: -6221269611560736488, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: 7167432085674687940, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}
+  - {fileID: -320008356313764554, guid: 76ad11a4b63bffe4d8c1b4c39a040e91, type: 3}

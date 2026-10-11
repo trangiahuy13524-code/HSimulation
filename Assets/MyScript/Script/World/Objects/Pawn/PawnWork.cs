@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -34,7 +35,7 @@ public partial class Pawn
 
     public async UniTask<bool> TryFindJob(CancellationToken token)
     {
-        if (currentJob != null) return false;
+        if (currentJob != null || jobRunning) return false;
 
         JobBase job = await jobManager.GetJob(this, token);
         if (job == null) return false;
@@ -43,20 +44,56 @@ public partial class Pawn
         return true;
     }
 
+    private bool jobRunning;
+    private const int MINIMUM_PICKUP_AMOUNT = 1;
+
     public void RemoveJob()
     {
-        currentState = PawnState.Idle;
+        jobCTS?.Cancel();
+        currentJob.ReturnJob(this);
+        currentJob.reserved = false;
         jobManager.RemoveJob(currentJob);
         currentJob = null;
+        currentState = PawnState.Idle;
     }
 
     public void ReturnJob()
     {
         if (currentJob == null) return;
 
+        jobCTS?.Cancel();
+        PathReset();
         currentState = PawnState.Idle;
         jobManager.ReturnJob(currentJob, this);
         currentJob = null;
+    }
+
+    private async UniTask RunCurrentJob(JobBase job, CancellationTokenSource cancellationSource)
+    {
+        jobRunning = true;
+        try
+        {
+            await job.DoJob(this, cancellationSource.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            // Cancellation returns the unfinished job for another attempt.
+        }
+        finally
+        {
+            if (currentJob == job)
+            {
+                ReturnJob();
+            }
+
+            if (jobCTS == cancellationSource)
+            {
+                jobCTS = null;
+            }
+
+            cancellationSource.Dispose();
+            jobRunning = false;
+        }
     }
 
     private bool IsCurrentJobStillValid()
@@ -67,136 +104,142 @@ public partial class Pawn
         return false;
     }
 
-    public async UniTask<ActionResult> MoveTo(Vector2Int targetPos, CancellationToken token)
+    private void ValidateCurrentJob(CancellationToken token)
     {
-        reachDestination = false;
-        destinationInvalid = false;
-        await MakePath(targetPos, PawnManager.Instance.GetWTS());
-
-        while (!reachDestination)
+        token.ThrowIfCancellationRequested();
+        if (currentJob == null || currentJob.removed)
         {
-            if (currentJob == null || currentJob.removed) return ActionResult.Cancelled;
-            await UniTask.Yield(token);
+            throw new OperationCanceledException(token);
         }
-
-        return destinationInvalid ? ActionResult.Cancelled : ActionResult.Success;
     }
 
-    public async UniTask<(ActionResult, int)> MoveToAndPickUp(Item item, int amount, CancellationToken token)
+    private async UniTask WaitForWorkDestination(CancellationToken token)
     {
-        reachDestination = false;
-        destinationInvalid = false;
-
-        item.reservingObject = this;
-
-        await MakePathWithoutLast(item.CurrentGridPosition, PawnManager.Instance.GetWTS());
-
-        await UniTask.Yield(token);
-        while (!reachDestination)
+        ValidateCurrentJob(token);
+        while (!reachDestination && !destinationInvalid)
         {
-            if (currentJob == null || currentJob.removed)
-            {
-                item.reservingObject = null;
-                return (ActionResult.Cancelled, 0);
-            }
-
-            if (item == null)
-            {
-                return (ActionResult.Success, 0);
-            }
-
             await UniTask.Yield(token);
+            ValidateCurrentJob(token);
         }
 
         if (destinationInvalid)
         {
-            item.reservingObject = null;
-            return (ActionResult.Cancelled, 0);
+            throw new OperationCanceledException(token);
         }
-
-        if (item == null || item.CurrentGridPosition != oldDestination)
-            return (ActionResult.Success, 0);
-
-        if (amount < 1) amount = 1;
-
-        int takenAmount = Mathf.Min(amount, item.StackCount);
-
-        if (takenAmount <= 0)
-        {
-            item.reservingObject = null;
-            return (ActionResult.Cancelled, 0);
-        }
-
-        takenAmount = HoldItem(item, takenAmount);
-        await UniTask.Yield(token);
-        return (ActionResult.Success, takenAmount);
     }
 
-    public async UniTask<ActionResult> DoProgressWork(
-    Direction workDirection,
-    CancellationToken token)
+    public async UniTask MoveTo(Vector2Int targetPos, CancellationToken token)
     {
-        ChangeDirection(workDirection);
-        CreateProgressBar();
+        ValidateCurrentJob(token);
+        reachDestination = false;
+        destinationInvalid = false;
+        await MakePath(targetPos, PawnManager.Instance.GetWTS(), token);
+        await WaitForWorkDestination(token);
+    }
+
+    public async UniTask<int> MoveToAndPickUp(Item item, int amount, CancellationToken token)
+    {
+        ValidateCurrentJob(token);
+        reachDestination = false;
+        destinationInvalid = false;
+        item.reservingObject = this;
+        bool pickedUp = false;
 
         try
         {
-            while (currentJob != null &&
-                   !currentJob.removed &&
-                   currentJob.currentProgress < currentJob.totalProgress)
-            {
-                token.ThrowIfCancellationRequested();
+            await MakePathWithoutLast(item.CurrentGridPosition, PawnManager.Instance.GetWTS(), token);
+            ValidateCurrentJob(token);
 
-                currentJob.currentProgress += Time.deltaTime * WORK_PROGRESS_PER_SECOND;
-                progressBarInstance.SetProgress(currentJob.currentProgress / currentJob.totalProgress);
+            while (!reachDestination && !destinationInvalid)
+            {
+                if (item == null)
+                {
+                    return 0;
+                }
 
                 await UniTask.Yield(token);
+                ValidateCurrentJob(token);
             }
+
+            if (destinationInvalid)
+            {
+                throw new OperationCanceledException(token);
+            }
+
+            if (item == null || item.CurrentGridPosition != oldDestination)
+            {
+                return 0;
+            }
+
+            int takenAmount = Mathf.Min(Mathf.Max(amount, MINIMUM_PICKUP_AMOUNT), item.StackCount);
+            if (takenAmount <= 0)
+            {
+                throw new OperationCanceledException(token);
+            }
+
+            takenAmount = HoldItem(item, takenAmount);
+            pickedUp = takenAmount > 0;
+            return takenAmount;
         }
         finally
         {
-            DestroyProgressBar();
+            if (!pickedUp && item != null)
+            {
+                item.reservingObject = null;
+            }
         }
-
-        if (currentJob == null || currentJob.removed)
-            return ActionResult.Cancelled;
-
-        return ActionResult.Success;
     }
 
-    public async UniTask<ActionResult> DoResearch(
-    DataJobResearch researchData,
-    Direction workDirection,
-    CancellationToken token)
+    public async UniTask DoProgressWork(Direction workDirection, CancellationToken token)
     {
+        ValidateCurrentJob(token);
+        JobBase job = currentJob;
+        ChangeDirection(workDirection);
+        ProgressBar progressBar = CreateProgressBar();
+
+        try
+        {
+            while (job.currentProgress < job.totalProgress)
+            {
+                ValidateCurrentJob(token);
+                job.currentProgress += Time.deltaTime * WORK_PROGRESS_PER_SECOND;
+                progressBar.SetProgress(Mathf.Clamp01(job.currentProgress / job.totalProgress));
+                await UniTask.Yield(token);
+            }
+
+            ValidateCurrentJob(token);
+        }
+        finally
+        {
+            DestroyProgressBar(progressBar);
+        }
+    }
+
+    public async UniTask DoResearch(
+        DataJobResearch researchData,
+        Direction workDirection,
+        CancellationToken token)
+    {
+        ValidateCurrentJob(token);
         ChangeDirection(workDirection);
         var state = researchManager.GetState(researchData);
-        CreateProgressBar();
+        ProgressBar progressBar = CreateProgressBar();
 
         try
         {
-            while (currentJob != null &&
-                   !currentJob.removed &&
-                   !state.completed)
+            while (!state.completed)
             {
-                token.ThrowIfCancellationRequested();
-
+                ValidateCurrentJob(token);
                 researchManager.AddProgress(researchData, Time.deltaTime * WORK_PROGRESS_PER_SECOND);
-                progressBarInstance.SetProgress(state.progress / researchData.totalProgress);
-
+                progressBar.SetProgress(Mathf.Clamp01(state.progress / researchData.totalProgress));
                 await UniTask.Yield(token);
             }
+
+            ValidateCurrentJob(token);
         }
         finally
         {
-            DestroyProgressBar();
+            DestroyProgressBar(progressBar);
         }
-
-        if (currentJob == null || currentJob.removed)
-            return ActionResult.Cancelled;
-
-        return ActionResult.Success;
     }
-
-    
 }

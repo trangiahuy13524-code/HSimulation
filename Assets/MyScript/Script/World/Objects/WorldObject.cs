@@ -28,7 +28,10 @@ public class WorldObject : MonoBehaviour
         }
     }
 
-    
+    public virtual void Initialize()
+    {
+
+    }
 
     protected void Awake()
     {
@@ -36,11 +39,6 @@ public class WorldObject : MonoBehaviour
         jobManager = JobManager.Instance;
         researchManager = ResearchManager.Instance;
         worldData = WorldData.Instance;
-    }
-
-    protected virtual void Start()
-    {
-        transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
     }
 
     [SerializeField] protected SpriteRenderer selectionSR;

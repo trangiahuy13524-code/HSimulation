@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8109650e6dff034896405805fbb3a78, type: 3}
+  m_Name: Mythril-Wall
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTillingTile
+  thingNameKey: wl-mythrilWall
+  thingDescriptionKey: wl-mythrilWallDesc
+  Icon: {fileID: 8651935175365652947, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  sprites:
+  - {fileID: 1477202494, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: -2009448412, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: -1773470600, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: -946928535, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: -8396537825307144174, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: -8072168220722800839, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: 1268734132, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: 1041226696, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: 8651935175365652947, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: 625372589594761401, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: -4333501650360949906, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: -463247259755677913, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: 3379634923171018307, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: 6888872735757587980, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: -6289138016543749067, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}
+  - {fileID: 8919832253387240892, guid: b696f40cb92d42a4895a1aa38902ab5c, type: 3}

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8109650e6dff034896405805fbb3a78, type: 3}
+  m_Name: Wooden-Wall
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTillingTile
+  thingNameKey: wl-woodenWall
+  thingDescriptionKey: wl-woodenWallDesc
+  Icon: {fileID: -6109447639648908823, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  sprites:
+  - {fileID: 1022511103, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: 1950289996, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: 1869461120, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: 1512095603, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: -7972472906209111453, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: 4450419263281098997, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: -1924520861, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: 940066783, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: -6109447639648908823, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: -6761905280284323073, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: -6319991426754516017, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: 5677474997845197808, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: -5942557296834424678, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: -8364365489841748030, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: 3520891953552412547, guid: 11b02fa749ac107429a92d3570c61581, type: 3}
+  - {fileID: 7290201326698020491, guid: 11b02fa749ac107429a92d3570c61581, type: 3}

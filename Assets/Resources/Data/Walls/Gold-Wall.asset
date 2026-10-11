@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8109650e6dff034896405805fbb3a78, type: 3}
+  m_Name: Gold-Wall
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTillingTile
+  thingNameKey: wl-goldWall
+  thingDescriptionKey: wl-goldWallDesc
+  Icon: {fileID: -3403216366302123743, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  sprites:
+  - {fileID: -210642136, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: -456847187, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: 798532332, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: -1025001323, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: 4606395594397239420, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: -527383145825626961, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: 1127198702, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: -27969624, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: -3403216366302123743, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: -8287336174443460575, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: 7014722534769052156, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: -2000748743379132914, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: 5015985062309147970, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: -4819369713220475582, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: -2169981437846981221, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}
+  - {fileID: -8417063467915871819, guid: 9140b23790b6f7b4ca4070aed36b0026, type: 3}

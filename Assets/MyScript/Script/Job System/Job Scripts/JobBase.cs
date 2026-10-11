@@ -2,7 +2,6 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using UnityEngine;
 
 public abstract class JobBase
 {
@@ -13,16 +12,45 @@ public abstract class JobBase
     public virtual bool removed => externalRemoved;
     public bool externalRemoved = false;
     public bool reserved;
-    //public Pawn worker;
     public Action<Pawn> result;
 
     public abstract UniTask DoJob(Pawn worker, CancellationToken token);
-
     public abstract void ReturnJob(Pawn worker);
+
+    public virtual void OnJobCancelled(Pawn worker)
+    {
+        worker.ReturnJob();
+    }
+
+    protected async UniTask ExecuteWork(
+        Pawn worker,
+        CancellationToken token,
+        Func<UniTask> workRoutine)
+    {
+        try
+        {
+            token.ThrowIfCancellationRequested();
+            await workRoutine();
+            token.ThrowIfCancellationRequested();
+            await FinishWork(worker, token);
+            worker.RemoveJob();
+        }
+        catch (OperationCanceledException)
+        {
+            OnJobCancelled(worker);
+            throw;
+        }
+        catch
+        {
+            worker.ReturnJob();
+            throw;
+        }
+    }
 
     protected virtual async UniTask FinishWork(Pawn worker, CancellationToken token)
     {
-        await UniTask.Yield(token);
+        token.ThrowIfCancellationRequested();
         result?.Invoke(worker);
+        await UniTask.CompletedTask;
     }
 }

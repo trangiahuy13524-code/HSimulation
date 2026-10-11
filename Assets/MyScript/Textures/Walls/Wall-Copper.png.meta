@@ -1,10 +1,37 @@
 fileFormatVersion: 2
-guid: 7fb721ea23596614784f62eaa27f46e8
+guid: 2402928fec2d41a43aea3de3dda3166b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5853383246252850406
-    second: AM_KemeticWall_0
+      213: 3191787544561333685
+    second: Wall-Copper_0
+  - first:
+      213: -1792895393673002331
+    second: Wall-Copper_1
+  - first:
+      213: 4507293285409140605
+    second: Wall-Copper_2
+  - first:
+      213: -4864702616949811541
+    second: Wall-Copper_3
+  - first:
+      213: -1627103713387243164
+    second: Wall-Copper_4
+  - first:
+      213: -6212546882235085597
+    second: Wall-Copper_5
+  - first:
+      213: 8082491086415087026
+    second: Wall-Copper_6
+  - first:
+      213: -953877754462890873
+    second: Wall-Copper_7
+  - first:
+      213: -5644519684820675966
+    second: Wall-Copper_8
+  - first:
+      213: 9171868836800163113
+    second: Wall-Copper_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,9 +67,9 @@ TextureImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -51,17 +78,17 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 60
+  spritePixelsToUnits: 240
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
-  flipbookRows: 4
-  flipbookColumns: 4
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
@@ -72,10 +99,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -109,30 +136,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AM_KemeticWall_0
+      name: Wall-Copper_0
       rect:
         serializedVersion: 2
-        x: 10
-        y: 250
-        width: 60
-        height: 60
+        x: 40
+        y: 1000
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,20 +155,218 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ecbf17cc056b3150800000000000000
-      internalID: 5853383246252850406
+      spriteID: 5b538186cd18b4c20800000000000000
+      internalID: 3191787544561333685
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AM_KemeticWall_1
+      name: Wall-Copper_1
       rect:
         serializedVersion: 2
-        x: 90
-        y: 250
-        width: 60
-        height: 60
+        x: 360
+        y: 1000
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a2cfac732b5e17e0800000000000000
+      internalID: -1792895393673002331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall-Copper_2
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 1000
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7fa057cc5f1d8e30800000000000000
+      internalID: 4507293285409140605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall-Copper_3
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 1000
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba61bc28eba1d7cb0800000000000000
+      internalID: -4864702616949811541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall-Copper_4
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 680
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46995de1bcd5b69e0800000000000000
+      internalID: -1627103713387243164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall-Copper_5
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 680
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3eccaeda68998c9a0800000000000000
+      internalID: -6212546882235085597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall-Copper_6
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 680
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b5480af1d6ca2070800000000000000
+      internalID: 8082491086415087026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall-Copper_7
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 680
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78497167c3523c2f0800000000000000
+      internalID: -953877754462890873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall-Copper_8
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 360
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 282509aa043aaa1b0800000000000000
+      internalID: -5644519684820675966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall-Copper_9
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 360
+        width: 240
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92de2f7cc16094f70800000000000000
+      internalID: 9171868836800163113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall-Copper_10
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 360
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,20 +375,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 81c2737ed0a0b354088c23c3b8868c45
-      internalID: -1851396106
+      spriteID: 44353921aaa807f46b0d37292980299f
+      internalID: 360423074
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AM_KemeticWall_2
+      name: Wall-Copper_11
       rect:
         serializedVersion: 2
-        x: 170
-        y: 250
-        width: 60
-        height: 60
+        x: 1000
+        y: 360
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -185,20 +397,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d030d7e9831ff3440b714b471451ca62
-      internalID: 1612196808
+      spriteID: c5ddbe7456824c84eaf21d6b571e5bea
+      internalID: 1030126506
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AM_KemeticWall_3
+      name: Wall-Copper_12
       rect:
         serializedVersion: 2
-        x: 250
-        y: 250
-        width: 60
-        height: 60
+        x: 40
+        y: 40
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -207,20 +419,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c06b29371e8a4dc4987b0d145bdf8537
-      internalID: 728133541
+      spriteID: 587fbef4c75629748892c2051635c3a5
+      internalID: -819342788
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AM_KemeticWall_4
+      name: Wall-Copper_13
       rect:
         serializedVersion: 2
-        x: 10
-        y: 170
-        width: 60
-        height: 60
+        x: 360
+        y: 40
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -229,20 +441,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5a499160afb527d46ab5a068a704814d
-      internalID: 1746644447
+      spriteID: 6b32a549efef97a46a41d6ca17d91c89
+      internalID: -439960737
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AM_KemeticWall_5
+      name: Wall-Copper_14
       rect:
         serializedVersion: 2
-        x: 90
-        y: 170
-        width: 60
-        height: 60
+        x: 680
+        y: 40
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -251,20 +463,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e9a29128bbce4bc4ba5de93f8c1a8730
-      internalID: -532533054
+      spriteID: cb899e56bf29b5b4d85ebb53b825b6b4
+      internalID: -1202773051
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AM_KemeticWall_6
+      name: Wall-Copper_15
       rect:
         serializedVersion: 2
-        x: 170
-        y: 170
-        width: 60
-        height: 60
+        x: 1000
+        y: 40
+        width: 240
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -273,206 +485,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cb8debece96da9a408ae34f2568c4d2e
-      internalID: 1833071111
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: AM_KemeticWall_7
-      rect:
-        serializedVersion: 2
-        x: 250
-        y: 170
-        width: 60
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 19f77d4a11253f44abe5fd173db53b65
-      internalID: 2021348477
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: AM_KemeticWall_8
-      rect:
-        serializedVersion: 2
-        x: 10
-        y: 90
-        width: 60
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 168cbb9c86d8eab4ea986019a89c73ab
-      internalID: -1186652503
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: AM_KemeticWall_9
-      rect:
-        serializedVersion: 2
-        x: 90
-        y: 90
-        width: 60
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e6a3f53d8fb227f46bf4200ab971114a
-      internalID: 1257387067
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: AM_KemeticWall_10
-      rect:
-        serializedVersion: 2
-        x: 170
-        y: 90
-        width: 60
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8e115efbf64ed3849bea8d5ed94dbda5
-      internalID: -2095720761
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: AM_KemeticWall_11
-      rect:
-        serializedVersion: 2
-        x: 250
-        y: 90
-        width: 60
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7090246785a844b41b4201572f93b058
-      internalID: 1856248172
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: AM_KemeticWall_12
-      rect:
-        serializedVersion: 2
-        x: 10
-        y: 10
-        width: 60
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: efb70c0d9e9087e4387586b7c325ceaa
-      internalID: -747203844
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: AM_KemeticWall_13
-      rect:
-        serializedVersion: 2
-        x: 90
-        y: 10
-        width: 60
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2880513e95fbe554b850979019f18a88
-      internalID: -1551645331
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: AM_KemeticWall_14
-      rect:
-        serializedVersion: 2
-        x: 170
-        y: 10
-        width: 60
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 819c2d1e9e558624a8968f1e717446ba
-      internalID: 1224984380
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: AM_KemeticWall_15
-      rect:
-        serializedVersion: 2
-        x: 250
-        y: 10
-        width: 60
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b1559493ea746484dacf9fff634da21a
-      internalID: -1397663898
+      spriteID: 7c25dc38f58db9140889e67bab4b84a7
+      internalID: -1983258530
       vertices: []
       indices: 
       edges: []
@@ -481,7 +495,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 62bfaaa864387244889c2dc4a955aaa3
+    spriteID: 1f5f90cda580c9c44aea89c53b16d9cf
     internalID: 0
     vertices: []
     indices: 
@@ -491,26 +505,24 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":4.0},"gridSpriteSize":{"x":60.0,"y":60.0},"gridSpriteOffset":{"x":10.0,"y":10.0},"gridSpritePadding":{"x":20.0,"y":20.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":1,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
-      - key: SpriteEditor.SliceOnImport
-        value: False
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":240.0,"y":240.0},"gridSpriteOffset":{"x":40.0,"y":40.0},"gridSpritePadding":{"x":80.0,"y":80.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      AM_KemeticWall_0: 5853383246252850406
-      AM_KemeticWall_1: -1851396106
-      AM_KemeticWall_10: -2095720761
-      AM_KemeticWall_11: 1856248172
-      AM_KemeticWall_12: -747203844
-      AM_KemeticWall_13: -1551645331
-      AM_KemeticWall_14: 1224984380
-      AM_KemeticWall_15: -1397663898
-      AM_KemeticWall_2: 1612196808
-      AM_KemeticWall_3: 728133541
-      AM_KemeticWall_4: 1746644447
-      AM_KemeticWall_5: -532533054
-      AM_KemeticWall_6: 1833071111
-      AM_KemeticWall_7: 2021348477
-      AM_KemeticWall_8: -1186652503
-      AM_KemeticWall_9: 1257387067
+      Wall-Copper_0: 3191787544561333685
+      Wall-Copper_1: -1792895393673002331
+      Wall-Copper_10: 360423074
+      Wall-Copper_11: 1030126506
+      Wall-Copper_12: -819342788
+      Wall-Copper_13: -439960737
+      Wall-Copper_14: -1202773051
+      Wall-Copper_15: -1983258530
+      Wall-Copper_2: 4507293285409140605
+      Wall-Copper_3: -4864702616949811541
+      Wall-Copper_4: -1627103713387243164
+      Wall-Copper_5: -6212546882235085597
+      Wall-Copper_6: 8082491086415087026
+      Wall-Copper_7: -953877754462890873
+      Wall-Copper_8: -5644519684820675966
+      Wall-Copper_9: 9171868836800163113
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

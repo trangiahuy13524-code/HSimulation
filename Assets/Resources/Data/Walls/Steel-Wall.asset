@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8109650e6dff034896405805fbb3a78, type: 3}
+  m_Name: Steel-Wall
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTillingTile
+  thingNameKey: wl-steelWall
+  thingDescriptionKey: wl-steelWallDesc
+  Icon: {fileID: -2370109866843263723, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  sprites:
+  - {fileID: 1335751322, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: -1237790442, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: -609893761, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: -351067305, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: -6222353412539076300, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: -2914368028448741052, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: -1569835492, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: -1546862375, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: -2370109866843263723, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: 8231498430388854083, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: 3688933261854059344, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: 2581662122213317615, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: 680451879711713747, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: -3482475127936447249, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: 8581326307811700562, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}
+  - {fileID: 4956665910509150187, guid: 4f7ec54d900e1c5489c9720ba214561f, type: 3}

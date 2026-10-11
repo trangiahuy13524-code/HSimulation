@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8109650e6dff034896405805fbb3a78, type: 3}
+  m_Name: Adamantine-Wall
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTillingTile
+  thingNameKey: wl-adamantineWall
+  thingDescriptionKey: wl-adamantineWallDesc
+  Icon: {fileID: 5706046053726806105, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  sprites:
+  - {fileID: 789153545, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: -1905513613, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: 323816946, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: 1827237125, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: 4751278444992217667, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: -8512968651054495893, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: 1865302916, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: -1266654418, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: 5706046053726806105, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: 3271488498359989852, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: -2583948203123972631, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: 689554930936346623, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: -5532214715819981850, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: -2845122493687619813, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: -73773193296828371, guid: 0c55759af5933d84488af6a3b7377914, type: 3}
+  - {fileID: -7289378419611957937, guid: 0c55759af5933d84488af6a3b7377914, type: 3}

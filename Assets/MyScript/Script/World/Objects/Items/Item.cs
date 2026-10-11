@@ -62,7 +62,7 @@ public class Item : WorldObjectDynamic
         }
     }
 
-    protected override void Start()
+    public override void Initialize()
     {
         transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
         world.RegisterItem(this, currentGridPos);

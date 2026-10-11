@@ -14,9 +14,9 @@ public abstract class BuildingWorkable : Building
     [SerializeField] public Direction workDirection;
 
     
-    protected override void Start()
+    public override void Initialize()
     {
-        base.Start();
+        base.Initialize();
         InitiateWorkPos(direction);
     }
 

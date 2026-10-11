@@ -1,3 +1,4 @@
+using Unity.Android.Gradle;
 using UnityEngine;
 
 public class Building : WorldObjectStatic
@@ -14,9 +15,10 @@ public class Building : WorldObjectStatic
 
     Vector2Int xRange;
     Vector2Int yRange;
-    protected override void Start()
+
+    public override void Initialize()
     {
-        transform.position = new Vector3(currentGridPos.x, currentGridPos.y, 0);
+        base.Initialize();
         bool isVertical = render.SetDirection(direction);
         if (!isVertical)
         {
@@ -38,10 +40,10 @@ public class Building : WorldObjectStatic
 
     protected override void OnDestroy()
     {
+        base.OnDestroy();
         for (int i = xRange.x; i < xRange.y; i++)
             for (int j = yRange.x; j < yRange.y; j++)
                 world.ResetNotPassableGrid(new Vector2Int(i, j));
-        base.OnDestroy();
     }
 
     public virtual bool checkPlaceable(Vector2Int position, Direction direction, WorldMap world)

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8109650e6dff034896405805fbb3a78, type: 3}
+  m_Name: Platinum-Wall
+  m_EditorClassIdentifier: Assembly-CSharp::AutoTillingTile
+  thingNameKey: wl-platinumWall
+  thingDescriptionKey: wl-platinumWallDesc
+  Icon: {fileID: 4683892031666121935, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  sprites:
+  - {fileID: 751280283, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: 264391761, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: 1884989202, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: -1970238534, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: 8451499172544538567, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: -2338139031713959578, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: 2144675124, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: -1581341899, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: 4683892031666121935, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: 56549243432605060, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: 5234696436797644009, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: -4684566243786864528, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: 1008954031750141095, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: 6614984166503960126, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: 5178046721578747962, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
+  - {fileID: -6079805159465869439, guid: 2c804fc453f129647abc084f1375e4cd, type: 3}
